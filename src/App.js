@@ -7,7 +7,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import Cards from './components/Cards';
+import Cards from './components/CardsHooks';
 
 export default function App() {
   return (

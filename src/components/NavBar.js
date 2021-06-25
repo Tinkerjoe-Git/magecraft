@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { fetchCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
 import { logoutUser } from '../actions/auth'
-import { Menu, Form, Dropdown } from 'semantic-ui-react'
+import { Menu, Form, DropDownMenu } from '@material-ui/core'
 
 class NavBar extends Component {
   state = {
@@ -105,15 +105,6 @@ class NavBar extends Component {
             onClick={this.handleItemClick}
           />
         )}
-        {loggedIn && (
-          <Menu.Item
-            as={Link}
-            to={{ pathname: `/${currentUser.name}/collection` }}
-            name="collection"
-            active={activeItem === 'collection'}
-            onClick={this.handleItemClick}
-          />
-        )}
         <Menu.Item position="right">
           <Form onSubmit={this.handleSearch}>
             <Form.Input
@@ -125,7 +116,7 @@ class NavBar extends Component {
             />
           </Form>
         </Menu.Item>
-        <Dropdown
+        <DropDownMenu
           name="dropdown"
           item
           onChange={this.handleChange}

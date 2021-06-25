@@ -1,58 +1,69 @@
+import React, { Component } from 'react'
+import './App.css'
+import NavBar from './components/NavBar'
+import CardContainer from './containers/CardContainer'
+import DeckContainer from './containers/DeckContainer'
+import Home from './components/HomePage'
+import DeckShow from './components/DeckShow'
+import LoginForm from './components/LoginForm'
+import SignupForm from './components/SignupForm'
+import DeckForm from './components/DeckForm'
+import NotFoundPage from './components/NotFoundPage'
+import withStats from './components/hocs/withStats'
+import { Route, Switch, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { fetchUser } from './actions/auth'
 
-import './App.css';
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import Cards from './components/CardsHooks';
+const DeckFormWithStats = withStats(DeckForm)
 
-export default function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/cards">Cards</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
+class App extends Component {
+  componentDidMount() {
+    let jwt = localStorage.getItem('token')
+    if (jwt && !this.props.loggedIn) {
+      this.props.fetchUser()
+    }
+  }
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
+  render() {
+    const { selectedDeck } = this.props
+    return (
+      <div className="App">
+        <NavBar />
         <Switch>
-          <Route path="/cards">
-            <Cards />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={LoginForm} />
+          <Route exact path="/signup" component={SignupForm} />
+          <Route exact path="/cards/search" component={CardContainer} />
+          <Route exact path="/decks/search" component={DeckContainer} />
+          <Route />
+          <Route exact path="/:username/decks" component={DeckContainer} />
+          <Route
+            exact
+            path="/:username/decks/new"
+            component={DeckFormWithStats}
+          />
+          <Route
+            exact
+            path="/decks/:id"
+            render={() => <DeckShow deck={selectedDeck} />}
+          />
+          <Route
+            exact
+            path="/:username/decks/:id"
+            render={() => <DeckShow deck={selectedDeck} />}
+          />
+          <Route component={NotFoundPage} />
         </Switch>
       </div>
-    </Router>
-  );
+    )
+  }
 }
 
-function Home() {
-  return <h2>Home</h2>;
+const mapStateToProps = (state) => {
+  return {
+    selectedDeck: state.decks.selected,
+    loggedIn: !!state.auth.currentUser.id,
+  }
 }
 
-
-
-function Users() {
-  return <h2>Users</h2>;
-}
-
-
+export default withRouter(connect(mapStateToProps, { fetchUser })(App))

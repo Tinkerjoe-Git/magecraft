@@ -19,7 +19,8 @@
         "react/display-name": 1,
         "no-unused-vars": "warn",
         "no-console": 1,
-        "no-unexpected-multiline": "warn"
+        "no-unexpected-multiline": "warn",
+        "react/prop-types": "off"
     
     },
     "env": {

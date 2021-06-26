@@ -2,8 +2,7 @@ import React from 'react'
 import { Grid, Container } from 'semantic-ui-react'
 
 export default function withStats(Component) {
-  return class extends React {
-    Component
+  return class withStats extends React.Component {
     render() {
       return (
         <Container>

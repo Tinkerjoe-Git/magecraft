@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import uuid from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuidv4'
 import DeckCardInput from './DeckCardInput'
 import { connect } from 'react-redux'
 import { sortCardsIntoBoards } from '../globalFunctions'
 import { Button, Container, Divider } from '@material-ui/core'
 import { Form } from 'react-final-form'
-import DropDownMenu from 'material-ui/DropDownMenu'
+import { Menu } from '@material-ui/core'
 import { createDeck } from '../actions/decks'
 import { clearCard } from '../actions/cards'
 import { withRouter } from 'react-router-dom'
 import { Alert } from '@material-ui/lab'
-import { Segment } from 'semantic-ui'
+import { Segment } from 'semantic-ui-react'
 
 const addCard = (newCard, prevState) => {
   const cards = prevState.fields.cards
@@ -34,7 +34,7 @@ const addCard = (newCard, prevState) => {
 
       if (!card.name) {
         cards[i] = {
-          key: uuid(),
+          key: uuidv4(),
           error: false,
           sideboard: newCard.sideboard,
           ...newCard.attributes,
@@ -46,7 +46,7 @@ const addCard = (newCard, prevState) => {
     }
     if (!updated) {
       cards.push({
-        key: uuid(),
+        key: uuidv4(),
         error: false,
         sideboard: newCard.sideboard,
         ...newCard.attributes,
@@ -117,7 +117,7 @@ class DeckForm extends Component {
           ...this.state.fields,
           cards: [
             ...cards,
-            { key: uuid(), error: false, sideboard, name: '', count: '' },
+            { key: uuidv4(), error: false, sideboard, name: '', count: '' },
           ],
         },
       })
@@ -216,7 +216,7 @@ class DeckForm extends Component {
           />
           <Form.Field required inline width={8}>
             <label>Format</label>
-            <DropDownMenu
+            <Menu
               onChange={this.handleFieldChange}
               options={formats}
               placeholder="Search format"
@@ -258,7 +258,7 @@ class DeckForm extends Component {
 const mapStateToProps = (state) => {
   return {
     formats: state.decks.formats.map((format) => {
-      return { key: uuid(), text: format.name, value: format.name }
+      return { key: uuidv4(), text: format.name, value: format.name }
     }),
     userId: state.auth.currentUser.id,
     selectedCard: state.cards.selected,

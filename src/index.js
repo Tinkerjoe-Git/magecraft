@@ -10,7 +10,6 @@ import thunk from 'redux-thunk'
 import cardsReducer from './reducers/cardsReducer'
 import decksReducer from './reducers/decksReducer'
 import authReducer from './reducers/authReducer'
-import './semantic/dist/semantic.min.css'
 
 const rootReducer = combineReducers({
   cards: cardsReducer,

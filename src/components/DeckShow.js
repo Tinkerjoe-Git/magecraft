@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import uuid from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuidv4'
 import SegmentList from './SegmentList'
 import DeleteModal from './DeleteModal'
 import withLoader from './hocs/withLoader'
@@ -15,7 +15,7 @@ import {
 } from '../actions/decks'
 import { connect } from 'react-redux'
 import { Button, Container, Grid, CardHeader } from '@material-ui/core'
-import { Segment } from 'semantic-ui'
+import { Segment } from 'semantic-ui-react'
 import { Form } from 'react-final-form'
 
 class DeckShow extends Component {
@@ -57,7 +57,7 @@ class DeckShow extends Component {
         (card) => !card.sideboard,
       ).length
       const cardsWithKeys = nextProps.selectedDeck.cards.map((card) => {
-        card.key = uuid()
+        card.key = uuidv4()
         card.error = false
         return card
       })
@@ -142,7 +142,7 @@ class DeckShow extends Component {
             cards: [
               ...this.state.deck.cards,
               {
-                key: uuid(),
+                key: uuidv4(),
                 error: false,
                 primary_type: name,
                 sideboard,

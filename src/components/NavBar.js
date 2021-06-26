@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { fetchCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
 import { logoutUser } from '../actions/auth'
-import DropDownMenu from 'material-ui/DropDownMenu'
 import { Menu } from '@material-ui/core'
 import { Form } from 'react-final-form'
 
@@ -118,7 +117,7 @@ class NavBar extends Component {
             />
           </Form>
         </Menu.Item>
-        <DropDownMenu
+        <Menu
           name="dropdown"
           item
           onChange={this.handleChange}

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Button, Grid, CardHeader, Divider } from '@material-ui/core'
 import { Form } from 'react-final-form'
 import { Alert } from '@material-ui/lab'
-import { Segment } from 'semantic-ui'
+import { Segment } from 'semantic-ui-react'
 
 class SignupForm extends Component {
   state = {

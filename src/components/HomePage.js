@@ -1,5 +1,5 @@
 import React from 'react'
-import MtgCard from './MagicCard'
+import MtgCard from './MtgCard'
 import DeckCard from './DeckCard'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'

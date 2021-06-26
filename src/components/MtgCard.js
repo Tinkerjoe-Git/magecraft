@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import uuid from 'uuid'
+import { v4 as uuidv4 } from 'uuidv4'
 import { connect } from 'react-redux'
 import { selectCard } from '../actions/cards'
 
-import { Card, List, Label, Button, Icon, Form } from '@material-ui/core'
+import { Card, List, Label, Button, Icon, Modal, Form } from 'semantic-ui-react'
 
 class MagicCard extends Component {
   state = {
     mouseOver: false,
     infoView: false,
     card: {},
-    key: uuid(),
+    key: uuidv4(),
   }
 
   handleAdd = (event) => {

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuidv4'
 import SegmentList from './SegmentList'
 import DeleteModal from './DeleteModal'
 import withLoader from './hocs/withLoader'
-import { keysForDeckShow } from '../globalVars'
+//import { keysForDeckShow } from '../globalVars'
 import { sortCardsByType, dateFormater } from '../globalFunctions'
 import { withRouter, Redirect } from 'react-router-dom'
 import {
@@ -205,7 +205,7 @@ class DeckShow extends Component {
               appendInput={this.appendInput}
               removeInput={this.removeInput}
               handleCardChange={this.handleCardChange}
-              key={keysForDeckShow[cardType]}
+              //key={keysForDeckShow[cardType]}
               editing={this.state.editing}
               cards={sortedCards[cardType]}
               type={cardType}
@@ -227,7 +227,7 @@ class DeckShow extends Component {
             removeInput={this.removeInput}
             handleCardChange={this.handleCardChange}
             totalsideboard={totalSideboard}
-            key={keysForDeckShow.Sideboard}
+            //key={keysForDeckShow.Sideboard}
             editing={this.state.editing}
             cards={sideboard}
             type="sideboard"

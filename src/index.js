@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { makeStyles } from '@material-ui/core/styles'
 import './index.css'
 import App from './App'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -16,6 +15,7 @@ const rootReducer = combineReducers({
   decks: decksReducer,
   auth: authReducer,
 })
+
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 ReactDOM.render(

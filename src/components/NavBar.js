@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { fetchCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
 import { logoutUser } from '../actions/auth'
-import { Menu } from '@material-ui/core'
+import { Menu, MenuItem } from '@material-ui/core'
 import { Form } from 'react-final-form'
 
 class NavBar extends Component {
@@ -89,8 +89,8 @@ class NavBar extends Component {
       marginBottom: this.props.history.location.pathname !== '/' ? '1rem' : '0',
     }
     return (
-      <Menu inverted pointing style={style}>
-        <Menu.Item
+      <Menu id="simple-menu" keepMounted open={Boolean}>
+        <MenuItem
           as={Link}
           to="/"
           name="home"
@@ -98,7 +98,7 @@ class NavBar extends Component {
           onClick={this.handleItemClick}
         />
         {loggedIn && (
-          <Menu.Item
+          <MenuItem
             as={Link}
             to={{ pathname: `/${currentUser.name}/decks` }}
             name="decks"
@@ -106,17 +106,11 @@ class NavBar extends Component {
             onClick={this.handleItemClick}
           />
         )}
-        <Menu.Item position="right">
-          <Form onSubmit={this.handleSearch}>
-            <Form.Input
-              icon="search"
-              name="search"
-              value={search}
-              onChange={this.handleChange}
-              placeholder={`Search ${dropdown}...`}
-            />
-          </Form>
-        </Menu.Item>
+        <MenuItem onSubmit={this.handleSearch}>
+          value={search}
+          onChange={this.handleChange}
+          placeholder={`Search ${dropdown}...`}
+        </MenuItem>
         <Menu
           name="dropdown"
           item
@@ -125,7 +119,7 @@ class NavBar extends Component {
           placeholder="Cards"
         />
         {!loggedIn ? (
-          <Menu.Item
+          <MenuItem
             as={Link}
             to="/login"
             name="login"
@@ -133,7 +127,7 @@ class NavBar extends Component {
             onClick={this.handleItemClick}
           />
         ) : (
-          <Menu.Item
+          <MenuItem
             as={Link}
             to="/"
             name="logout"

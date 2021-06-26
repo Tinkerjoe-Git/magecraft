@@ -1,6 +1,5 @@
 import React from 'react'
 import DeckForm from '../DeckForm'
-import CollectionForm from '../CollectionForm'
 import {
   Sidebar,
   Button,
@@ -55,24 +54,7 @@ export default function withPusher(Component) {
       this.measure()
     }
 
-    componentDidUpdate(prevProps, prevState) {
-      // if (prevProps.location.pathname !== this.props.location.pathname) {
-      //   this.setState({
-      //     visible: false,
-      //     activeItem: '',
-      //     sidebar: {
-      //       width: null,
-      //       height: null,
-      //     },
-      //     pusher:{
-      //       width: null,
-      //       height: null,
-      //       initialWidth: null,
-      //       initialHeight: null,
-      //     }
-      //   })
-      // }
-    }
+    componentDidUpdate(prevProps, prevState) {}
 
     handleItemClick = (e, { name }) => {
       if (name === this.state.activeItem) {
@@ -117,22 +99,13 @@ export default function withPusher(Component) {
             </Dimmer>
           ) : null}
           {loggedIn && (
-            <Button.Group>
-              <Button
-                name="createDeck"
-                active={activeItem === 'createDeck'}
-                onClick={this.handleItemClick}
-              >
-                Build Deck
-              </Button>
-              <Button
-                name="addToCollection"
-                active={activeItem === 'addToCollection'}
-                onClick={this.handleItemClick}
-              >
-                Add to Collection
-              </Button>
-            </Button.Group>
+            <Button
+              name="createDeck"
+              active={activeItem === 'createDeck'}
+              onClick={this.handleItemClick}
+            >
+              Build Deck
+            </Button>
           )}
           <Divider />
           <Sidebar.Pushable className="sidebar-pusher">
@@ -142,7 +115,7 @@ export default function withPusher(Component) {
               visible={visible}
               id="sidebar"
             >
-              {activeItem === 'createDeck' ? <DeckForm /> : <CollectionForm />}
+              {activeItem === 'createDeck'}
             </Sidebar>
             <Sidebar.Pusher as={Container} style={style} id="pusher" fluid>
               <Component

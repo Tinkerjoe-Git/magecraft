@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import DeleteModal from './DeleteModal'
 import { connect } from 'react-redux'
 import { selectDeck, deleteDeck } from '../actions/decks'
-import { Card, List, Label } from '@material-ui/core'
+import { Card, List, FormLabel } from '@material-ui/core'
 import { dateFormater } from '../globalFunctions'
 
 class DeckCard extends Component {
@@ -78,7 +78,7 @@ class DeckCard extends Component {
           {dateFormater(updatedAt)}
           {this.props.match.path === '/:username/decks' &&
             this.state.mouseOver && (
-              <Label
+              <FormLabel
                 as="a"
                 name="delete"
                 onClick={this.toggleDestroyModal}

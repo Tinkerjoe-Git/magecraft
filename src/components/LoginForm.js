@@ -2,15 +2,10 @@ import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { loginUser } from '../actions/auth'
 import { connect } from 'react-redux'
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment,
-  Divider,
-} from '@material-ui/core'
+import { Button, Grid, CardHeader, Divider } from '@material-ui/core'
+import { Form } from 'react-final-form'
+import { Alert } from '@material-ui/lab'
+import { Segment } from 'semantic-ui'
 
 class LoginForm extends Component {
   state = {
@@ -72,20 +67,18 @@ class LoginForm extends Component {
         <Grid textAlign="center" verticalAlign="top" className="login-form">
           <Grid.Column className="auth-form-body">
             <Divider hidden />
-            <Header as="h2" textAlign="center">
+            <CardHeader as="h2" textAlign="center">
               {' '}
               Log-in to your account
-            </Header>
-            <Message warning attached hidden={redirect === false}>
-              <Message.Header>
-                You must be logged before you can do that!
-              </Message.Header>
+            </CardHeader>
+            <Alert severity="error">
+              You must be logged before you can do that!
+            </Alert>
+            <Alert severity="error">
               <p>Please login below, then try again.</p>
-            </Message>
-            <Message warning attached hidden={error === false}>
-              <Message.Header>Something went wrong!</Message.Header>
-              <p>{this.props.authErrorMessage}</p>
-            </Message>
+            </Alert>
+            <Alert severity="warning">Something went wrong!</Alert>
+            <p>{this.props.authErrorAlert}</p>
             <Form size="large" onSubmit={this.handleSubmit}>
               <p>
                 For sample, use <b>username:</b> <i>demo</i> and{' '}
@@ -118,9 +111,9 @@ class LoginForm extends Component {
                 </Button>
               </Segment>
             </Form>
-            <Message>
+            <Alert>
               New to us? <Link to="/signup">Sign Up</Link>
-            </Message>
+            </Alert>
           </Grid.Column>
         </Grid>
       )
@@ -131,7 +124,7 @@ class LoginForm extends Component {
 const mapStateToProps = (state) => {
   return {
     authError: state.auth.errorStatus,
-    authErrorMessage: state.auth.error.message,
+    authErrorAlert: state.auth.error.Alert,
     loggedIn: !!state.auth.currentUser.id,
   }
 }

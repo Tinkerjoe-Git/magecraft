@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import uuid from 'uuid'
+import uuid from 'uuid/v4'
 import SegmentList from './SegmentList'
 import DeleteModal from './DeleteModal'
 import withLoader from './hocs/withLoader'
@@ -14,14 +14,9 @@ import {
   createDeck,
 } from '../actions/decks'
 import { connect } from 'react-redux'
-import {
-  Button,
-  Container,
-  Grid,
-  Header,
-  Segment,
-  Form,
-} from '@material-ui/core'
+import { Button, Container, Grid, CardHeader } from '@material-ui/core'
+import { Segment } from 'semantic-ui'
+import { Form } from 'react-final-form'
 
 class DeckShow extends Component {
   constructor(props) {
@@ -286,7 +281,10 @@ class DeckShow extends Component {
           </Segment.Group>
           <Grid as={Form} columns={2} divided size="mini">
             <Grid.Column width={11}>
-              <Segment as={Header} content={`Mainboard (${totalMainboard})`} />
+              <Segment
+                as={CardHeader}
+                content={`Mainboard (${totalMainboard})`}
+              />
               <div
                 id={
                   (this.state.segmentCount <= 26 && 'deck-container-small') ||
@@ -298,7 +296,10 @@ class DeckShow extends Component {
               </div>
             </Grid.Column>
             <Grid.Column width={5}>
-              <Segment as={Header} content={`Sideboard (${totalSideboard})`} />
+              <Segment
+                as={CardHeader}
+                content={`Sideboard (${totalSideboard})`}
+              />
               {sideboardSegment}
             </Grid.Column>
           </Grid>

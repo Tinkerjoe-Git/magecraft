@@ -2,15 +2,10 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { createUser } from '../actions/auth'
 import { connect } from 'react-redux'
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment,
-  Divider,
-} from '@material-ui/core'
+import { Button, Grid, CardHeader, Divider } from '@material-ui/core'
+import { Form } from 'react-final-form'
+import { Alert } from '@material-ui/lab'
+import { Segment } from 'semantic-ui'
 
 class SignupForm extends Component {
   state = {
@@ -62,14 +57,11 @@ class SignupForm extends Component {
       <Grid textAlign="center" verticalAlign="top" className="login-form">
         <Grid.Column className="auth-form-body">
           <Divider hidden />
-          <Header as="h2" textAlign="center">
+          <CardHeader as="h2" textAlign="center">
             {' '}
             Signup for your account
-          </Header>
-          <Message warning attached hidden={error === false}>
-            <Message.Header>Something went wrong!</Message.Header>
-            <p>{message}</p>
-          </Message>
+          </CardHeader>
+          <Alert severity="error">Something went wrong! {message} </Alert>
           <Form size="large" onSubmit={this.handleSubmit}>
             <Segment stacked>
               <Form.Input
@@ -108,9 +100,9 @@ class SignupForm extends Component {
               </Button>
             </Segment>
           </Form>
-          <Message>
+          <Alert severity="info">
             Already have an account? <Link to="/login">Login</Link>
-          </Message>
+          </Alert>
         </Grid.Column>
       </Grid>
     )

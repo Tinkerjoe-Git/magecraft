@@ -3,14 +3,9 @@ import MtgCard from './MagicCard'
 import DeckCard from './DeckCard'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import {
-  Container,
-  Header,
-  Button,
-  Icon,
-  Segment,
-  Menu,
-} from '@material-ui/core'
+import { Container, CardHeader, Button, Icon, Menu } from '@material-ui/core'
+
+import Box from '@material-ui/core/Box'
 
 const Home = (props) => {
   const handleClick = (event) => {
@@ -18,7 +13,7 @@ const Home = (props) => {
   }
 
   return (
-    <Segment
+    <Box
       id="home"
       color="grey"
       inverted
@@ -35,7 +30,7 @@ const Home = (props) => {
         compact
       >
         <Container text>
-          <Header
+          <CardHeader
             className="main-header"
             as="h1"
             content="Spellbook"
@@ -43,12 +38,12 @@ const Home = (props) => {
           />
 
           {props.loggedIn && (
-            <Header className="sub-header" as="h2" inverted>
+            <CardHeader className="sub-header" as="h2" inverted>
               Welcome <span className="username">{props.currentUser.name}</span>
-            </Header>
+            </CardHeader>
           )}
 
-          <Header
+          <CardHeader
             className="sub-header"
             as="h2"
             content="Create and manage your Magic: The Gathering Decks"
@@ -63,7 +58,7 @@ const Home = (props) => {
           )}
         </Container>
       </Menu>
-    </Segment>
+    </Box>
   )
 }
 

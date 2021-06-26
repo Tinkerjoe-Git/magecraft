@@ -1,21 +1,16 @@
 import React, { Component } from 'react'
-import uuid from 'uuid'
+import uuid from 'uuid/v4'
 import DeckCardInput from './DeckCardInput'
 import { connect } from 'react-redux'
 import { sortCardsIntoBoards } from '../globalFunctions'
-import {
-  Form,
-  Button,
-  Container,
-  Segment,
-  Dropdown,
-  Message,
-  Checkbox,
-  Divider,
-} from '@material-ui/core'
+import { Button, Container, Divider } from '@material-ui/core'
+import { Form } from 'react-final-form'
+import DropDownMenu from 'material-ui/DropDownMenu'
 import { createDeck } from '../actions/decks'
 import { clearCard } from '../actions/cards'
 import { withRouter } from 'react-router-dom'
+import { Alert } from '@material-ui/lab'
+import { Segment } from 'semantic-ui'
 
 const addCard = (newCard, prevState) => {
   const cards = prevState.fields.cards
@@ -221,7 +216,7 @@ class DeckForm extends Component {
           />
           <Form.Field required inline width={8}>
             <label>Format</label>
-            <Dropdown
+            <DropDownMenu
               onChange={this.handleFieldChange}
               options={formats}
               placeholder="Search format"
@@ -248,12 +243,11 @@ class DeckForm extends Component {
             Add Card
           </Button>
           <Divider />
-          <Message
+          <Alert severity="error">
             hidden={!error}
-            error
-            header="Invalid Submission"
-            content={message}
-          />
+            error Invalid Submission
+            {message}
+          </Alert>
           <Form.Button>Submit</Form.Button>
         </Form>
       </Container>

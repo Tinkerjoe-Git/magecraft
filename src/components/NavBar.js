@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import { fetchCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
 import { logoutUser } from '../actions/auth'
-import { Menu, Form, DropDownMenu } from '@material-ui/core'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import { Menu } from '@material-ui/core'
+import { Form } from 'react-final-form'
 
 class NavBar extends Component {
   state = {

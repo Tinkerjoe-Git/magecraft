@@ -1,4 +1,4 @@
-# Deck Builder
+# Magecraft
 
 A MTG Magic the Gathering deck building utility // written in JS with a Rails API backend. 
 Currently Full ZNR Setlist is displayed.

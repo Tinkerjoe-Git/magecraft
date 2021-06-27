@@ -13,7 +13,7 @@ import withStats from './components/hocs/withStats'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchUser } from './actions/auth'
-import { DeckCard2 } from './components/DeckCard2'
+import { Cards } from './components/Cards'
 
 const DeckFormWithStats = withStats(DeckForm)
 
@@ -23,28 +23,24 @@ class App extends Component {
     if (jwt && !this.props.loggedIn) {
       this.props.fetchUser()
     }
-    fetch('http://localhost:3000/cards')
-      .then((resp) => resp.json())
-      .then((json) => {
-        this.setState({
-          cards: json,
-        })
-      })
   }
 
   render() {
-    const { selectedDeck } = this.props
+    const {
+      selectedDeck,
+      // loggedIn,
+      // loading,
+    } = this.props
     return (
       <div className="App">
         <NavBar />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={LoginForm} />
-          <Route exact path="/signup" component={SignupForm} />
-          <Route exact path="/cards/search" component={CardContainer} />
-          <Route exact path="/decks/search" component={DeckContainer} />
-          <Route />
-          <Route exact path="/:username/decks" component={DeckContainer} />
+          <Route exact path="/login" />
+          <Route exact path="/signup" />
+          <Route exact path="/cards" />
+          <Route exact path="/decks/search" />
+          <Route exact path="/:username/decks" />
           <Route
             exact
             path="/:username/decks/new"

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import BookIcon from '@material-ui/icons/Book'
@@ -13,6 +13,13 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import Link from '@material-ui/core/Link'
+import { withRouter } from 'react-router-dom'
+import DeleteModal from './DeleteModal'
+import { connect, useSelector, useDispatch } from 'react-redux'
+import { selectDeck, deleteDeck } from '../actions/decks'
+import { dateFormater } from '../globalFunctions'
+import { fetchCARDS } from '../globalVars'
+import { setCards } from '../reducers/cardSlice'
 
 function Copyright() {
   return (
@@ -59,10 +66,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-export default function DeckCard2() {
+export default function Cards() {
   const classes = useStyles()
+  const cards = useSelector((state) => state.cards)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    console.log('mounting cards')
+    fetchCARDS('cards').then(() => dispatch(setCards(cards)))
+    return () => {
+      console.log('done')
+    }
+  }, [])
 
   return (
     <React.Fragment>
@@ -86,7 +100,7 @@ export default function DeckCard2() {
               color="textPrimary"
               gutterBottom
             >
-              Album layout
+              Card Layout
             </Typography>
             <Typography
               variant="h5"
@@ -115,16 +129,16 @@ export default function DeckCard2() {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={this.id} xs={12} sm={6} md={4}>
+            {cards.map((card, i) => (
+              <Grid item key={i}>
+                {card.name} xs={12} sm={6} md={4}
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image={this.props.img}
-                    title={this.props.name}
-                    text={this.props.text}
-                    type={this.props.type}
+                    image={card.img_url}
+                    title={card.name}
                   />
+                  )
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {this.props.name}
@@ -168,3 +182,11 @@ export default function DeckCard2() {
     </React.Fragment>
   )
 }
+
+// const mapStateToProps = (state) => {
+//   return {
+//     currentUser: state.auth.currentUser,
+//   }
+// }
+
+// connect(mapStateToProps, { selectDeck, deleteDeck })(withRouter(DeckCard2))

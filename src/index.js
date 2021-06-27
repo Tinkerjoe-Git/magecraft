@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import cardsReducer from './reducers/cardsReducer'
 import decksReducer from './reducers/decksReducer'
 import authReducer from './reducers/authReducer'
+import { render } from 'react-dom'
 
 const rootReducer = combineReducers({
   cards: cardsReducer,

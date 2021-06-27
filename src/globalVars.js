@@ -1,6 +1,8 @@
-import { v4 as uuidv4 } from 'uuidv4'
-
 export const API_ROOT = 'http://localhost:3000'
+
+export async function fetchCARDS(arg) {
+  return await fetch(`https://localhost:3000/${arg}`).then((r) => r.json())
+}
 
 export const types = [
   'Creature',

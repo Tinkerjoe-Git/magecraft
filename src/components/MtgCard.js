@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import React, { Component } from 'react'
 import { v4 as uuidv4 } from 'uuidv4'
 import { connect } from 'react-redux'
@@ -19,9 +21,7 @@ class MagicCard extends Component {
   }
 
   componentDidMount() {
-    if (this.props.type === 'collection_card') {
-      this.setState({ collectionView: true, card: this.props.card })
-    }
+    console.log('Updated')
   }
 
   handleMouseOver = (event) => {
@@ -56,25 +56,10 @@ class MagicCard extends Component {
   }
 
   render() {
-    const {
-      // id,
-      name,
-      // cmc,
-      // mana_cost,
-      // rarity,
-      // power,
-      // toughness,
-      // text,
-      imgUrl,
-      count,
-      condition,
-      setName,
-      premium,
-      wishlist,
-    } = this.props.card
+    const { id, name, cmc, mana_cost, rarity, power, toughness, text, imgUrl } =
+      this.props.card
 
     const { mouseOver, showInfo, key } = this.state
-    const { pusherVisible, pusherType } = this.props
     {
       return (
         <Card
@@ -84,7 +69,7 @@ class MagicCard extends Component {
         >
           <div className="ui image">
             <img src={imgUrl} alt={name} />
-            {pusherVisible && pusherType === 'createDeck' && mouseOver && (
+            {'createDeck' && mouseOver && (
               <Label
                 as="a"
                 onClick={this.handleAdd}
@@ -95,7 +80,7 @@ class MagicCard extends Component {
               />
             )}
 
-            {pusherVisible && pusherType === 'createDeck' && mouseOver && (
+            {'createDeck' && mouseOver && (
               <Label
                 as="a"
                 onClick={this.handleAdd}

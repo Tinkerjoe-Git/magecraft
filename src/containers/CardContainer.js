@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import MtgCard from '../components/MtgCard'
 import { v4 as uuidv4 } from 'uuidv4'
 import { connect } from 'react-redux'
-import withPusher from '../components/hocs/withPusher'
 import { fetchCards } from '../actions/cards'
 import { Container } from '@material-ui/core'
 
@@ -12,14 +11,14 @@ class CardContainer extends Component {
   }
 
   render() {
-    const { pusherVisible, pusherType } = this.props
     const cards = this.props.results.map((card) => (
       <MtgCard
         key={uuidv4()}
         card={card.attributes}
+        name={card.name}
         type={card.type}
-        pusherVisible={pusherVisible}
-        pusherType={pusherType}
+        img={card.image_url}
+        text={card.text}
       />
     ))
 
@@ -35,6 +34,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { fetchCards })(
-  withPusher(CardContainer),
-)
+export default connect(mapStateToProps, { fetchCards })(CardContainer)

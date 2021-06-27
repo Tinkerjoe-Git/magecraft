@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { fetchCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
 import { logoutUser } from '../actions/auth'
-import { Menu, MenuItem } from '@material-ui/core'
-import { Form } from 'react-final-form'
+import { MenuList, MenuItem } from '@material-ui/core'
 
 class NavBar extends Component {
   state = {
@@ -14,7 +13,7 @@ class NavBar extends Component {
     dropdown: 'cards',
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.history.location.pathname === '/') {
       return {
         activeItem: 'home',
@@ -26,13 +25,6 @@ class NavBar extends Component {
       return {
         activeItem: 'decks',
       }
-    } else if (
-      nextProps.history.location.pathname ===
-      `/${nextProps.currentUser.name}/collection`
-    ) {
-      return {
-        activeItem: 'collection',
-      }
     } else {
       return {
         activeItem: '',
@@ -40,7 +32,7 @@ class NavBar extends Component {
     }
   }
 
-  handleItemClick = (event, { name }) =>
+  handleItemClick = (event, name) =>
     this.setState({ activeItem: name, submit: false })
 
   handleChange = (event, { value, name }) => {
@@ -54,7 +46,7 @@ class NavBar extends Component {
     this.props.logoutUser()
   }
 
-  handleSearch = (event, { name }) => {
+  handleSearch = (event) => {
     event.preventDefault()
     const searchTerm = this.state.search.length ? this.state.search : 'default'
     switch (this.state.dropdown) {
@@ -85,57 +77,68 @@ class NavBar extends Component {
     ]
     const { activeItem, search, dropdown } = this.state
     const { currentUser, loggedIn } = this.props
-    const style = {
-      marginBottom: this.props.history.location.pathname !== '/' ? '1rem' : '0',
-    }
-    return (
-      <Menu id="simple-menu" keepMounted open={Boolean}>
-        <MenuItem
-          as={Link}
-          to="/"
-          name="home"
-          active={activeItem === 'home'}
-          onClick={this.handleItemClick}
-        />
-        {loggedIn && (
+    const drawer = (
+      <div>
+        <MenuList>
           <MenuItem
-            as={Link}
-            to={{ pathname: `/${currentUser.name}/decks` }}
+            name="home"
+            active={activeItem === 'home'}
+            component={Link}
+            to="/"
+            onClick={this.handleItemClick}
+          >
+            Home
+          </MenuItem>
+          <MenuItem
             name="decks"
             active={activeItem === 'decks'}
+            component={Link}
+            to={{ pathname: `/${currentUser.name}/decks` }}
             onClick={this.handleItemClick}
-          />
-        )}
-        <MenuItem onSubmit={this.handleSearch}>
-          value={search}
-          onChange={this.handleChange}
-          placeholder={`Search ${dropdown}...`}
-        </MenuItem>
-        <Menu
-          name="dropdown"
-          item
-          onChange={this.handleChange}
-          options={options}
-          placeholder="Cards"
-        />
-        {!loggedIn ? (
+          >
+            Decks
+          </MenuItem>
           <MenuItem
-            as={Link}
-            to="/login"
-            name="login"
-            active={activeItem === 'login'}
-            onClick={this.handleItemClick}
-          />
-        ) : (
+            name="search"
+            onSubmit={this.handleSearch}
+            value={search}
+            onChange={this.handleChange}
+            placeholder={`Search ${dropdown}...`}
+          >
+            Search
+          </MenuItem>
           <MenuItem
-            as={Link}
-            to="/"
-            name="logout"
-            onClick={this.handleLogout}
-          />
-        )}
-      </Menu>
+            name="cards"
+            onChange={this.handleChange}
+            options={options}
+            to="/cards"
+          >
+            Cards
+          </MenuItem>
+          {!loggedIn ? (
+            <MenuItem
+              name="login"
+              active={activeItem === 'decks'}
+              component={Link}
+              to="/login"
+              onClick={this.handleItemClick}
+            >
+              Login
+            </MenuItem>
+          ) : (
+            <MenuItem
+              component={Link}
+              to="/"
+              onClick={this.handleLogout}
+              name="logout"
+            >
+              Logout
+            </MenuItem>
+          )}
+        </MenuList>
+      </div>
     )
+    return drawer
   }
 }
 

@@ -55,10 +55,10 @@ const SignupPage = () => {
 class App extends Component {
   componentDidMount() {
     this.props.getCards
-    let jwt = localStorage.getItem('token')
-    if (jwt && !this.props.loggedIn) {
-      this.props.fetchUser()
-    }
+    // let jwt = localStorage.getItem('token')
+    // if (jwt && !this.props.loggedIn) {
+    //   this.props.fetchUser()
+    // }
   }
 
   render() {
@@ -77,9 +77,10 @@ class App extends Component {
           <Route exact path="/cards" component={Cards} />
           <Route exact path="/decks/search" />
           {/* UserDecks is list of all decks for a given user */}
-          <Route exact path="/decks/:username" component={UserDecks} />
+          {/* <Route exact path="/decks/:username" component={UserDecks} />
           {/* UserDeck is a single deck of cards */}
-          <Route exact path="/decks/:username/:id" component={UserDeck} />
+          {/* <Route exact path="/decks/:username/:id" component={UserDeck} /> */}{' '}
+          */
           <Route
             exact
             path="/:username/decks/new"

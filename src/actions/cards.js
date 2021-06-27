@@ -2,20 +2,22 @@ import { generateSearchParams } from '../globalFunctions'
 import { API_ROOT } from '../globalVars'
 
 export const fetchCards = (searchTerms, history) => {
-  const params = generateSearchParams(searchTerms, 'card')
+  const params = generateSearchParams(searchTerms, 'cards')
   const path = `/cards/search?${params}`
   history.push(path)
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({
       type: 'LOADING_CARDS',
     })
 
-    const res = await fetch(`${API_ROOT}${path}`)
-    const cards = await res.json()
-    dispatch({
-      type: 'SEARCH_CARDS',
-      payload: cards.data,
-    })
+    return fetch(`${API_ROOT}${path}`)
+      .then((res) => res.json())
+      .then((cards) => {
+        dispatch({
+          type: 'SEARCH_CARDS',
+          payload: cards.data,
+        })
+      })
   }
 }
 

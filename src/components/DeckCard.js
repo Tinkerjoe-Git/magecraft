@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { selectDeck, deleteDeck } from '../actions/decks'
 import { Card, List, FormLabel } from '@material-ui/core'
 import { dateFormater } from '../globalFunctions'
+import CardContent from '@material-ui/core/CardContent'
 
 class DeckCard extends Component {
   state = {
@@ -12,7 +13,7 @@ class DeckCard extends Component {
     mouseOver: false,
   }
 
-  handleMouseOver = (event) => {
+  handleMouseOver = () => {
     this.setState({
       mouseOver: !this.state.mouseOver,
     })
@@ -24,7 +25,7 @@ class DeckCard extends Component {
     })
   }
 
-  handleClick = (event) => {
+  handleClick = () => {
     this.props.selectDeck(
       this.props.deck,
       this.props.history,
@@ -32,7 +33,7 @@ class DeckCard extends Component {
     )
   }
 
-  handleDelete = (event) => {
+  handleDelete = () => {
     this.props.deleteDeck(
       this.props.deck.id,
       this.props.history,
@@ -55,7 +56,7 @@ class DeckCard extends Component {
         onMouseEnter={this.handleMouseOver}
         onMouseLeave={this.handleMouseOver}
       >
-        <Card.Content>
+        <CardContent>
           <Card.Header
             as="a"
             floated="left"
@@ -73,7 +74,7 @@ class DeckCard extends Component {
               {formatName}
             </List.Item>
           </List>
-        </Card.Content>
+        </CardContent>
         <Card.Content extra className="white-text">
           {dateFormater(updatedAt)}
           {this.props.match.path === '/:username/decks' &&

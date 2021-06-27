@@ -5,7 +5,7 @@ export default function withLoader(Component) {
   return class withLoader extends React.Component {
     render() {
       return this.props.loading ? (
-        <Dimmer active>
+        <Dimmer active="true">
           <Loader />
         </Dimmer>
       ) : (

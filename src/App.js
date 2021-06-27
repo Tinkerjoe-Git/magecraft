@@ -13,6 +13,7 @@ import withStats from './components/hocs/withStats'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchUser } from './actions/auth'
+import { DeckCard2 } from './components/DeckCard2'
 
 const DeckFormWithStats = withStats(DeckForm)
 
@@ -22,6 +23,13 @@ class App extends Component {
     if (jwt && !this.props.loggedIn) {
       this.props.fetchUser()
     }
+    fetch('http://localhost:3000/cards')
+      .then((resp) => resp.json())
+      .then((json) => {
+        this.setState({
+          cards: json,
+        })
+      })
   }
 
   render() {

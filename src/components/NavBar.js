@@ -8,34 +8,15 @@ import { MenuList, MenuItem } from '@material-ui/core'
 
 class NavBar extends Component {
   state = {
-    activeItem: '',
     search: '',
     dropdown: 'cards',
   }
 
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.history.location.pathname === '/') {
-      return {
-        activeItem: 'home',
-      }
-    } else if (
-      nextProps.history.location.pathname ===
-      `/${nextProps.currentUser.name}/decks`
-    ) {
-      return {
-        activeItem: 'decks',
-      }
-    } else {
-      return {
-        activeItem: '',
-      }
-    }
+  handleItemClick = (event, name) => {
+    this.setState({ activeItem: name, submit: false })
   }
 
-  handleItemClick = (event, name) =>
-    this.setState({ activeItem: name, submit: false })
-
-  handleChange = (event, { value, name }) => {
+  handleChange = ({ value, name }) => {
     this.setState({
       [name]: value,
     })
@@ -75,26 +56,24 @@ class NavBar extends Component {
         value: 'decks',
       },
     ]
-    const { activeItem, search, dropdown } = this.state
+    const { search, dropdown } = this.state
     const { currentUser, loggedIn } = this.props
     const drawer = (
       <div>
         <MenuList>
           <MenuItem
             name="home"
-            active={activeItem === 'home'}
             component={Link}
             to="/"
-            onClick={this.handleItemClick}
+            //onClick={this.handleItemClick}
           >
             Home
           </MenuItem>
           <MenuItem
             name="decks"
-            active={activeItem === 'decks'}
             component={Link}
-            to={{ pathname: `/${currentUser.name}/decks` }}
-            onClick={this.handleItemClick}
+            to={`/${currentUser.name}/decks`}
+            //onClick={this.handleItemClick}
           >
             Decks
           </MenuItem>
@@ -108,7 +87,7 @@ class NavBar extends Component {
             Search
           </MenuItem>
           <MenuItem
-            name="cards"
+            component={Link}
             onChange={this.handleChange}
             options={options}
             to="/cards"
@@ -117,11 +96,9 @@ class NavBar extends Component {
           </MenuItem>
           {!loggedIn ? (
             <MenuItem
-              name="login"
-              active={activeItem === 'decks'}
               component={Link}
               to="/login"
-              onClick={this.handleItemClick}
+              //onClick={this.handleItemClick}
             >
               Login
             </MenuItem>

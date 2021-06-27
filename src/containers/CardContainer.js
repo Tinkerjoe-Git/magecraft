@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import MtgCard from '../components/MtgCard'
-import { v4 as uuidv4 } from 'uuidv4'
+// import { v4 as uuidv4 } from 'uuidv4'
 import { connect } from 'react-redux'
 import { fetchCards } from '../actions/cards'
 import { Container } from '@material-ui/core'
+import DeckCard2 from '../components/DeckCard2'
 
 class CardContainer extends Component {
   componentDidMount() {
@@ -12,17 +13,20 @@ class CardContainer extends Component {
 
   render() {
     const cards = this.props.results.map((card) => (
-      <MtgCard
-        key={uuidv4()}
-        card={card.attributes}
+      <DeckCard2
+        key={card.id}
+        //key={uuidv4()}
+        id={card.id}
         name={card.name}
-        type={card.type}
         img={card.image_url}
         text={card.text}
+        cmc={card.cmc}
+        type={card.card_type}
+        colors={card.colors}
       />
     ))
 
-    return <Container>{cards}</Container>
+    return <div id="card-container">{cards}</div>
   }
 }
 

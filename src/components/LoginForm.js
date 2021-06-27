@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { connect } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,10 +28,18 @@ const LoginForm = ({ handleClose }) => {
   //const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const authError = useSelector((state) => state.auth.error)
+  const dispatch = useDispatch()
+
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(username, password)
-    handleClose()
+    /*
+    fetchUser(auth endpoint thing with username and password)
+      .then(dispatch user is authed)
+      .catch(auth failed for reason and dispatch that)
+    */
+    if (handleClose) handleClose()
   }
 
   return (
@@ -64,4 +72,4 @@ const LoginForm = ({ handleClose }) => {
   )
 }
 
-export default connect(LoginForm)
+export default LoginForm

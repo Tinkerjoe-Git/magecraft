@@ -50,15 +50,19 @@ export const createUser = (username, password, history) => {
       },
       body: JSON.stringify({ username, password }),
     }
-    const res = await fetch(`${API_ROOT}/users`, options)
-    const res_1 = await res.json()
-    if (res_1.error) {
-      dispatch({ type: 'LOGIN_ERROR', payload: res_1.error })
-    } else {
-      localStorage.setItem('token', res_1.jwt)
-      const { id, name } = res_1.user.data.attributes
-      dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
-      history.push('/')
+    try {
+      const res = await fetch(`${API_ROOT}/users`, options)
+      const res_1 = await res.json()
+      if (res_1.error) {
+        dispatch({ type: 'LOGIN_ERROR', payload: res_1.error })
+      } else {
+        localStorage.setItem('token', res_1.jwt)
+        const { id, name } = res_1.user.data.attributes
+        dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
+        history.push('/')
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 }

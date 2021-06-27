@@ -1,7 +1,7 @@
 export const API_ROOT = 'http://localhost:3000'
 
-export async function fetchCARDS(arg) {
-  return await fetch(`https://localhost:3000/${arg}`).then((r) => r.json())
+export async function fetchCARDS() {
+  return await fetch('http://localhost:3000/cards').then((r) => r.json())
 }
 
 export const types = [

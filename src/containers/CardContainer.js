@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import MtgCard from '../components/MtgCard'
 // import { v4 as uuidv4 } from 'uuidv4'
 import { connect } from 'react-redux'
 import { fetchCards } from '../actions/cards'

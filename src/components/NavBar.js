@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchCards } from '../actions/cards'
+import { getCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
 import { logoutUser } from '../actions/auth'
 import { MenuList, MenuItem } from '@material-ui/core'
@@ -27,23 +27,23 @@ class NavBar extends Component {
     this.props.logoutUser()
   }
 
-  handleSearch = (event) => {
-    event.preventDefault()
-    const searchTerm = this.state.search.length ? this.state.search : 'default'
-    switch (this.state.dropdown) {
-      case 'cards':
-        this.props.fetchCards({ term: searchTerm }, this.props.history)
-        break
-      case 'decks':
-        this.props.fetchDecks({ term: searchTerm }, this.props.history)
-        break
-      default:
-        alert('Something went wrong in React Router')
-    }
-    this.setState({
-      search: '',
-    })
-  }
+  // handleSearch = (event) => {
+  //   event.preventDefault()
+  //   const searchTerm = this.state.search.length ? this.state.search : 'default'
+  //   switch (this.state.dropdown) {
+  //     case 'cards':
+  //       this.props.fetchCards({ term: searchTerm }, this.props.history)
+  //       break
+  //     case 'decks':
+  //       this.props.fetchDecks({ term: searchTerm }, this.props.history)
+  //       break
+  //     default:
+  //       alert('Something went wrong in React Router')
+  //   }
+  //   this.setState({
+  //     search: '',
+  //   })
+  // }
 
   render() {
     const options = [
@@ -127,6 +127,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { fetchCards, fetchDecks, logoutUser })(
+export default connect(mapStateToProps, { getCards, fetchDecks, logoutUser })(
   withRouter(NavBar),
 )

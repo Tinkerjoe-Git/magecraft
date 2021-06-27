@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { createUser } from '../actions/auth'
 import { connect } from 'react-redux'
-import { Button, Grid, CardHeader, Divider } from '@material-ui/core'
+import { Card, Button, Grid, CardHeader, Divider } from '@material-ui/core'
 import { Form } from 'react-final-form'
 import { Alert } from '@material-ui/lab'
 import { Segment } from 'semantic-ui-react'
@@ -20,11 +20,11 @@ class SignupForm extends Component {
     },
   }
 
-  handleChange = (event, { name, value }) => {
+  handleChange = (name) => (event) => {
     this.setState({
       fields: {
         ...this.state.fields,
-        [name]: value,
+        [name]: event.target.value,
       },
     })
   }
@@ -54,56 +54,40 @@ class SignupForm extends Component {
   render() {
     const { error, message } = this.state.validation
     return (
-      <Grid textAlign="center" verticalAlign="top" className="login-form">
-        <Grid.Column className="auth-form-body">
+      <Grid className="login-form">
+        <Card className="auth-form-body">
           <Divider hidden />
-          <CardHeader as="h2" textAlign="center">
-            {' '}
-            Signup for your account
-          </CardHeader>
+          <CardHeader as="h2"> Signup for your account</CardHeader>
           <Alert severity="error">Something went wrong! {message} </Alert>
-          <Form size="large" onSubmit={this.handleSubmit}>
-            <Segment stacked>
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="Username"
-                name="username"
-                type="text"
-                value={this.state.username}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password"
-                name="password"
-                type="password"
-                value={this.state.password}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password confirmation"
-                name="passwordConfirmation"
-                type="password"
-                value={this.state.passwordConfirmation}
-                onChange={this.handleChange}
-              />
+          <form size="large" onSubmit={this.handleSubmit}>
+            <input
+              placeholder="Username"
+              name="username"
+              type="text"
+              value={this.state.username}
+              onChange={this.handleChange('username')}
+            />
+            <input
+              placeholder="Password"
+              name="password"
+              type="password"
+              value={this.state.password}
+              onChange={this.handleChange('password')}
+            />
+            <input
+              placeholder="Password confirmation"
+              name="passwordConfirmation"
+              type="password"
+              value={this.state.passwordConfirmation}
+              onChange={this.handleChange('passwordConfirmation')}
+            />
 
-              <Button fluid size="large">
-                Signup
-              </Button>
-            </Segment>
-          </Form>
+            <Button onClick={this.handleSubmit}>Signup</Button>
+          </form>
           <Alert severity="info">
             Already have an account? <Link to="/login">Login</Link>
           </Alert>
-        </Grid.Column>
+        </Card>
       </Grid>
     )
   }

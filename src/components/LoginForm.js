@@ -1,132 +1,67 @@
-import React, { Component } from 'react'
-import { Link, Redirect } from 'react-router-dom'
-import { loginUser } from '../actions/auth'
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
-import { Button, Grid, CardHeader, Divider } from '@material-ui/core'
-import { Form } from 'react-final-form'
-import { Alert } from '@material-ui/lab'
-import { Segment } from 'semantic-ui-react'
 
-class LoginForm extends Component {
-  state = {
-    error: false,
-    redirect: false,
-    fields: {
-      username: '',
-      password: '',
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing(2),
+
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '300px',
     },
+    '& .MuiButtonBase-root': {
+      margin: theme.spacing(2),
+    },
+  },
+}))
+
+const LoginForm = ({ handleClose }) => {
+  const classes = useStyles()
+  const [username, setUsername] = useState('')
+  //const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(username, password)
+    handleClose()
   }
 
-  componentDidMount = () => {
-    if (this.props.location.state) {
-      this.setState({
-        redirect: this.props.location.state.redirect,
-      })
-    }
-  }
+  return (
+    <form className={classes.root} onSubmit={handleSubmit}>
+      <TextField
+        label="username"
+        variant="filled"
+        required
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
 
-  UNSAFE_componentWillReceiveProps(nextProps, prevState) {
-    if (nextProps.authError) {
-      this.setState({
-        error: true,
-      })
-    }
-  }
-
-  handleChange = (event, { name, value }) => {
-    this.setState({
-      fields: {
-        ...this.state.fields,
-        [name]: value,
-      },
-    })
-  }
-
-  handleSubmit = (event) => {
-    event.preventDefault()
-    const {
-      fields: { username, password },
-    } = this.state
-    this.props.loginUser(username, password, this.props.history)
-    this.setState({
-      redirect: false,
-      error: false,
-      fields: {
-        ...this.state.fields,
-        password: '',
-      },
-    })
-  }
-
-  render() {
-    const { error, redirect } = this.state
-    if (this.props.loggedIn) {
-      return <Redirect to="/" />
-    } else {
-      return (
-        <Grid textAlign="center" verticalAlign="top" className="login-form">
-          <Grid.Column className="auth-form-body">
-            <Divider hidden />
-            <CardHeader as="h2" textAlign="center">
-              {' '}
-              Log-in to your account
-            </CardHeader>
-            <Alert severity="error">
-              You must be logged before you can do that!
-            </Alert>
-            <Alert severity="error">
-              <p>Please login below, then try again.</p>
-            </Alert>
-            <Alert severity="warning">Something went wrong!</Alert>
-            <p>{this.props.authErrorAlert}</p>
-            <Form size="large" onSubmit={this.handleSubmit}>
-              <p>
-                For sample, use <b>username:</b> <i>demo</i> and{' '}
-                <b>password:</b> <i>1234</i>
-              </p>
-              <Segment stacked>
-                <Form.Input
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="Username"
-                  name="username"
-                  type="text"
-                  value={this.state.username}
-                  onChange={this.handleChange}
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                />
-
-                <Button fluid size="large">
-                  Login
-                </Button>
-              </Segment>
-            </Form>
-            <Alert>
-              New to us? <Link to="/signup">Sign Up</Link>
-            </Alert>
-          </Grid.Column>
-        </Grid>
-      )
-    }
-  }
+      <TextField
+        label="Password"
+        variant="filled"
+        type="password"
+        required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <div>
+        <Button variant="contained" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button type="submit" variant="contained" color="primary">
+          Signup
+        </Button>
+      </div>
+    </form>
+  )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    authError: state.auth.errorStatus,
-    authErrorAlert: state.auth.error.Alert,
-    loggedIn: !!state.auth.currentUser.id,
-  }
-}
-
-export default connect(mapStateToProps, { loginUser })(LoginForm)
+export default connect(LoginForm)

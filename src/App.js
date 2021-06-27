@@ -13,7 +13,7 @@ import withStats from './components/hocs/withStats'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchUser } from './actions/auth'
-import { Cards } from './components/Cards'
+import Cards from './components/Cards'
 
 const DeckFormWithStats = withStats(DeckForm)
 
@@ -38,7 +38,7 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <Route exact path="/login" />
           <Route exact path="/signup" />
-          <Route exact path="/cards" />
+          <Route exact path="/cards" component={Cards} />
           <Route exact path="/decks/search" />
           <Route exact path="/:username/decks" />
           <Route

@@ -72,7 +72,8 @@ class NavBar extends Component {
           <MenuItem
             name="decks"
             component={Link}
-            to={`/${currentUser.name}/decks`}
+            to="/decks"
+            //to={`/${currentUser.name}/decks`}
             //onClick={this.handleItemClick}
           >
             Decks

@@ -20,6 +20,7 @@ import { selectDeck, deleteDeck } from '../actions/decks'
 import { dateFormater } from '../globalFunctions'
 import { fetchCARDS } from '../globalVars'
 import { setCards } from '../reducers/cardSlice'
+import BrushIcon from '@material-ui/icons/Brush'
 
 function Copyright() {
   return (
@@ -112,7 +113,7 @@ export default function Cards() {
               color="textPrimary"
               gutterBottom
             >
-              Card Layout
+              Cards Index
             </Typography>
             <Typography
               variant="h5"
@@ -125,13 +126,18 @@ export default function Cards() {
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <Button variant="contained" color="primary">
-                    Main call to action
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component={Link}
+                    to={`/:username/decks/new`}
+                  >
+                    Make a New Deck
                   </Button>
                 </Grid>
                 <Grid item>
                   <Button variant="outlined" color="primary">
-                    Secondary action
+                    Wishlist a Card
                   </Button>
                 </Grid>
               </Grid>
@@ -154,7 +160,26 @@ export default function Cards() {
                     <Typography gutterBottom variant="h5" component="h2">
                       {card.name}
                     </Typography>
-                    <Typography>{card.text}</Typography>
+                    <Typography
+                      color="textSecondary"
+                      align="center"
+                      variant="body1"
+                    >
+                      Type:{card.card_type}
+                    </Typography>
+                    <br></br>
+                    <Typography
+                      color="textSecondary"
+                      align="center"
+                      variant="body2"
+                    >
+                      {card.text}
+                    </Typography>
+                    <br></br>
+                    <Typography gutterBottom variant="body2">
+                      <BrushIcon />
+                      {card.artist}
+                    </Typography>
                   </CardContent>
                   <CardActions>
                     <Button size="small" color="primary">

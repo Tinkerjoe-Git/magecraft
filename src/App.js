@@ -87,7 +87,7 @@ class App extends Component {
             component={DeckFormWithStats}
           />
           <Route exact path="/decks/:id" />
-          <Route exact path="/:username/decks/:id" />
+          <Route exact path="/:username/decks/:id/new" component={DeckForm} />
           <Route component={NotFoundPage} />
         </Switch>
       </div>

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import DeleteModal from './DeleteModal'
 import { connect } from 'react-redux'
 import { selectDeck, deleteDeck } from '../actions/decks'
-import { Card, List, FormLabel } from '@material-ui/core'
+import { Card, List, FormLabel, CardHeader } from '@material-ui/core'
 import { dateFormater } from '../globalFunctions'
 import CardContent from '@material-ui/core/CardContent'
 
@@ -57,14 +57,14 @@ class DeckCard extends Component {
         onMouseLeave={this.handleMouseOver}
       >
         <CardContent>
-          <Card.Header
+          <CardHeader
             as="a"
             floated="left"
             onClick={this.handleClick}
             className="white-text"
           >
             {name}
-          </Card.Header>
+          </CardHeader>
           <Card.Meta className="white-text">
             <i>{userName === 'admin' ? creator : userName}</i>
           </Card.Meta>
@@ -75,7 +75,7 @@ class DeckCard extends Component {
             </List.Item>
           </List>
         </CardContent>
-        <Card.Content extra className="white-text">
+        <CardContent extra className="white-text">
           {dateFormater(updatedAt)}
           {this.props.match.path === '/:username/decks' &&
             this.state.mouseOver && (
@@ -87,7 +87,7 @@ class DeckCard extends Component {
                 icon="delete"
               />
             )}
-        </Card.Content>
+        </CardContent>
         <DeleteModal
           open={this.state.destroy}
           handleDelete={this.handleDelete}

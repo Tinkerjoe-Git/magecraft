@@ -11,7 +11,7 @@ export const createDeck = (deck, history, copy = false) => {
       headers: {
         Accept: 'application/json',
         'Content-type': 'application/json',
-        Authorization: localStorage.getItem('token'),
+        // Authorization: localStorage.getItem('token'),
       },
       body: JSON.stringify({ ...deck, copy }),
     }

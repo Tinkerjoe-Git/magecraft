@@ -182,6 +182,6 @@ export default function AuthNavbar() {
     </>
   )
 }
-connect(mapStateToProps, { fetchCards, fetchDecks, logoutUser })(
-  withRouter(NavBar2),
-)
+// connect(mapStateToProps, { fetchCards, fetchDecks, logoutUser })(
+//   withRouter(NavBar2),
+// )

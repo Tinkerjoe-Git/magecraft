@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# Magecraft
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A MTG Magic the Gathering deck building utility // written in JS with a Rails API backend. 
+Currently Full ZNR Setlist is displayed.
 
-## Available Scripts
+API Repo Link: https://github.com/Tinkerjoe-Git/magecraft-backend
 
-In the project directory, you can run:
+note: you can change the seeded data by changing card_data variable set: 'znr' to any set: 'code' you like i.e. 'kld', 'eld', or if you want to download the entire 20,000+ card catalog from the MTG API change card_data = MTG::Card.all ( This will take 10+ minutes to create all the card objects ).
 
-### `yarn start`
+card_data = MTG::Card.where(set: 'znr').all      
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Prerequisites
 
-### `yarn test`
+An IDE:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+     VSCode, or Atom, Sublime, etc.
 
-### `yarn build`
+### Installing
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Fork and Clone the repository.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Load up the API magecraft-backend in your IDE
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Run 'bundle install' in your terminal to get dependencies
 
-### `yarn eject`
+4. Run 'rails s' in your terminal to create our local environment,
+ 
+5. Use cntl(or 'cmd') + left click on the local host link that Rails / Puma output, this will take us into the API
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+6. Use npm install to get your packages, then npm start and you'll be off to the races.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Built With
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  - React
+  - Rails
+  - ActiveRecord
+  - SQLite3
+  - and all the lovely gems in the Gemfile, not to mention all the packages in our json file. 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Author
 
-## Learn More
+  - **Nicholas Stagno** - 
+    
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## License
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-### Code Splitting
+## Acknowledgments
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  - Flatiron School
+  - HUGE HUGE shoutout to this CSS guide: https://github.com/adamschwartz/magic-of-css/tree/gh-pages/css
+  - My homies in the flatiron cohort.
+ 
+ ##Caveats
+ 
+ I am in no way affiliated with Magic the Gathering IP's or License with Wizards of the Coast.

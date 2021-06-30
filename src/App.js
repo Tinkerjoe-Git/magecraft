@@ -56,10 +56,10 @@ const SignupPage = () => {
 class App extends Component {
   componentDidMount() {
     this.props.getCards
-    let jwt = localStorage.getItem('token')
-    if (jwt && !this.props.loggedIn) {
-      this.props.fetchUser()
-    }
+    // let jwt = localStorage.getItem('token')
+    // if (jwt && !this.props.loggedIn) {
+    //   this.props.fetchUser()
+    //}
   }
 
   render() {

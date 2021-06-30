@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import CardFragment from './CardFragment'
 import DeckCardInput from './DeckCardInput'
 import { capitalizeFirstLetter } from '../globalFunctions'
-import { Fragment, Header, FormLabel } from 'material-ui'
+import { Box, FormLabel } from '@material-ui/core'
 
 class FragmentList extends Component {
   state = {
@@ -72,7 +72,7 @@ class FragmentList extends Component {
             Add
           </FormLabel>
         )}
-        {type && <Fragment as={Header}>{FragmentHeader}</Fragment>}
+        {type && <Box as={FragmentHeader}></Box>}
 
         {cardFragments}
       </React.Fragment>

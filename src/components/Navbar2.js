@@ -42,6 +42,8 @@ export default function AuthNavbar() {
     setAnchorEl(null)
   }
 
+  const { currentUser, loggedIn } = this.props
+
   const menuId = 'responsive-menu-id'
 
   const listObject = (

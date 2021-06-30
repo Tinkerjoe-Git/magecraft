@@ -27,24 +27,6 @@ class NavBar extends Component {
     this.props.logoutUser()
   }
 
-  // handleSearch = (event) => {
-  //   event.preventDefault()
-  //   const searchTerm = this.state.search.length ? this.state.search : 'default'
-  //   switch (this.state.dropdown) {
-  //     case 'cards':
-  //       this.props.fetchCards({ term: searchTerm }, this.props.history)
-  //       break
-  //     case 'decks':
-  //       this.props.fetchDecks({ term: searchTerm }, this.props.history)
-  //       break
-  //     default:
-  //       alert('Something went wrong in React Router')
-  //   }
-  //   this.setState({
-  //     search: '',
-  //   })
-  // }
-
   render() {
     const options = [
       {
@@ -72,8 +54,8 @@ class NavBar extends Component {
           <MenuItem
             name="decks"
             component={Link}
-            to="/decks"
-            //to={`/${currentUser.name}/decks`}
+            //to="/decks"
+            to={`/${currentUser.name}/decks`}
             //onClick={this.handleItemClick}
           >
             Decks

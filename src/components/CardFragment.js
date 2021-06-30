@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Fragment, Popover, Image } from '@material-ui/core'
+import { Box, Popper } from '@material-ui/core'
 
 class CardFragment extends Component {
   state = { isOpen: false }
@@ -15,13 +15,13 @@ class CardFragment extends Component {
   render() {
     const { count, name, img_url } = this.props.card
     const fragment = (
-      <Fragment>
+      <Box>
         <a>{`${count} ${name}`}</a>
-      </Fragment>
+      </Box>
     )
 
     return (
-      <Popover
+      <Popper
         trigger={fragment}
         position="bottom center"
         on="hover"
@@ -30,8 +30,8 @@ class CardFragment extends Component {
         onClose={this.handleClose}
         onOpen={this.handleOpen}
       >
-        <Image src={img_url} />
-      </Popover>
+        src={img_url}
+      </Popper>
     )
   }
 }

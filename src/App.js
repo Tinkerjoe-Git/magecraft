@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import './App.css'
 import NavBar from './components/NavBar'
+//import Navbar2 from './components/Navbar2'
 import CardContainer from './containers/CardContainer'
 import DeckContainer from './containers/DeckContainer'
 import Home from './components/HomePage'
-//import DeckShow from './components/DeckShow'
+import DeckShow from './components/DeckShow'
 import LoginForm from './components/LoginForm'
 import SignupForm from './components/SignupForm'
 import DeckForm from './components/DeckForm'
@@ -55,27 +56,28 @@ const SignupPage = () => {
 class App extends Component {
   componentDidMount() {
     this.props.getCards
-    // let jwt = localStorage.getItem('token')
-    // if (jwt && !this.props.loggedIn) {
-    //   this.props.fetchUser()
-    // }
+    let jwt = localStorage.getItem('token')
+    if (jwt && !this.props.loggedIn) {
+      this.props.fetchUser()
+    }
   }
 
   render() {
     const {
       selectedDeck,
-      // loggedIn,
+      loggedIn,
       // loading,
     } = this.props
     return (
       <div className="App">
         <NavBar />
+
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/cards" component={Cards} />
-          <Route exact path="/decks/search" />
+          {/* <Route exact path="/decks/search" /> not yet built*/}
           {/* UserDecks is list of all decks for a given user */}
           {/* <Route exact path="/decks/:username" component={UserDecks} />
           {/* UserDeck is a single deck of cards */}
@@ -89,12 +91,12 @@ class App extends Component {
           <Route
             exact
             path="/decks/:id"
-            // render={() => <DeckShow deck={selectedDeck} />}
+            render={() => <DeckShow deck={selectedDeck} />}
           />
           <Route
             exact
             path="/:username/decks/:id"
-            // render={() => <DeckShow deck={selectedDeck} />}
+            render={() => <DeckShow deck={selectedDeck} />}
           />
           <Route component={NotFoundPage} />
         </Switch>

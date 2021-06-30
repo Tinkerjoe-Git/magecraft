@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Container } from 'material-ui'
+import { Grid, Container } from '@material-ui/core'
 
 export default function withStats(Component) {
   return class withStats extends React.Component {
@@ -10,7 +10,7 @@ export default function withStats(Component) {
             <Grid item key={this.props.cards.id}></Grid>
             <Component />
 
-            <p>Stats go here</p>
+            <p>Stats</p>
           </Grid>
         </Container>
       )

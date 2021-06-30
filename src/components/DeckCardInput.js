@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Fragment, Label, Icon, FormGroup, TextField } from 'material-ui'
+import { Label, Icon, FormGroup, FormLabel, TextField } from '@material-ui/core'
 
 class DeckCardInput extends Component {
   state = {
@@ -16,9 +16,9 @@ class DeckCardInput extends Component {
     const { error, key, name, count, card_id } = this.props.card
     if (this.state.removed && name.length) {
       return (
-        <Fragment tertiary size="small">
-          <Label
-            color="green"
+        <React.Fragment>
+          <FormLabel
+            color="primary"
             size="small"
             as="a"
             onClick={this.handleRemove}
@@ -26,15 +26,15 @@ class DeckCardInput extends Component {
             name={index}
           >
             restore
-          </Label>
+          </FormLabel>
           {`${count} ${name}`} removed
-        </Fragment>
+        </React.Fragment>
       )
     } else {
       return (
-        <FormGroup as={editing ? null : Fragment}>
+        <FormGroup as={editing ? null : React.Fragment}>
           {!editing && (
-            <Label
+            <FormLabel
               color="red"
               size="small"
               as="a"
@@ -44,7 +44,7 @@ class DeckCardInput extends Component {
               name="remove"
             >
               <Icon name="remove" size="large" />
-            </Label>
+            </FormLabel>
           )}
 
           <TextField

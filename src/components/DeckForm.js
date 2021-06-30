@@ -148,7 +148,7 @@ class DeckForm extends Component {
     const { handleCardChange, removeInput } = this
     const { formats } = this.props
     const { error, message } = this.state.validation
-    const { name, archtype, tournament, formatName, cards } = this.state.fields
+    const { name, formatName, cards } = this.state.fields
     const mainboard = sortCardsIntoBoards(cards, DeckCardInput, false, {
       handleCardChange,
       removeInput,

@@ -3,7 +3,14 @@ import { withRouter } from 'react-router-dom'
 import DeleteModal from './DeleteModal'
 import { connect } from 'react-redux'
 import { selectDeck, deleteDeck } from '../actions/decks'
-import { Card, List, FormLabel, CardHeader } from '@material-ui/core'
+import {
+  Card,
+  List,
+  ListItem,
+  FormLabel,
+  CardHeader,
+  ListItemText,
+} from '@material-ui/core'
 import { dateFormater } from '../globalFunctions'
 import CardContent from '@material-ui/core/CardContent'
 
@@ -65,14 +72,14 @@ class DeckCard extends Component {
           >
             {name}
           </CardHeader>
-          <Card.Meta className="white-text">
+          <CardHeader className="white-text">
             <i>{userName === 'admin' ? creator : userName}</i>
-          </Card.Meta>
+          </CardHeader>
           <List>
-            <List.Item>
-              <List.Header className="white-text">Format</List.Header>
+            <ListItem>
+              <ListItemText className="white-text">Format</ListItemText>
               {formatName}
-            </List.Item>
+            </ListItem>
           </List>
         </CardContent>
         <CardContent extra className="white-text">

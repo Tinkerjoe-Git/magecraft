@@ -86,8 +86,16 @@ class App extends Component {
             path="/:username/decks/new"
             component={DeckFormWithStats}
           />
-          <Route exact path="/decks/:id" />
-          <Route exact path="/:username/decks/:id/new" component={DeckForm} />
+          <Route
+            exact
+            path="/decks/:id"
+            // render={() => <DeckShow deck={selectedDeck} />}
+          />
+          <Route
+            exact
+            path="/:username/decks/:id"
+            // render={() => <DeckShow deck={selectedDeck} />}
+          />
           <Route component={NotFoundPage} />
         </Switch>
       </div>

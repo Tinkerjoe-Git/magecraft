@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Segment, Icon, Label } from 'semantic-ui-react'
+import { Fragment, Label, Icon, FormGroup, TextField } from 'material-ui'
 
 class DeckCardInput extends Component {
   state = {
@@ -16,7 +16,7 @@ class DeckCardInput extends Component {
     const { error, key, name, count, card_id } = this.props.card
     if (this.state.removed && name.length) {
       return (
-        <Segment tertiary size="small">
+        <Fragment tertiary size="small">
           <Label
             color="green"
             size="small"
@@ -28,11 +28,11 @@ class DeckCardInput extends Component {
             restore
           </Label>
           {`${count} ${name}`} removed
-        </Segment>
+        </Fragment>
       )
     } else {
       return (
-        <Form.Group as={editing ? null : Segment}>
+        <FormGroup as={editing ? null : Fragment}>
           {!editing && (
             <Label
               color="red"
@@ -47,7 +47,7 @@ class DeckCardInput extends Component {
             </Label>
           )}
 
-          <Form.Input
+          <TextField
             type="text"
             disabled={!!card_id}
             error={error}
@@ -58,7 +58,7 @@ class DeckCardInput extends Component {
             className={editing ? 'name-input-deck-show' : 'name-input'}
             onChange={this.props.handleCardChange}
           />
-          <Form.Input
+          <TextField
             type="number"
             placeholder="N"
             value={count}
@@ -77,7 +77,7 @@ class DeckCardInput extends Component {
               onClick={this.props.removeInput}
             />
           )}
-        </Form.Group>
+        </FormGroup>
       )
     }
   }

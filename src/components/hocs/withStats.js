@@ -1,18 +1,16 @@
 import React from 'react'
-import { Grid, Container } from 'semantic-ui-react'
+import { Grid, Container } from 'material-ui'
 
 export default function withStats(Component) {
   return class withStats extends React.Component {
     render() {
       return (
-        <Container>
-          <Grid>
-            <Grid.Column width={5}>
-              <Component {...this.props} />
-            </Grid.Column>
-            <Grid.Column width={11}>
-              <p>Stats go here</p>
-            </Grid.Column>
+        <Container maxWidth={'md'}>
+          <Grid container spacing={4}>
+            <Grid item key={this.props.cards.id}></Grid>
+            <Component />
+
+            <p>Stats go here</p>
           </Grid>
         </Container>
       )

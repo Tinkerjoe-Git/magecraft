@@ -14,3 +14,4 @@ export default function withLoader(Component) {
     }
   }
 }
+//feel like I don't need this anylonger, should delete going forward.

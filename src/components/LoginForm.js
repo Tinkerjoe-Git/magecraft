@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const LoginForm = ({ handleClose }) => {
   const classes = useStyles()
   const [username, setUsername] = useState('')
-  //const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const authError = useSelector((state) => state.auth.error)
@@ -33,7 +33,7 @@ const LoginForm = ({ handleClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, password)
+    console.log(username, email, password)
     /*
     fetchUser(auth endpoint thing with username and password)
       .then(dispatch user is authed)
@@ -50,6 +50,13 @@ const LoginForm = ({ handleClose }) => {
         required
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+      />
+      <TextField
+        label="email"
+        variant="filled"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
 
       <TextField

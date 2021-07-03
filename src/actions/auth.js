@@ -58,6 +58,7 @@ export const createUser = (username, password, email, history) => {
         'Content-Type': 'application/json',
         Accepts: 'application/json',
       },
+      // body: JSON.stringify({ user: credentials })
       body: JSON.stringify({ username, email, password }),
     }
     try {

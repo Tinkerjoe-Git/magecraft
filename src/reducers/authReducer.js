@@ -13,6 +13,7 @@ export default function (state = defaultState, action) {
     case 'SET_CURRENT_USER':
       return {
         ...state,
+        // maybe want action.payload
         currentUser: action.user,
         loading: false,
         errorStatus: false,

@@ -13,6 +13,7 @@ class SignupForm extends Component {
     },
     fields: {
       username: '',
+      email: '',
       password: '',
       passwordConfirmation: '',
     },
@@ -30,10 +31,10 @@ class SignupForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
     const {
-      fields: { username, password, passwordConfirmation },
+      fields: { username, password, email, passwordConfirmation },
     } = this.state
     if (password === passwordConfirmation) {
-      this.props.createUser(username, password, this.props.history)
+      this.props.createUser(username, password, email, this.props.history)
     } else {
       this.setState({
         validation: {
@@ -56,7 +57,7 @@ class SignupForm extends Component {
         <Card className="auth-form-body">
           <Divider hidden />
           <CardHeader as="h2"> Signup for your account</CardHeader>
-          <Alert severity="error">Something went wrong! {message} </Alert>
+          {/* <Alert severity="error">Something went wrong! {message} </Alert> */}
           <form size="large" onSubmit={this.handleSubmit}>
             <input
               placeholder="Username"
@@ -64,6 +65,13 @@ class SignupForm extends Component {
               type="text"
               value={this.state.username}
               onChange={this.handleChange('username')}
+            />
+            <input
+              placeholder="email"
+              name="email"
+              type="text"
+              value={this.state.email}
+              onChange={this.handleChange('email')}
             />
             <input
               placeholder="Password"

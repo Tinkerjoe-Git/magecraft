@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { connect, useSelector, useDispatch } from 'react-redux'
+import { Link, Redirect, useHistory } from 'react-router-dom'
+import { loginUser } from '../actions/auth'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,24 +24,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const LoginForm = ({ handleClose }) => {
+const LoginForm = ({ onCancelClick }) => {
   const classes = useStyles()
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const history = useHistory()
 
   const authError = useSelector((state) => state.auth.error)
   const dispatch = useDispatch()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, email, password)
+    console.log(username, email, password, history)
+    dispatch(loginUser(username, email, password, history))
+
     /*
     fetchUser(auth endpoint thing with username and password)
       .then(dispatch user is authed)
       .catch(auth failed for reason and dispatch that)
     */
-    if (handleClose) handleClose()
   }
 
   return (
@@ -68,11 +72,16 @@ const LoginForm = ({ handleClose }) => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <div>
-        <Button variant="contained" onClick={handleClose}>
+        <Button variant="contained" onClick={onCancelClick}>
           Cancel
         </Button>
-        <Button type="submit" variant="contained" color="primary">
-          Signup
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+        >
+          Login
         </Button>
       </div>
     </form>

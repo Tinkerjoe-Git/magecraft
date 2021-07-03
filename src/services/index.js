@@ -7,14 +7,24 @@ const headers = {
 
 const getWithToken = async (url) => {
   const token = localStorage.getItem('token')
+
   const res = await fetch(url, {
-    headers: { Authorization: token },
+    headers: { Authorization: token, 'Content-Type': 'application/json' },
   })
-  return await res.json()
+  return res
 }
 
 const getCurrentUser = () => {
-  return getWithToken(`${API_ROOT}/current_user`)
+  // resolve if current user is present, reject otherwise
+
+  return getWithToken(`${API_ROOT}/current_user`).then((res) => {
+    console.log(res)
+    if (res.status === 401) {
+      throw new Error('Not authorized as current user')
+    } else {
+      return res.json()
+    }
+  })
 }
 
 const login = async (data) => {
@@ -23,6 +33,7 @@ const login = async (data) => {
     headers,
     body: JSON.stringify(data),
   })
+  //TODO:
   return await res.json()
 }
 

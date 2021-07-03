@@ -12,18 +12,23 @@ import { API_ROOT } from '../globalVars'
 
 export const fetchUser = () => (dispatch) => {
   dispatch({ type: 'LOADING_USER' })
-  adapter.auth.getCurrentUser().then((res) => {
-    const { id, name, email } = res.data.attributes
-    const decks = res.data.attributes.decks.data
-    dispatch({ type: 'SET_CURRENT_USER', user: { id, name, email } })
-    dispatch({ type: 'LOAD_CURRENT_USER_DATA', payload: { decks } })
-  })
+  adapter.auth
+    .getCurrentUser()
+    .then((res) => {
+      const { id, name, email } = res.data.attributes
+      const decks = res.data.attributes.decks.data
+      dispatch({ type: 'SET_CURRENT_USER', user: { id, name, email } })
+      dispatch({ type: 'LOAD_CURRENT_USER_DATA', payload: { decks } })
+    })
+    .catch((err) => {
+      // unproblematic if no current user
+    })
 }
 
-export const loginUser = (username, password, history) => (dispatch) => {
+export const loginUser = (username, email, password, history) => (dispatch) => {
   dispatch({ type: 'LOADING_USER' })
 
-  adapter.auth.login({ username, password }).then((res) => {
+  return adapter.auth.login({ username, password, email }).then((res) => {
     if (res.error) {
       dispatch({ type: 'LOGIN_ERROR', payload: res.error })
     } else {

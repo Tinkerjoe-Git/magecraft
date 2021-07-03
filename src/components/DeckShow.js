@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 //import uuid from 'uuid'
 import FragmentList from './FragmentList'
 import DeleteModal from './DeleteModal'
-import withLoader from './hocs/withLoader'
 import { keysForDeckShow } from '../globalVars'
 import { sortCardsByType, dateFormater } from '../globalFunctions'
 import { withRouter, Redirect } from 'react-router-dom'
@@ -391,5 +390,5 @@ export default withRouter(
     updateDeck,
     deleteFromDeck,
     createDeck,
-  })(withLoader(DeckShow)),
+  })(DeckShow),
 )

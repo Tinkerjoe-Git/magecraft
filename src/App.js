@@ -58,7 +58,7 @@ class App extends Component {
     this.props.getCards
     // let jwt = localStorage.getItem('token')
     // if (jwt && !this.props.loggedIn) {
-    //   this.props.fetchUser()
+    this.props.fetchUser()
     //}
   }
 

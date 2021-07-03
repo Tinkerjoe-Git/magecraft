@@ -1,6 +1,15 @@
 import { adapter } from '../services'
 import { API_ROOT } from '../globalVars'
 
+// export const fetchUser = () => (dispatch) => {
+//   dispatch({ type: 'LOADING_USER' })
+//   adapter.auth.getCurrentUser().then((data) => {
+//     console.log(data)
+
+//     dispatch({ type: 'SET_CURRENT_USER', user: data.attributes })
+//   })
+// }
+
 export const fetchUser = () => (dispatch) => {
   dispatch({ type: 'LOADING_USER' })
   adapter.auth.getCurrentUser().then((res) => {
@@ -21,6 +30,7 @@ export const loginUser = (username, password, history) => (dispatch) => {
       localStorage.setItem('token', res.jwt)
       const { id, name } = res.user.data.attributes
       const decks = res.user.data.attributes.decks.data
+      console.log(res.data.attributes)
 
       dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
       dispatch({

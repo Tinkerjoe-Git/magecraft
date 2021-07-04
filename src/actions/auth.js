@@ -28,7 +28,7 @@ export const fetchUser = () => (dispatch) => {
 export const loginUser = (username, email, password, history) => (dispatch) => {
   dispatch({ type: 'LOADING_USER' })
 
-  return adapter.auth.login({ username, password, email }).then((res) => {
+  return adapter.auth.login({ username, email, password }).then((res) => {
     if (res.error) {
       dispatch({ type: 'LOGIN_ERROR', payload: res.error })
     } else {
@@ -54,32 +54,62 @@ export const logoutUser = () => {
   }
 }
 
-//TODO: check the order here, seems sus.
-export const createUser = (username, password, email, history) => {
-  return async (dispatch) => {
-    dispatch({ type: 'LOADING_USER' })
-    const options = {
+export const createUser = (name, email, password, history) => {
+  return (dispatch) => {
+    return fetch(`${API_ROOT}/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accepts: 'application/json',
       },
-      // body: JSON.stringify({ user: credentials })
-      body: JSON.stringify({ username, email, password }),
-    }
-    try {
-      const res = await fetch(`${API_ROOT}/signup`, options)
-      const res_1 = await res.json()
-      if (res_1.error) {
-        dispatch({ type: 'LOGIN_ERROR', payload: res_1.error })
+      body: JSON.stringify({ user: { name, email, password } }),
+    }).then((res) => {
+      if (res.ok) {
+        console.log(res.headers.get('Authorization'))
+        localStorage.setItem('token', res.headers.get('Authorization'))
+        //TODO: lets set our currentUser
+        return res.json().then((userJson) =>
+          dispatch({
+            type: 'SET_CURRENT_USER',
+            payload: userJson,
+          }),
+        )
       } else {
-        localStorage.setItem('token', res_1.jwt)
-        const { id, name, email } = res_1.user.data.attributes
-        dispatch({ type: 'SET_CURRENT_USER', user: { id, name, email } })
-        history.push('/')
+        return res.json().then((errors) => {
+          dispatch({ type: 'LOGIN_ERROR', payload: res.error })
+          return Promise.reject(errors)
+        })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    })
   }
 }
+
+//TODO: check the order here, seems sus.
+// export const createUser = (name, email, password, history) => {
+//   return async (dispatch) => {
+//     dispatch({ type: 'LOADING_USER' })
+//     const options = {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Accepts: 'application/json',
+//       },
+//       // body: JSON.stringify({ user: credentials })
+//       body: JSON.stringify({ user: { name, email, password } }),
+//     }
+//     try {
+//       const res = await fetch(`${API_ROOT}/signup`, options)
+//       const res_1 = await res.json()
+//       if (res_1.error) {
+//         dispatch({ type: 'LOGIN_ERROR', payload: res_1.error })
+//       } else {
+//         localStorage.setItem('token', res.headers.get('Authorization'))
+//         const { id, name, email } = res_1.user.data.attributes
+//         dispatch({ type: 'SET_CURRENT_USER', user: { id, name, email } })
+//         history.push('/')
+//       }
+//     } catch (e) {
+//       console.log(e)
+//     }
+//   }
+// }

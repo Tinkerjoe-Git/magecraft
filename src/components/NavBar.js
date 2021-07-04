@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { getCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
 import { logoutUser } from '../actions/auth'
-import { MenuList, MenuItem } from '@material-ui/core'
+import { MenuList, MenuItem, Select } from '@material-ui/core'
 
 class NavBar extends Component {
   state = {
@@ -63,6 +63,7 @@ class NavBar extends Component {
           <MenuItem
             name="search"
             onSubmit={this.handleSearch}
+            to="cards/search"
             value={search}
             onChange={this.handleChange}
             placeholder={`Search ${dropdown}...`}

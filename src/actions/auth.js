@@ -54,6 +54,7 @@ export const logoutUser = () => {
   }
 }
 
+//TODO: check the order here, seems sus.
 export const createUser = (username, password, email, history) => {
   return async (dispatch) => {
     dispatch({ type: 'LOADING_USER' })

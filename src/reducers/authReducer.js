@@ -14,7 +14,7 @@ export default function (state = defaultState, action) {
       return {
         ...state,
         // maybe want action.payload
-        currentUser: action.user,
+        currentUser: action.payload,
         loading: false,
         errorStatus: false,
         error: {},

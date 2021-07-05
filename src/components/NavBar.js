@@ -83,6 +83,7 @@ class NavBar extends Component {
           <MenuItem>
             <form onSubmit={this.handleSearch}>
               <input
+                type="search"
                 name="search"
                 value={search}
                 onChange={this.handleChange}
@@ -92,8 +93,8 @@ class NavBar extends Component {
             Search
           </MenuItem>
           <Select
+            position="relative"
             name="dropdown"
-            item
             onChange={this.handleChange}
             options={options}
             placeholder="Cards"

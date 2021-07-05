@@ -136,106 +136,108 @@ class NavBar extends Component {
     const { search, dropdown } = this.state
     const { currentUser, loggedIn } = this.props
     return (
-      <AppBar position="static">
-        <ToolBar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            MageCraft
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+      <div className={classes.root}>
+        <AppBar position="static">
+          <ToolBar>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography className={classes.title} variant="h6" noWrap>
+              MageCraft
+            </Typography>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-          <MenuList>
-            <MenuItem
-              name="home"
-              component={Link}
-              to="/"
-              //onClick={this.handleItemClick}
-            >
-              Home
-            </MenuItem>
-            {loggedIn && (
+            <MenuList>
               <MenuItem
-                name="decks"
-                component={Link}
-                //to="/decks"
-                to={`/${currentUser.name}/decks`}
-                onClick={this.handleItemClick}
-              >
-                Decks
-              </MenuItem>
-            )}
-            <MenuItem>
-              <FormControl
-                classname={classes.formControl}
-                onSubmit={this.handleSearch}
-              >
-                <InputLabel
-                  type="search"
-                  name="search"
-                  value={search}
-                  onChange={this.handleChange}
-                  placeholder={`Search ${dropdown}...`}
-                />
-              </FormControl>
-              Search
-            </MenuItem>
-            <Select
-              className={classes.selectEmpty}
-              value="cards"
-              position="relative"
-              name="dropdown"
-              onChange={this.handleChange}
-              options={options}
-              placeholder="Cards"
-            />
-            <MenuItem
-              value="cards"
-              component={Link}
-              onChange={this.handleChange}
-              options={options}
-              to="/cards"
-            >
-              Cards
-            </MenuItem>
-            {!loggedIn ? (
-              <MenuItem
-                component={Link}
-                to="/login"
-                //onClick={this.handleItemClick}
-              >
-                Login
-              </MenuItem>
-            ) : (
-              <MenuItem
+                name="home"
                 component={Link}
                 to="/"
-                onClick={this.handleLogout}
-                name="logout"
+                //onClick={this.handleItemClick}
               >
-                Logout
+                Home
               </MenuItem>
-            )}
-          </MenuList>
-        </ToolBar>
-      </AppBar>
+              {loggedIn && (
+                <MenuItem
+                  name="decks"
+                  component={Link}
+                  //to="/decks"
+                  to={`/${currentUser.name}/decks`}
+                  onClick={this.handleItemClick}
+                >
+                  Decks
+                </MenuItem>
+              )}
+              <MenuItem>
+                <FormControl
+                  classname={classes.formControl}
+                  onSubmit={this.handleSearch}
+                >
+                  <InputLabel
+                    type="search"
+                    name="search"
+                    value={search}
+                    onChange={this.handleChange}
+                    placeholder={`Search ${dropdown}...`}
+                  />
+                </FormControl>
+                Search
+              </MenuItem>
+              <Select
+                className={classes.selectEmpty}
+                value="cards"
+                position="relative"
+                name="dropdown"
+                onChange={this.handleChange}
+                options={options}
+                placeholder="Cards"
+              />
+              <MenuItem
+                value="cards"
+                component={Link}
+                onChange={this.handleChange}
+                options={options}
+                to="/cards"
+              >
+                Cards
+              </MenuItem>
+              {!loggedIn ? (
+                <MenuItem
+                  component={Link}
+                  to="/login"
+                  //onClick={this.handleItemClick}
+                >
+                  Login
+                </MenuItem>
+              ) : (
+                <MenuItem
+                  component={Link}
+                  to="/"
+                  onClick={this.handleLogout}
+                  name="logout"
+                >
+                  Logout
+                </MenuItem>
+              )}
+            </MenuList>
+          </ToolBar>
+        </AppBar>
+      </div>
     )
   }
 }

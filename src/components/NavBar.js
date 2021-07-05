@@ -27,6 +27,24 @@ class NavBar extends Component {
     this.props.logoutUser()
   }
 
+  handleSearch = (event, { name }) => {
+    event.preventDefault()
+    const searchTerm = this.state.search.length ? this.state.search : 'default'
+    switch (this.state.dropdown) {
+      case 'cards':
+        this.props.fetchCards({ term: searchTerm }, this.props.history)
+        break
+      case 'decks':
+        this.props.fetchDecks({ term: searchTerm }, this.props.history)
+        break
+      default:
+        alert('Something went wrong in React Router')
+    }
+    this.setState({
+      search: '',
+    })
+  }
+
   render() {
     const options = [
       {
@@ -40,7 +58,7 @@ class NavBar extends Component {
     ]
     const { search, dropdown } = this.state
     const { currentUser, loggedIn } = this.props
-    const drawer = (
+    return (
       <div>
         <MenuList>
           <MenuItem
@@ -51,25 +69,35 @@ class NavBar extends Component {
           >
             Home
           </MenuItem>
-          <MenuItem
-            name="decks"
-            component={Link}
-            //to="/decks"
-            to={`/${currentUser.name}/decks`}
-            //onClick={this.handleItemClick}
-          >
-            Decks
-          </MenuItem>
-          <MenuItem
-            name="search"
-            onSubmit={this.handleSearch}
-            to="cards/search"
-            value={search}
-            onChange={this.handleChange}
-            placeholder={`Search ${dropdown}...`}
-          >
+          {loggedIn && (
+            <MenuItem
+              name="decks"
+              component={Link}
+              //to="/decks"
+              to={`/${currentUser.name}/decks`}
+              onClick={this.handleItemClick}
+            >
+              Decks
+            </MenuItem>
+          )}
+          <MenuItem>
+            <form onSubmit={this.handleSearch}>
+              <input
+                name="search"
+                value={search}
+                onChange={this.handleChange}
+                placeholder={`Search ${dropdown}...`}
+              />
+            </form>
             Search
           </MenuItem>
+          <Select
+            name="dropdown"
+            item
+            onChange={this.handleChange}
+            options={options}
+            placeholder="Cards"
+          />
           <MenuItem
             component={Link}
             onChange={this.handleChange}
@@ -99,7 +127,6 @@ class NavBar extends Component {
         </MenuList>
       </div>
     )
-    return drawer
   }
 }
 

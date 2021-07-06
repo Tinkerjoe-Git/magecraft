@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getCards } from '../actions/cards'
-import { fetchDecks } from '../actions/decks'
-import { logoutUser } from '../actions/auth'
+import { getCards } from '../../actions/cards'
+import { fetchDecks } from '../../actions/decks'
+import { logoutUser } from '../../actions/auth'
 import {
   MenuList,
   MenuItem,

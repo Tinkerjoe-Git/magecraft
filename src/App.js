@@ -77,12 +77,14 @@ class App extends Component {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/cards" component={Cards} />
-          {/* <Route exact path="/decks/search" /> not yet built*/}
-          {/* UserDecks is list of all decks for a given user */}
-          {/* <Route exact path="/decks/:username" component={UserDecks} />
-          {/* UserDeck is a single deck of cards */}
-          {/* <Route exact path="/decks/:username/:id" component={UserDeck} /> */}{' '}
-          */
+          <Route exact path="/decks/search" />
+
+          <Route exact path="/:username/decks" component={DeckContainer} />
+          <Route
+            exact
+            path="/:username/decks/new"
+            component={DeckFormWithStats}
+          />
           <Route
             exact
             path="/:username/decks/new"

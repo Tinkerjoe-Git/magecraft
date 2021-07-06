@@ -76,7 +76,7 @@ class NavBar extends Component {
     return (
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="open menu">
+          <IconButton edge="start" color="inherit" aria-label="open drawer">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
@@ -103,7 +103,7 @@ class NavBar extends Component {
                 name="decks"
                 component={Link}
                 //to="/decks"
-                to={`/${currentUser.name}/decks`}
+                to={{ pathname: `/${currentUser.name}/decks` }}
                 onClick={this.handleItemClick}
               >
                 Decks

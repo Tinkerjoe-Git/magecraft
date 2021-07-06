@@ -1,13 +1,29 @@
+import { AUTHENTICATED, NOT_AUTHENTICATED } from '../actions'
+
 const defaultState = {
   currentUser: {},
   currentUserDecks: [],
+  loggedIn: false,
   loading: false,
   errorStatus: false,
   error: {},
 }
 
-export default function (state = defaultState, action) {
+export default function authReducer(state = defaultState, action) {
   switch (action.type) {
+    case AUTHENTICATED:
+      return {
+        authChecked: true,
+        loggedIn: true,
+        currentUser: action.payload,
+      }
+    case NOT_AUTHENTICATED:
+      return {
+        authChecked: true,
+        loggedIn: false,
+        currentUser: {},
+      }
+
     case 'LOADING_USER':
       return { ...state, loading: true }
     case 'SET_CURRENT_USER':

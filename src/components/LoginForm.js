@@ -36,8 +36,10 @@ const LoginForm = ({ onCancelClick }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, email, password, history)
-    dispatch(loginUser(username, email, password, history))
+    console.log(username, email, password)
+    dispatch(loginUser(username, email, password)).then(() =>
+      this.props.history.push('/'),
+    )
 
     /*
     fetchUser(auth endpoint thing with username and password)
@@ -50,6 +52,7 @@ const LoginForm = ({ onCancelClick }) => {
     <form className={classes.root} onSubmit={handleSubmit}>
       <TextField
         label="username"
+        placeholder="Username"
         variant="filled"
         required
         value={username}
@@ -87,5 +90,12 @@ const LoginForm = ({ onCancelClick }) => {
     </form>
   )
 }
+const mapStateToProps = (state) => {
+  return {
+    authError: state.auth.errorStatus,
+    authErrorMessage: state.auth.error.message,
+    loggedIn: !!state.auth.currentUser.id,
+  }
+}
 
-export default LoginForm
+export default connect(mapStateToProps, { loginUser })(LoginForm)

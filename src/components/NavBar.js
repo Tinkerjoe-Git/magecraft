@@ -24,6 +24,7 @@ class NavBar extends Component {
   state = {
     search: '',
     dropdown: 'cards',
+    request: '',
   }
 
   handleItemClick = (event, name) => {
@@ -122,15 +123,15 @@ class NavBar extends Component {
               Search
             </MenuItem>
             <Select
-              value="cards"
+              //TODO: need to check this name, dropdown isn't working
+              value={dropdown}
               position="relative"
-              name="dropdown"
               onChange={this.handleChange}
               options={options}
               placeholder="Cards"
             />
             <MenuItem
-              value="cards"
+              value={options}
               component={Link}
               onChange={this.handleChange}
               options={options}
@@ -163,8 +164,21 @@ class NavBar extends Component {
   }
 }
 
+// const mapStateToProps = ({
+//   auth: { authChecked, loggedIn, currentUser },
+//   state,
+// }) => {
+//   return {
+//     authChecked,
+//     loggedIn,
+//     currentUser,
+//     request: state.cards.loading || state.decks.loading,
+//   }
+// }
+
 const mapStateToProps = (state) => {
   return {
+    authChecked: state.auth.authChecked,
     loggedIn: !!state.auth.currentUser.id,
     currentUser: state.auth.currentUser,
     request: state.cards.loading || state.decks.loading,

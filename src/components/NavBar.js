@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
@@ -19,12 +19,16 @@ import {
 import { fade, makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
+import { checkAuth } from '../actions/auth'
 
 class NavBar extends Component {
   state = {
     search: '',
     dropdown: 'cards',
     request: '',
+  }
+  componentDidMount() {
+    //this.props.dispatchCheckAuth()
   }
 
   handleItemClick = (event, name) => {
@@ -59,6 +63,35 @@ class NavBar extends Component {
       search: '',
     })
   }
+  renderAuthLinks() {
+    const { authChecked, loggedIn, currentUser } = this.props
+    if (authChecked) {
+      return loggedIn ? (
+        <>{currentUser.email}</>
+      ) : (
+        <>
+          <NavLink
+            className="p-4 inline-block"
+            activeClassName="text-blue-900"
+            exact
+            to="/signup"
+          >
+            Sign Up
+          </NavLink>
+          <NavLink
+            className="p-4 inline-block"
+            activeClassName="text-blue-900"
+            exact
+            to="/login"
+          >
+            Log In
+          </NavLink>
+        </>
+      )
+    } else {
+      return null
+    }
+  }
 
   render() {
     const options = [
@@ -73,7 +106,7 @@ class NavBar extends Component {
     ]
 
     const { search, dropdown } = this.state
-    const { currentUser, loggedIn } = this.props
+    const { authChecked, currentUser, loggedIn } = this.props
     return (
       <AppBar position="static">
         <Toolbar>
@@ -157,6 +190,7 @@ class NavBar extends Component {
                 Logout
               </MenuItem>
             )}
+            <div className="sm:text-right">{this.renderAuthLinks()}</div>
           </MenuList>
         </Toolbar>
       </AppBar>
@@ -176,13 +210,8 @@ class NavBar extends Component {
 //   }
 // }
 
-const mapStateToProps = (state) => {
-  return {
-    authChecked: state.auth.authChecked,
-    loggedIn: !!state.auth.currentUser.id,
-    currentUser: state.auth.currentUser,
-    request: state.cards.loading || state.decks.loading,
-  }
+const mapStateToProps = ({ auth: { authChecked, loggedIn, currentUser } }) => {
+  return { authChecked, loggedIn, currentUser }
 }
 
 export default connect(mapStateToProps, { getCards, fetchDecks, logoutUser })(

@@ -4,6 +4,7 @@ import { loginUser } from '../actions/auth'
 import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Input from '@material-ui/core/Input'
 
 class Login extends React.Component {
   state = {
@@ -32,6 +33,8 @@ class Login extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <TextField
+          name="username"
+          id="standard-password-input"
           label="username"
           placeholder="Username"
           variant="filled"
@@ -40,6 +43,7 @@ class Login extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
+          name="email"
           label="email"
           variant="filled"
           required
@@ -48,6 +52,7 @@ class Login extends React.Component {
         />
 
         <TextField
+          name="password"
           label="Password"
           variant="filled"
           type="password"
@@ -57,9 +62,11 @@ class Login extends React.Component {
         />
         <div>
           <Button variant="contained">Cancel</Button>
+          <Input type="submit" value="Log In" />
           <Button
-            type="submit"
-            onClick={this.handleChange}
+            onClick={() => {
+              alert('Logging In')
+            }}
             variant="contained"
             color="primary"
           >
@@ -73,7 +80,8 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchLoginUser: (credentials) => dispatch(loginUser(credentials)),
+    dispatchLoginUser: (name, email, password) =>
+      dispatch(loginUser(name, email, password)),
   }
 }
 

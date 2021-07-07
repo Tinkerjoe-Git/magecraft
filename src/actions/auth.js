@@ -25,7 +25,7 @@ export const fetchUser = () => (dispatch) => {
     })
 }
 
-export const loginUser = (credentials) => {
+export const loginUser = (username, email, password) => {
   return (dispatch) => {
     return fetch('http://localhost:3001/login', {
       method: 'POST',
@@ -33,7 +33,7 @@ export const loginUser = (credentials) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ user: credentials }),
+      body: JSON.stringify({ user: username, email, password }),
     }).then((res) => {
       if (res.ok) {
         setToken(res.headers.get('Authorization'))
@@ -148,6 +148,26 @@ const getToken = () => {
   const timeSinceLastLogin = now - localStorage.getItem('lastLoginTime')
   if (timeSinceLastLogin < thirtyMinutes) {
     return localStorage.getItem('token')
+  }
+}
+
+export const checkAuth = () => {
+  return (dispatch) => {
+    return fetch('http://localhost:3000/current_user', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: getToken(),
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res
+          .json()
+          .then((user) => dispatch({ type: AUTHENTICATED, payload: user }))
+      } else {
+        return Promise.reject(dispatch({ type: NOT_AUTHENTICATED }))
+      }
+    })
   }
 }
 

@@ -14,6 +14,7 @@ import withStats from './components/hocs/withStats'
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { connect, useSelector } from 'react-redux'
 import { fetchUser } from './actions/auth'
+import withAuth from './components/hocs/withAuth'
 import Cards from './components/Cards2'
 import { getCards } from './actions/cards'
 
@@ -56,16 +57,16 @@ const SignupPage = () => {
 class App extends Component {
   componentDidMount() {
     this.props.getCards
-    // let jwt = localStorage.getItem('token')
-    // if (jwt && !this.props.loggedIn) {
-    this.props.fetchUser()
-    //}
+    let jwt = localStorage.getItem('token')
+    if (jwt && !this.props.loggedIn) {
+      this.props.fetchUser()
+    }
   }
 
   render() {
     const {
       selectedDeck,
-      loggedIn,
+      //loggedIn,
       // loading,
     } = this.props
     return (
@@ -83,12 +84,7 @@ class App extends Component {
           <Route
             exact
             path="/:username/decks/new"
-            component={DeckFormWithStats}
-          />
-          <Route
-            exact
-            path="/:username/decks/new"
-            component={DeckFormWithStats}
+            component={withAuth(DeckFormWithStats)}
           />
           <Route
             exact

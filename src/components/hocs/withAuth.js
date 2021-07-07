@@ -1,51 +1,46 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import { fetchUser } from '../../actions/auth'
+import { checkAuth } from '../../actions/auth'
+import LoadingSpinner from '../LoadingSpinner'
+import Login from '../LoginForm'
 
-const withAuth = (WrappedComponent) => {
-  class AuthedComponent extends React.Component {
-    state = {
-      authCompleted: this.props.loggedIn,
-    }
-
+function withAuth(WrappedComponent) {
+  class Wrapper extends React.Component {
     componentDidMount() {
-      if (localStorage.getItem('token')) {
-        this.props.fetchUser()
-      } else {
-        this.setState({ authCompleted: true })
-      }
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps) {
-      if (nextProps.loggedIn) {
-        this.setState({ authCompleted: true })
-      }
+      this.props.dispatchCheckAuth()
     }
 
     render() {
-      if (this.state.authCompleted) {
-        return this.props.loggedIn ? (
-          <WrappedComponent {...this.props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { redirect: true },
-            }}
-          />
+      if (!this.props.authChecked) {
+        return <LoadingSpinner />
+      } else if (!this.props.loggedIn) {
+        return (
+          <>
+            <p className="w-11/12 max-w-2xl mx-auto my-4 text-red-500">
+              You need to login to view this page.
+            </p>
+            <Login />
+          </>
         )
       } else {
-        return null
+        return <WrappedComponent {...this.props} />
       }
     }
   }
 
-  const mapStateToProps = (state) => ({
-    loggedIn: !!state.auth.currentUser.id,
-  })
+  const mapStateToProps = ({
+    auth: { authChecked, loggedIn, currentUser },
+  }) => {
+    return { authChecked, loggedIn, currentUser }
+  }
 
-  return connect(mapStateToProps, { fetchUser })(AuthedComponent)
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      dispatchCheckAuth: () => dispatch(checkAuth()),
+    }
+  }
+
+  return connect(mapStateToProps, mapDispatchToProps)(Wrapper)
 }
 
 export default withAuth

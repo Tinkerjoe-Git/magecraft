@@ -149,7 +149,7 @@ export const createUser = (name, email, password, history) => {
       if (res.ok) {
         console.log(res.headers.get('Authorization'))
         localStorage.setItem('token', res.jwt, res.headers.get('Authorization'))
-        const { id, name } = res.user.attributes
+        // const { id, name } = res.user.attributes
         //TODO: lets set our currentUser
         return res.json().then(
           (userJson) => dispatch({ type: AUTHENTICATED, payload: userJson }),

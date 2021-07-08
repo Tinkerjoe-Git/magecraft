@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginForm = ({ onCancelClick }) => {
   const classes = useStyles()
-  const [username, setUsername] = useState('')
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -36,8 +36,8 @@ const LoginForm = ({ onCancelClick }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, email, password, history)
-    dispatch(loginUser(username, email, password, history))
+    console.log(name, email, password, history)
+    dispatch(loginUser(name, email, password, history))
 
     /*
     fetchUser(auth endpoint thing with username and password)
@@ -49,11 +49,11 @@ const LoginForm = ({ onCancelClick }) => {
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       <TextField
-        label="username"
+        label="name"
         variant="filled"
         required
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <TextField
         label="email"

@@ -60,6 +60,7 @@ class SignupForm extends Component {
           {/* <Alert severity="error">Something went wrong! {message} </Alert> */}
           <form size="large" onSubmit={this.handleSubmit}>
             <input
+              id="name"
               placeholder="name"
               name="name"
               type="text"
@@ -67,6 +68,7 @@ class SignupForm extends Component {
               onChange={this.handleChange('name')}
             />
             <input
+              id="email"
               placeholder="email"
               name="email"
               type="text"
@@ -74,6 +76,7 @@ class SignupForm extends Component {
               onChange={this.handleChange('email')}
             />
             <input
+              id="password"
               placeholder="Password"
               name="password"
               type="password"

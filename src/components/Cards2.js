@@ -85,7 +85,7 @@ export default function Cards() {
       })
 
     return () => {
-      console.log('about to unmount')
+      console.log('About to unmount')
     }
   }, [])
 

@@ -98,6 +98,7 @@ export const loginUser = (name, email, password, history) => (dispatch) => {
         type: 'LOAD_CURRENT_USER_DATA',
         payload: { decks },
       })
+      // convert this to useHistory later
       history.push('/')
     }
   })

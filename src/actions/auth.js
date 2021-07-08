@@ -104,37 +104,37 @@ export const loginUser = (name, email, password, history) => (dispatch) => {
   })
 }
 
-// export const logoutUser = () => {
-//   localStorage.removeItem('token')
-//   return {
-//     type: 'LOGOUT_USER',
-//   }
-// }
-
 export const logoutUser = () => {
-  return (dispatch) => {
-    return fetch('http://localhost:3001/logout', {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: getToken(),
-      },
-    }).then((res) => {
-      if (res.ok) {
-        return (
-          dispatch({ type: NOT_AUTHENTICATED }),
-          dispatch({ type: 'LOGOUT_USER' })
-        )
-      } else {
-        return res.json().then((errors) => {
-          dispatch({ type: NOT_AUTHENTICATED })
-          return Promise.reject(errors)
-        })
-      }
-    })
+  localStorage.removeItem('token')
+  return {
+    type: 'LOGOUT_USER',
   }
 }
+
+// export const logoutUser = () => {
+//   return (dispatch) => {
+//     return fetch('http://localhost:3000/logout', {
+//       method: 'DELETE',
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//         Authorization: getToken(),
+//       },
+//     }).then((res) => {
+//       if (res.ok) {
+//         return (
+//           // dispatch({ type: NOT_AUTHENTICATED }),
+//           dispatch({ type: 'LOGOUT_USER' })
+//         )
+//       } else {
+//         return res.json().then((errors) => {
+//           dispatch({ type: NOT_AUTHENTICATED })
+//           return Promise.reject(errors)
+//         })
+//       }
+//     })
+//   }
+// }
 
 export const createUser = (name, email, password, history) => {
   return (dispatch) => {

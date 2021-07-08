@@ -72,7 +72,7 @@ export default function Cards() {
   const classes = useStyles()
   const cards = useSelector((state) => state.cards.results)
   const dispatch = useDispatch()
-
+  // component did mount
   useEffect(() => {
     dispatch({ type: 'CARDS_COMPONENT_MOUNTED' })
 

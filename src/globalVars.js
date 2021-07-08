@@ -1,4 +1,5 @@
 export const API_ROOT = 'http://localhost:3000'
+import { v4 as uuid } from 'uuid'
 
 export async function fetchCARDS() {
   return await fetch('http://localhost:3000/cards').then((r) => r.json())
@@ -14,13 +15,13 @@ export const types = [
   'Planeswalker',
 ]
 
-// export const keysForDeckShow = {
-//   Creature: uuidv4(),
-//   Instant: uuidv4(),
-//   Sorcery: uuidv4(),
-//   Land: uuidv4(),
-//   Artifact: uuidv4(),
-//   Enchantment: uuidv4(),
-//   Planeswalker: uuidv4(),
-//   Sideboard: uuidv4(),
-// }
+export const keysForDeckShow = {
+  Creature: uuid(),
+  Instant: uuid(),
+  Sorcery: uuid(),
+  Land: uuid(),
+  Artifact: uuid(),
+  Enchantment: uuid(),
+  Planeswalker: uuid(),
+  Sideboard: uuid(),
+}

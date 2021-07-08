@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-//import { v4 as uuidv4 } from 'uuid/v4'
+import { v4 as uuid } from 'uuid'
 import DeckCardInput from './DeckCardInput'
 import { connect } from 'react-redux'
 import { sortCardsIntoBoards } from '../globalFunctions'

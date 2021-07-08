@@ -6,83 +6,116 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
 
-class Login extends React.Component {
+class LoginForm extends React.Component {
   state = {
-    username: '',
-    email: '',
-    password: '',
     error: false,
+    redirect: false,
+    fields: {
+      username: '',
+      email: '',
+      password: '',
+    },
+  }
+
+  componentDidMount = () => {
+    if (this.props.location.state) {
+      this.setState({
+        redirect: this.props.location.state.redirect,
+      })
+    }
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps, prevState) {
+    if (nextProps.authError) {
+      this.setState({
+        error: true,
+      })
+    }
   }
 
   handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value,
+      fields: {
+        ...this.state.fields,
+        [event.target.name]: event.target.value,
+      },
     })
   }
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const { username, email, password } = this.state
-    this.props
-      .dispatchLoginUser({ username, email, password })
-      .then(() => this.props.history.push('/'))
-      .catch(() => this.setState({ error: true }))
+    const {
+      fields: { username, email, password },
+    } = this.state
+    this.props.loginUser(username, email, password, this.props.history)
+    this.setState({
+      redirect: false,
+      error: false,
+      fields: {
+        ...this.state.fields,
+        password: '',
+      },
+    })
   }
 
   render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <TextField
-          name="username"
-          id="standard-password-input"
-          label="username"
-          placeholder="Username"
-          variant="filled"
-          required
-          value={this.state.username}
-          onChange={this.handleChange}
-        />
-        <TextField
-          name="email"
-          label="email"
-          variant="filled"
-          required
-          value={this.state.email}
-          onChange={this.handleChange}
-        />
+    const { error, redirect } = this.state
+    if (this.props.loggedIn) {
+      return <Redirect to="/" />
+    } else {
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <TextField
+            name="username"
+            id="standard-password-input"
+            label="username"
+            placeholder="Username"
+            variant="filled"
+            required
+            value={this.state.username}
+            onChange={this.handleChange}
+          />
+          <TextField
+            name="email"
+            label="email"
+            variant="filled"
+            required
+            value={this.state.email}
+            onChange={this.handleChange}
+          />
 
-        <TextField
-          name="password"
-          label="Password"
-          variant="filled"
-          type="password"
-          required
-          value={this.state.password}
-          onChange={this.handleChange}
-        />
-        <div>
-          <Button variant="contained">Cancel</Button>
-          <Input type="submit" value="Log In" />
-          <Button
-            onClick={() => {
-              alert('Logging In')
-            }}
-            variant="contained"
-            color="primary"
-          >
-            Login
-          </Button>
-        </div>
-      </form>
-    )
+          <TextField
+            name="password"
+            label="Password"
+            variant="filled"
+            type="password"
+            required
+            value={this.state.password}
+            onChange={this.handleChange}
+          />
+          <div>
+            <Button variant="contained">Cancel</Button>
+            <Input type="submit" value="Log In" />
+            <Button
+              onClick={this.handleSubmit}
+              variant="contained"
+              color="primary"
+            >
+              Login
+            </Button>
+          </div>
+        </form>
+      )
+    }
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    dispatchLoginUser: (name, email, password) =>
-      dispatch(loginUser(name, email, password)),
+    authError: state.auth.errorStatus,
+    authErrorMessage: state.auth.error.message,
+    loggedIn: !!state.auth.currentUser.id,
   }
 }
 
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, { loginUser })(LoginForm)

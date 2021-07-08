@@ -24,32 +24,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const LoginForm = (props) => {
+const LoginForm = ({ onCancelClick }) => {
   const classes = useStyles()
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
-  //const Loggedin = useSelector((state) => state.auth.currentUser.id)
 
   const authError = useSelector((state) => state.auth.error)
   const dispatch = useDispatch()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    return {
-      dispatchLoginUser: (username, email, password) =>
-        dispatch(loginUser(username, email, password)).then(() =>
-          props.history.push('/'),
-        ),
-    }
+    console.log(username, email, password, history)
+    dispatch(loginUser(username, email, password, history))
+
+    /*
+    fetchUser(auth endpoint thing with username and password)
+      .then(dispatch user is authed)
+      .catch(auth failed for reason and dispatch that)
+    */
   }
 
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       <TextField
         label="username"
-        placeholder="Username"
         variant="filled"
         required
         value={username}
@@ -72,7 +72,9 @@ const LoginForm = (props) => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <div>
-        <Button variant="contained">Cancel</Button>
+        <Button variant="contained" onClick={onCancelClick}>
+          Cancel
+        </Button>
         <Button
           type="submit"
           onClick={handleSubmit}

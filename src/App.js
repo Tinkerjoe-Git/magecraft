@@ -6,7 +6,7 @@ import CardContainer from './containers/CardContainer'
 import DeckContainer from './containers/DeckContainer'
 import Home from './components/HomePage'
 import DeckShow from './components/DeckShow'
-import LoginForm from './components/LoginForm'
+import LoginForm from './components/LoginForm4'
 import SignupForm from './components/SignupForm'
 import DeckForm from './components/DeckForm'
 import NotFoundPage from './components/NotFoundPage'
@@ -27,14 +27,13 @@ const LoginPage = () => {
 
   if (userIsAuthenticated) {
     return <Redirect to="/" />
-  }
-
-  return (
-    <div>
-      <h1>Login</h1>
-      <LoginForm />
-    </div>
-  )
+  } else
+    return (
+      <div>
+        <h1>Login</h1>
+        <LoginForm />
+      </div>
+    )
 }
 
 const SignupPage = () => {

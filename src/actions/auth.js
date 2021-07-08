@@ -25,26 +25,52 @@ export const fetchUser = () => (dispatch) => {
     })
 }
 
-export const loginUser = (username, email, password) => {
+// export const loginUser = (username, email, password) => {
+//   return (dispatch) => {
+//     return fetch('http://localhost:3001/login', {
+//       method: 'POST',
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ user: username, email, password }),
+//     }).then((res) => {
+//       if (res.ok) {
+//         setToken(res.headers.get('Authorization'))
+//         // const { id, name } = res.user.data.attributes
+//         // const decks = res.user.data.attributes.decks.data
+//         return res
+//           .json()
+//           .then(
+//             (userJson) => dispatch({ type: AUTHENTICATED, payload: userJson }),
+//             dispatch({ type: 'SET_CURRENT_USER', user: { id, name } }),
+//             dispatch({ type: 'LOAD_CURRENT_USER_DATA', payload: { decks } }),
+//           )
+//       } else {
+//         return res.json().then((errors) => {
+//           dispatch({ type: NOT_AUTHENTICATED })
+//           return Promise.reject(errors)
+//         })
+//       }
+//     })
+//   }
+// }
+export const loginUser = (name, email, password) => {
   return (dispatch) => {
-    return fetch('http://localhost:3001/login', {
+    return fetch('http://localhost:3000/login', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ user: username, email, password }),
+      body: JSON.stringify({ user: name, email, password }),
     }).then((res) => {
       if (res.ok) {
         setToken(res.headers.get('Authorization'))
-        const { id, name } = res.user.data.attributes
-        const decks = res.user.data.attributes.decks.data
         return res
           .json()
-          .then(
-            (userJson) => dispatch({ type: AUTHENTICATED, payload: userJson }),
-            dispatch({ type: 'SET_CURRENT_USER', user: { id, name } }),
-            dispatch({ type: 'LOAD_CURRENT_USER_DATA', payload: { decks } }),
+          .then((userJson) =>
+            dispatch({ type: AUTHENTICATED, payload: userJson }),
           )
       } else {
         return res.json().then((errors) => {
@@ -56,16 +82,19 @@ export const loginUser = (username, email, password) => {
   }
 }
 
-//   return adapter.auth.login({ username, email, password }).then((res) => {
+// export const loginUser = (username, email, password, history) => (dispatch) => {
+//   dispatch({ type: 'LOADING_USER' })
+
+//   adapter.auth.login({ username, email, password }).then((res) => {
 //     if (res.error) {
 //       dispatch({ type: 'LOGIN_ERROR', payload: res.error })
 //     } else {
+//       console.log(res)
+//       setToken(res.headers.get('Authorization'))
 //       localStorage.setItem('token', res.jwt)
-//       const { id, name, email } = res.user.data.attributes
+//       const { id, name } = res.user.data.attributes
 //       const decks = res.user.data.attributes.decks.data
-//       console.log(res.data.attributes)
-
-//       dispatch({ type: 'SET_CURRENT_USER', user: { id, name, email } })
+//       dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
 //       dispatch({
 //         type: 'LOAD_CURRENT_USER_DATA',
 //         payload: { decks },
@@ -119,13 +148,18 @@ export const createUser = (name, email, password, history) => {
     }).then((res) => {
       if (res.ok) {
         console.log(res.headers.get('Authorization'))
-        localStorage.setItem('token', res.headers.get('Authorization'))
+        localStorage.setItem('token', res.jwt, res.headers.get('Authorization'))
+        const { id, name } = res.user.attributes
         //TODO: lets set our currentUser
-        return res.json().then((userJson) =>
-          dispatch({
-            type: 'SET_CURRENT_USER',
-            payload: userJson,
-          }),
+        return res.json().then(
+          (userJson) => dispatch({ type: AUTHENTICATED, payload: userJson }),
+          // dispatch({
+          //   type: 'SET_CURRENT_USER',
+          //   //TODO: maybe user: { name, email, password }
+          //   user: { id, name },
+          // }),
+
+          //history.push('/');
         )
       } else {
         return res.json().then((errors) => {

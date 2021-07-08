@@ -15,7 +15,7 @@ export default function authReducer(state = defaultState, action) {
       return {
         authChecked: true,
         loggedIn: true,
-        currentUser: action.payload,
+        currentUser: action.user,
       }
     case NOT_AUTHENTICATED:
       return {
@@ -30,7 +30,7 @@ export default function authReducer(state = defaultState, action) {
       return {
         ...state,
         // maybe want action.payload // action.user
-        currentUser: action.payload,
+        currentUser: action.user,
         loading: false,
         errorStatus: false,
         error: {},

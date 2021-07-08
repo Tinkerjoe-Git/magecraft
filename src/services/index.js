@@ -5,14 +5,16 @@ const headers = {
   Accepts: 'application/json',
 }
 
-const getWithToken = async (url) => {
+const getWithToken = (url) => {
   const token = localStorage.getItem('token')
-
-  const res = await fetch(url, {
-    headers: { Authorization: token, 'Content-Type': 'application/json' },
-  })
-  return res
+  return fetch(url, {
+    headers: { Authorization: token },
+  }).then((res) => res.json())
 }
+
+// const getCurrentUser = () => {
+//   return getWithToken(`${API_ROOT}/current_user`)
+// }
 
 const getCurrentUser = () => {
   // resolve if current user is present, reject otherwise
@@ -27,14 +29,17 @@ const getCurrentUser = () => {
   })
 }
 
-const login = async (data) => {
-  const res = await fetch(`${API_ROOT}/login`, {
+const setToken = (token) => {
+  localStorage.setItem('token', token)
+  localStorage.setItem('lastLoginTime', new Date(Date.now()).getTime())
+}
+
+const login = (credentials) => {
+  return fetch(`${API_ROOT}/login`, {
     method: 'POST',
     headers,
-    body: JSON.stringify(data),
-  })
-  //TODO:
-  return await res.json()
+    body: JSON.stringify({ user: credentials }),
+  }).then((res) => res.json())
 }
 
 export const adapter = {

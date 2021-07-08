@@ -105,7 +105,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     selectedDeck: state.decks.selected,
-    // loggedIn: !!state.auth.currentUser.id,
+    loggedIn: !!state.auth.currentUser.id,
   }
 }
 

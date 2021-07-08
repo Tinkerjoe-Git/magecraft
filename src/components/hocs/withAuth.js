@@ -1,46 +1,51 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { checkAuth } from '../../actions/auth'
-import LoadingSpinner from '../LoadingSpinner'
-import Login from '../LoginForm'
+import { Redirect } from 'react-router-dom'
+import { fetchUser } from '../../actions/auth'
 
-function withAuth(WrappedComponent) {
-  class Wrapper extends React.Component {
+const withAuth = (WrappedComponent) => {
+  class AuthedComponent extends React.Component {
+    state = {
+      authCompleted: this.props.loggedIn,
+    }
+
     componentDidMount() {
-      this.props.dispatchCheckAuth()
+      if (localStorage.getItem('token')) {
+        this.props.fetchUser()
+      } else {
+        this.setState({ authCompleted: true })
+      }
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps) {
+      if (nextProps.loggedIn) {
+        this.setState({ authCompleted: true })
+      }
     }
 
     render() {
-      if (!this.props.authChecked) {
-        return <LoadingSpinner />
-      } else if (!this.props.loggedIn) {
-        return (
-          <>
-            <p className="w-11/12 max-w-2xl mx-auto my-4 text-red-500">
-              You need to login to view this page.
-            </p>
-            <Login />
-          </>
+      if (this.state.authCompleted) {
+        return this.props.loggedIn ? (
+          <WrappedComponent {...this.props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { redirect: true },
+            }}
+          />
         )
       } else {
-        return <WrappedComponent {...this.props} />
+        return null
       }
     }
   }
 
-  const mapStateToProps = ({
-    auth: { authChecked, loggedIn, currentUser },
-  }) => {
-    return { authChecked, loggedIn, currentUser }
-  }
+  const mapStateToProps = (state) => ({
+    loggedIn: !!state.auth.currentUser.id,
+  })
 
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      dispatchCheckAuth: () => dispatch(checkAuth()),
-    }
-  }
-
-  return connect(mapStateToProps, mapDispatchToProps)(Wrapper)
+  return connect(mapStateToProps, { fetchUser })(AuthedComponent)
 }
 
 export default withAuth

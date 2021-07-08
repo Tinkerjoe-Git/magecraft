@@ -7,7 +7,7 @@ export default function withStats(Component) {
       return (
         <Container maxWidth={'md'}>
           <Grid container spacing={4}>
-            <Grid item key={this.props.cards.id}></Grid>
+            <Grid item key={this.props.deck_cards.id}></Grid>
             <Component />
 
             <p>Stats</p>

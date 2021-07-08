@@ -16,7 +16,7 @@ export const fetchUser = () => (dispatch) => {
   adapter.auth
     .getCurrentUser()
     .then((res) => {
-      const { id, name, decks } = res.data.attributes
+      const { id, name, decks } = res.data
       dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
       dispatch({ type: 'LOAD_CURRENT_USER_DATA', payload: { decks } })
     })
@@ -91,8 +91,8 @@ export const loginUser = (name, email, password, history) => (dispatch) => {
       console.log(res)
       // setToken(res.headers.get('Authorization'))
       localStorage.setItem('token', res.jwt)
-      const { id, name } = res.user.data.attributes
-      const decks = res.user.data.attributes.decks.data
+      const { id, name } = res.data
+      const decks = res.data.decks
       dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
       dispatch({
         type: 'LOAD_CURRENT_USER_DATA',
@@ -208,25 +208,25 @@ const getToken = () => {
   }
 }
 
-export const checkAuth = () => {
-  return (dispatch) => {
-    return fetch('http://localhost:3000/current_user', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: getToken(),
-      },
-    }).then((res) => {
-      if (res.ok) {
-        return res
-          .json()
-          .then((user) => dispatch({ type: AUTHENTICATED, payload: user }))
-      } else {
-        return Promise.reject(dispatch({ type: NOT_AUTHENTICATED }))
-      }
-    })
-  }
-}
+// export const checkAuth = () => {
+//   return (dispatch) => {
+//     return fetch('http://localhost:3000/current_user', {
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//         Authorization: getToken(),
+//       },
+//     }).then((res) => {
+//       if (res.ok) {
+//         return res
+//           .json()
+//           .then((user) => dispatch({ type: AUTHENTICATED, payload: user }))
+//       } else {
+//         return Promise.reject(dispatch({ type: NOT_AUTHENTICATED }))
+//       }
+//     })
+//   }
+// }
 
 //TODO: check the order here, seems sus.
 // export const createUser = (name, email, password, history) => {

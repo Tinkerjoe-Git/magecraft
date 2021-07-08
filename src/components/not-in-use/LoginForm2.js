@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link, Redirect, useHistory } from 'react-router-dom'
-import { loginUser } from '../actions/auth'
+import { loginUser } from '../../actions/auth'
 
 const useStyles = makeStyles((theme) => ({
   root: {

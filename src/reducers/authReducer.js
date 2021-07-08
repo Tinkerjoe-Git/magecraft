@@ -11,18 +11,18 @@ const defaultState = {
 
 export default function authReducer(state = defaultState, action) {
   switch (action.type) {
-    case AUTHENTICATED:
-      return {
-        authChecked: true,
-        loggedIn: true,
-        currentUser: action.user,
-      }
-    case NOT_AUTHENTICATED:
-      return {
-        authChecked: true,
-        loggedIn: false,
-        currentUser: {},
-      }
+    // case AUTHENTICATED:
+    //   return {
+    //     authChecked: true,
+    //     loggedIn: true,
+    //     currentUser: action.user,
+    //   }
+    // case NOT_AUTHENTICATED:
+    //   return {
+    //     authChecked: true,
+    //     loggedIn: false,
+    //     currentUser: {},
+    //   }
 
     case 'LOADING_USER':
       return { ...state, loading: true }

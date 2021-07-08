@@ -83,7 +83,7 @@ class App extends Component {
           <Route
             exact
             path="/:username/decks/new"
-            component={withAuth(DeckFormWithStats)}
+            component={DeckFormWithStats}
           />
           <Route
             exact

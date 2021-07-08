@@ -5,6 +5,9 @@ import Button from '@material-ui/core/Button'
 import { connect, useSelector, useDispatch } from 'react-redux'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { loginUser } from '../actions/auth'
+import Alert from '@material-ui/lab/Alert'
+import CheckIcon from '@material-ui/icons/Check'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +80,9 @@ const LoginForm = ({ onCancelClick }) => {
         </Button>
         <Button
           type="submit"
-          onClick={handleSubmit}
+          onClick={() => (
+            <Alert severity="success">Logging you in Wizard</Alert>
+          )}
           variant="contained"
           color="primary"
         >

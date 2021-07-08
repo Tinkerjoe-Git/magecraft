@@ -198,21 +198,17 @@ class NavBar extends Component {
   }
 }
 
-// const mapStateToProps = ({
-//   auth: { authChecked, loggedIn, currentUser },
-//   state,
-// }) => {
-//   return {
-//     authChecked,
-//     loggedIn,
-//     currentUser,
-//     request: state.cards.loading || state.decks.loading,
-//   }
-// }
-
-const mapStateToProps = ({ auth: { authChecked, loggedIn, currentUser } }) => {
-  return { authChecked, loggedIn, currentUser }
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: !!state.auth.currentUser.id,
+    currentUser: state.auth.currentUser,
+    request: state.cards.loading || state.decks.loading,
+  }
 }
+
+// const mapStateToProps = ({ auth: { authChecked, loggedIn, currentUser } }) => {
+//   return { authChecked, loggedIn, currentUser }
+// }
 
 export default connect(mapStateToProps, { getCards, fetchDecks, logoutUser })(
   withRouter(NavBar),

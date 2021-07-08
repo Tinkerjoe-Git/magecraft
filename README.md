@@ -18,7 +18,7 @@ An IDE:
 
 ### Installing
 
-1. Fork and Clone the repository.
+1. Fork and Clone the repository for the front and backend. 
 
 2. Load up the API magecraft-backend in your IDE
 
@@ -28,15 +28,17 @@ An IDE:
  
 5. Use cntl(or 'cmd') + left click on the local host link that Rails / Puma output, this will take us into the API
 
-6. Use npm install to get your packages, then npm start and you'll be off to the races.
+6. Use npm install to get your packages for this repository, then npm start, you'll be directed to localhost:3001 on the React app. 
 
 ## Built With
 
   - React
   - Rails
+  - Devise
+  - Devise-JWT
   - ActiveRecord
   - SQLite3
-  - and all the lovely gems in the Gemfile, not to mention all the packages in our json file. 
+  - and all the lovely gems in the Gemfile, and our frontend packages. 
 
 ## Author
 

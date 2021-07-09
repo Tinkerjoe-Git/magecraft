@@ -25,6 +25,26 @@ export const fetchUser = () => (dispatch) => {
     })
 }
 
+export const loginUser = (username, password, history) => (dispatch) => {
+  dispatch({ type: 'LOADING_USER' })
+
+  adapter.auth.login({ username, password }).then((res) => {
+    if (res.error) {
+      dispatch({ type: 'LOGIN_ERROR', payload: res.error })
+    } else {
+      localStorage.setItem('token', res.jwt)
+      const { id, name } = res.user.data.attributes
+      const decks = res.user.data.attributes.decks.data
+      dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
+      dispatch({
+        type: 'LOAD_CURRENT_USER_DATA',
+        payload: { decks },
+      })
+      history.push('/')
+    }
+  })
+}
+
 // export const loginUser = (username, email, password) => {
 //   return (dispatch) => {
 //     return fetch('http://localhost:3001/login', {
@@ -81,50 +101,31 @@ export const fetchUser = () => (dispatch) => {
 //     })
 //   }
 
-export const loginUser = (name, email, password, history) => (dispatch) => {
-  dispatch({ type: 'LOADING_USER' })
-
-  adapter.auth.login({ name, email, password }).then((res) => {
-    if (res.error) {
-      dispatch({ type: 'LOGIN_ERROR', payload: res.error })
-    } else {
-      console.log(res)
-      // setToken(res.headers.get('Authorization'))
-      localStorage.setItem('token', res.jwt)
-      const { id, name } = res.data
-      const decks = res.data.decks
-      dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
-      dispatch({
-        type: 'LOAD_CURRENT_USER_DATA',
-        payload: { decks },
-      })
-      // convert this to useHistory later
-      history.push('/')
-    }
-  })
-}
-
-export const logoutUser = () => {
-  localStorage.removeItem('token')
-  return {
-    type: 'LOGOUT_USER',
-  }
-}
-
-// export const logoutUser = () => {
+// export const loginUser = (name, email, password) => {
 //   return (dispatch) => {
-//     return fetch('http://localhost:3000/logout', {
-//       method: 'DELETE',
+//     return fetch('http://localhost:3000/login', {
+//       method: 'POST',
 //       headers: {
 //         Accept: 'application/json',
 //         'Content-Type': 'application/json',
-//         Authorization: getToken(),
 //       },
+//       body: JSON.stringify({ user: name, email, password }),
 //     }).then((res) => {
 //       if (res.ok) {
-//         return (
-//           // dispatch({ type: NOT_AUTHENTICATED }),
-//           dispatch({ type: 'LOGOUT_USER' })
+//         setToken(res.headers.get('Authorization'))
+//         const { id, name } = res.user.user.attributes
+//         const decks = res.user.user.attributes.decks.data
+//         return res.json().then(
+//           () =>
+//             dispatch({
+//               type: 'AUTHENTICATED',
+//               user: { name, email, password },
+//             }),
+//           dispatch({ type: 'SET_CURRENT_USER', user: { id, name } }),
+//           dispatch({
+//             type: 'LOAD_CURRENT_USER_DATA',
+//             payload: { decks },
+//           }),
 //         )
 //       } else {
 //         return res.json().then((errors) => {
@@ -136,7 +137,39 @@ export const logoutUser = () => {
 //   }
 // }
 
-export const createUser = (name, email, password, history) => {
+export const logoutUser = () => {
+  localStorage.removeItem('token')
+  return {
+    type: 'LOGOUT_USER',
+  }
+}
+
+// export const createUser = (name, email, password, history) => {
+//   return (dispatch) => {
+//     dispatch({ type: 'LOADING_USER' })
+//     const options = {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Accepts: 'application/json',
+//       },
+//       body: JSON.stringify({ user: { name, email, password } }),
+//     }
+//     return fetch(`${API_ROOT}/signup`, options)
+//       .then((res) => res.json())
+//       .then((res) => {
+//         if (res.error) {
+//           dispatch({ type: 'LOGIN_ERROR', payload: res.error })
+//         } else {
+//           localStorage.setItem('token', res.jwt)
+//           const { id, name } = res.data
+//           dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
+//         }
+//       })
+//   }
+// }
+
+export const createUser = (username, email, password, history) => {
   return (dispatch) => {
     dispatch({ type: 'LOADING_USER' })
     const options = {
@@ -145,7 +178,7 @@ export const createUser = (name, email, password, history) => {
         'Content-Type': 'application/json',
         Accepts: 'application/json',
       },
-      body: JSON.stringify({ user: { name, email, password } }),
+      body: JSON.stringify({ username, email, password }),
     }
     return fetch(`${API_ROOT}/signup`, options)
       .then((res) => res.json())
@@ -154,46 +187,12 @@ export const createUser = (name, email, password, history) => {
           dispatch({ type: 'LOGIN_ERROR', payload: res.error })
         } else {
           localStorage.setItem('token', res.jwt)
-          const { id, name } = res.data
+          const { id, name } = res.user.data.attributes
           dispatch({ type: 'SET_CURRENT_USER', user: { id, name } })
         }
       })
   }
 }
-
-// export const createUser = (name, email, password, history) => {
-//   return (dispatch) => {
-//     return fetch(`${API_ROOT}/signup`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Accepts: 'application/json',
-//       },
-//       body: JSON.stringify({ user: { name, email, password } }),
-//     }).then((res) => {
-//       if (res.ok) {
-//         console.log(res.headers.get('Authorization'))
-//         localStorage.setItem('token', res.jwt)
-//         // const { id, name } = res.user.attributes
-//         //TODO: lets set our currentUser
-//         return res.json().then(
-//           (userJson) => dispatch({ type: AUTHENTICATED, payload: userJson }),
-//           // dispatch({
-//           //   type: 'SET_CURRENT_USER',
-//           //   //TODO: maybe user: { name, email, password }
-//           //   user: { id, name },
-//           // }),
-
-//           //history.push('/');
-//         )
-//       } else {
-//         return res.json().then((errors) => {
-//           dispatch({ type: 'LOGIN_ERROR', payload: res.error })
-//           return Promise.reject(errors)
-//         })
-//       }
-//     })
-//   }
 
 const setToken = (token) => {
   localStorage.setItem('token', token)
@@ -226,35 +225,5 @@ const getToken = () => {
 //         return Promise.reject(dispatch({ type: NOT_AUTHENTICATED }))
 //       }
 //     })
-//   }
-// }
-
-//TODO: check the order here, seems sus.
-// export const createUser = (name, email, password, history) => {
-//   return async (dispatch) => {
-//     dispatch({ type: 'LOADING_USER' })
-//     const options = {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Accepts: 'application/json',
-//       },
-//       // body: JSON.stringify({ user: credentials })
-//       body: JSON.stringify({ user: { name, email, password } }),
-//     }
-//     try {
-//       const res = await fetch(`${API_ROOT}/signup`, options)
-//       const res_1 = await res.json()
-//       if (res_1.error) {
-//         dispatch({ type: 'LOGIN_ERROR', payload: res_1.error })
-//       } else {
-//         localStorage.setItem('token', res.headers.get('Authorization'))
-//         const { id, name, email } = res_1.user.data.attributes
-//         dispatch({ type: 'SET_CURRENT_USER', user: { id, name, email } })
-//         history.push('/')
-//       }
-//     } catch (e) {
-//       console.log(e)
-//     }
 //   }
 // }

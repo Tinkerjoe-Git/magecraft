@@ -78,10 +78,10 @@ class App extends Component {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/cards" component={Cards} />
-          <Route exact path="/decks" component={DeckContainer5} />
+          <Route exact path="/decks" component={DeckContainer} />
           <Route exact path="/decks/search" />
 
-          <Route exact path="/:username/decks" component={DeckContainer5} />
+          <Route exact path="/:username/decks" component={DeckContainer} />
           <Route exact path="/:username/decks/new" component={DeckForm} />
 
           <Route

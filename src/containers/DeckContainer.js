@@ -12,6 +12,10 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
+import Cards from '../components/Cards2'
+import CardMedia from '@material-ui/core/CardMedia'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
 
 //TODO: work on structure of fetch
 
@@ -50,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DeckContainer() {
   const classes = useStyles()
-  const deckcards = useSelector((state) => state.decks)
+  const [decks, setDecks] = useState([])
+  const deckcards = useSelector((state) => state.results)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch({ type: 'SELECT_DECK' })
@@ -66,41 +71,66 @@ export default function DeckContainer() {
     }
   }, [])
 
+  function Cards() {
+    return <Cards cards={deckcards} />
+  }
+
+  const [selectedDeck, setSelectedDeck] = useState(null)
+  const [selectedCard, setSelectedCard] = useState(null)
+
   return (
     <div className={classes.heroContent}>
-      <Container maxWidth="sm">
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="textPrimary"
-          gutterBottom
+      <div className={classes.heroButtons}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.icon}
+          onClick={() => {
+            setSelectedDeck(null)
+            setSelectedCard(null)
+            dispatch({ type: 'SELECT_DECK' })
+          }}
         >
-          Cards Index
-        </Typography>
-        <Typography variant="h5" align="center" color="textSecondary" paragraph>
-          List of Standard Legal Cards 2021
-        </Typography>
-        <div className={classes.heroButtons}>
-          <Grid container spacing={2} justify="center">
-            <Grid item>
-              <Button
-                variant="contained"
-                color="primary"
-                component={Link}
-                to={`/:username/decks/new`}
-              >
-                Make a New Deck
+          <i className="fa fa-fw fa-plus" />
+        </Button>
+      </div>
+      <Typography variant="h5" component="h1" gutterBottom>
+        Decks
+      </Typography>
+      <Typography variant="subtitle1" component="h2">
+        Decks in your account
+      </Typography>
+      <Cards />
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <Card className={classes.card}>
+            <CardMedia
+              className={classes.cardMedia}
+              image="/static/images/logo.png"
+              title="Logo"
+            />
+            <CardContent className={classes.cardContent}>
+              <Typography variant="h5" component="h1">
+                Deck
+              </Typography>
+              <Typography variant="subtitle1" component="h2">
+                Deck title
+              </Typography>
+              <Typography variant="subtitle1" component="h3">
+                Deck description
+              </Typography>
+            </CardContent>
+            <CardActions className={classes.cardContent}>
+              <Button color="primary" variant="contained">
+                Edit deck
               </Button>
-            </Grid>
-            <Grid item>
-              <Button variant="outlined" color="primary">
-                Wishlist a Card
+              <Button color="secondary" variant="contained">
+                Delete deck
               </Button>
-            </Grid>
-          </Grid>
-        </div>
-      </Container>
+            </CardActions>
+          </Card>
+        </Grid>
+      </Grid>
     </div>
   )
 }

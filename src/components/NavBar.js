@@ -137,7 +137,7 @@ class NavBar extends Component {
                 name="decks"
                 component={Link}
                 //to="/decks"
-                to={{ pathname: `/${currentUser.name}/decks` }}
+                to={{ pathname: `/${currentUser.name}/decks/new` }}
                 onClick={this.handleItemClick}
               >
                 Decks

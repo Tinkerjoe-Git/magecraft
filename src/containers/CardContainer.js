@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
-// import { v4 as uuidv4 } from 'uuidv4'
+import { v4 as uuid } from 'uuid'
 import { connect } from 'react-redux'
-import { fetchCards } from '../actions/cards'
+import { fetchCARDS } from '../globalVars'
 import { Container } from '@material-ui/core'
-import DeckCard2 from '../components/Cards'
+import Cards2 from '../components/Cards2'
 
 class CardContainer extends Component {
   componentDidMount() {
+    this.props.fetchCARDS({ term: 'default' }, this.props.history)
     console.log('Cards Mount')
   }
 
   render() {
     const cards = this.props.cards.map((card) => (
-      <DeckCard2
-        key={card.id}
+      <Cards2
+        key={card.uuid()}
         //key={uuidv4()}
         id={card.id}
         name={card.name}
@@ -29,14 +30,12 @@ class CardContainer extends Component {
   }
 }
 
-export default CardContainer
+const mapStateToProps = (state) => {
+  return {
+    results: state.cards.results,
+    loading: state.cards.loading,
+    loggedIn: !!state.auth.currentUser.id,
+  }
+}
 
-// const mapStateToProps = (state) => {
-//   return {
-//     results: state.cards.results,
-//     loading: state.cards.loading,
-//     loggedIn: !!state.auth.currentUser.id,
-//   }
-// }
-
-// export default connect(mapStateToProps, { fetchCards })(CardContainer)
+export default connect(mapStateToProps, { fetchCARDS })(CardContainer)

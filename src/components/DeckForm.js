@@ -31,6 +31,7 @@ const addCard = (newCard, prevState) => {
 
       if (!card.name) {
         cards[i] = {
+          key: uuid(),
           error: false,
           sideboard: newCard.sideboard,
           ...newCard.attributes,
@@ -42,6 +43,7 @@ const addCard = (newCard, prevState) => {
     }
     if (!updated) {
       cards.push({
+        key: uuid(),
         error: false,
         sideboard: newCard.sideboard,
         ...newCard.attributes,
@@ -74,7 +76,10 @@ class DeckForm extends Component {
       this.setState({
         fields: {
           ...this.state.fields,
-          cards: [...cards, { error: false, sideboard, name: '', count: '' }],
+          cards: [
+            ...cards,
+            { key: uuid(), error: false, sideboard, name: '', count: '' },
+          ],
         },
       })
     } else {

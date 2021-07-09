@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Grid, Container } from '@material-ui/core'
 
 export default function withStats(Component) {
@@ -6,9 +6,8 @@ export default function withStats(Component) {
     render() {
       return (
         <Container maxWidth={'md'}>
-          <Grid container spacing={4}>
-            <Grid item key={this.props.deck_cards.id}></Grid>
-            <Component />
+          <Grid>
+            <Component {...this.props} />
 
             <p>Stats</p>
           </Grid>

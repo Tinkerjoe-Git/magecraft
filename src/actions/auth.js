@@ -25,10 +25,10 @@ export const fetchUser = () => (dispatch) => {
     })
 }
 
-export const loginUser = (username, password, history) => (dispatch) => {
+export const loginUser = (name, password, history) => (dispatch) => {
   dispatch({ type: 'LOADING_USER' })
 
-  adapter.auth.login({ username, password }).then((res) => {
+  adapter.auth.login({ name, password }).then((res) => {
     if (res.error) {
       dispatch({ type: 'LOGIN_ERROR', payload: res.error })
     } else {
@@ -40,7 +40,6 @@ export const loginUser = (username, password, history) => (dispatch) => {
         type: 'LOAD_CURRENT_USER_DATA',
         payload: { decks },
       })
-      history.push('/')
     }
   })
 }
@@ -169,7 +168,7 @@ export const logoutUser = () => {
 //   }
 // }
 
-export const createUser = (username, email, password, history) => {
+export const createUser = (name, email, password) => {
   return (dispatch) => {
     dispatch({ type: 'LOADING_USER' })
     const options = {
@@ -178,7 +177,7 @@ export const createUser = (username, email, password, history) => {
         'Content-Type': 'application/json',
         Accepts: 'application/json',
       },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({ name, email, password }),
     }
     return fetch(`${API_ROOT}/signup`, options)
       .then((res) => res.json())

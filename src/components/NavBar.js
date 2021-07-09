@@ -155,6 +155,17 @@ class NavBar extends Component {
               </FormControl>
               Search
             </MenuItem>
+            <MenuItem>
+              <FormControl onSubmit={this.handleClick}>
+                <InputLabel
+                  name="decksnew"
+                  component={Link}
+                  onChange={this.handleChange}
+                  to={{ pathname: `/${currentUser.name}/decks/new` }}
+                />
+              </FormControl>
+              Create
+            </MenuItem>
             <Select
               //TODO: need to check this name, dropdown isn't working
               value={dropdown}

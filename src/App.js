@@ -17,6 +17,7 @@ import { fetchUser } from './actions/auth'
 import withAuth from './components/hocs/withAuth'
 import Cards from './components/Cards2'
 import { getCards } from './actions/cards'
+import DeckContainer5 from './components/not-in-use/DeckContainer5'
 
 const DeckFormWithStats = withStats(DeckForm)
 
@@ -77,6 +78,7 @@ class App extends Component {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/cards" component={Cards} />
+          <Route exact path="/decks" component={DeckContainer5} />
           <Route exact path="/decks/search" />
 
           <Route exact path="/:username/decks" component={DeckContainer} />
@@ -85,6 +87,7 @@ class App extends Component {
             path="/:username/decks/new"
             component={DeckFormWithStats}
           />
+
           <Route
             exact
             path="/decks/:id"

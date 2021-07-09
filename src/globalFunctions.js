@@ -1,13 +1,15 @@
 import React from 'react'
 
 export const generateSearchParams = (searchTerms, model) => {
-  let query = Object.keys(searchTerms)
-    .map(
-      (k) =>
-        `${model}[${encodeURIComponent(k)}]=${encodeURIComponent(
-          searchTerms[k],
-        )}`,
-    )
+  let params = {}
+  for (let input in searchTerms) {
+    if (searchTerms[input]) {
+      params[`${model}[${input}]`] = searchTerms[input]
+    }
+  }
+  let esc = encodeURIComponent
+  let query = Object.keys(params)
+    .map((k) => esc(k) + '=' + esc(params[k]))
     .join('&')
   return query
 }

@@ -161,7 +161,7 @@ class NavBar extends Component {
                   name="decksnew"
                   component={Link}
                   onChange={this.handleChange}
-                  to={{ pathname: `/${currentUser.name}/decks/new` }}
+                  to={`${currentUser.name}/decks/new`}
                 />
               </FormControl>
               Create

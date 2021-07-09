@@ -33,10 +33,9 @@ export const createDeck = (deck, history, copy = false) => {
   }
 }
 
-export const fetchDecks = (searchTerms, history) => {
+export const fetchDecks = (searchTerms) => {
   const params = generateSearchParams(searchTerms, 'deck')
   const path = `/decks/search?${params}`
-  history.push(path)
   return async (dispatch) => {
     dispatch({
       type: 'LOADING_DECKS',

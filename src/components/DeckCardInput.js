@@ -1,5 +1,11 @@
 import React, { Component } from 'react'
-import { Label, Icon, FormGroup, FormLabel, TextField } from '@material-ui/core'
+import {
+  InputLabel,
+  Icon,
+  FormGroup,
+  FormLabel,
+  TextField,
+} from '@material-ui/core'
 
 class DeckCardInput extends Component {
   state = {

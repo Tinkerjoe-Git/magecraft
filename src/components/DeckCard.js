@@ -66,7 +66,7 @@ class DeckCard extends Component {
         <CardContent>
           <CardHeader
             as="a"
-            floated="left"
+            floated="center"
             onClick={this.handleClick}
             className="white-text"
           >

@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import Logout from './auth/Logout'
-import { checkAuth } from '../actions/auth'
+import Logout from '../auth/Logout'
+import { checkAuth } from '../../actions/auth'
 
 class Navbar extends React.Component {
   componentDidMount() {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid'
 import { connect } from 'react-redux'
 import { fetchUser } from '../actions/auth'
@@ -6,123 +6,101 @@ import { fetchDecks } from '../actions/decks'
 import DeckCard from '../components/DeckCard'
 import { Container, Card } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
+import { useDispatch, useSelector } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import Link from '@material-ui/core/Link'
 
-class DeckContainer extends Component {
-  state = {
-    userPage: false,
-    redirect: false,
-    visible: false,
-    message: '',
-    decks: [],
-  }
+//TODO: work on structure of fetch
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.loggedIn && nextProps.match.path === '/:username/decks') {
-      return {
-        message:
-          (nextProps.location.state && nextProps.location.state.message) || '',
-        visible:
-          (nextProps.location.state && nextProps.location.state.message) ||
-          false,
-        userPage: true,
-        decks: nextProps.currentUserDecks,
-      }
-    }
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+    backgroundSize: 'contain',
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+}))
 
-    if (
-      nextProps.loggedIn &&
-      nextProps.match.path === '/:username/decks' &&
-      prevState.userPage === false
-    ) {
-      nextProps.fetchUser()
-      return {
-        message:
-          (nextProps.location.state && nextProps.location.state.message) || '',
-        visible:
-          (nextProps.location.state && nextProps.location.state.message) ||
-          false,
-        userPage: true,
-        decks: nextProps.currentUserDecks,
-      }
-    }
+export default function DeckContainer() {
+  const classes = useStyles()
+  const deckcards = useSelector((state) => state.decks)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch({ type: 'SELECT_DECK' })
 
-    if (nextProps.match.path === '/decks/search') {
-      return {
-        message:
-          (nextProps.location.state && nextProps.location.state.message) || '',
-        visible:
-          (nextProps.location.state && nextProps.location.state.message) ||
-          false,
-        userPage: false,
-        decks: nextProps.deckResults,
-      }
-    }
-
-    return null
-  }
-
-  componentDidMount = () => {
-    if (this.props.loggedIn && this.props.match.path === '/:username/decks') {
-      this.props.fetchUser()
-      this.setState({
-        userPage: true,
-        decks: this.props.currentUserDecks,
+    fetchDecks()
+      .then((data) => {
+        dispatch({ type: 'FETCH_DECKS_COMPLETE', payload: data })
       })
-    } else if (
-      !this.props.loading &&
-      !this.props.deckResults.length &&
-      this.props.match.path !== '/:username/decks'
-    ) {
-      this.props.fetchDecks({ term: 'default' }, this.props.history)
-    } else if (this.props.match.path === '/decks/search') {
-      this.setState({
-        userPage: false,
-        decks: this.props.deckResults,
-      })
+      .catch((reason) => ({ type: 'DECK_ERROR', payload: reason }))
+
+    return () => {
+      console.log('Unmounting')
     }
-  }
+  }, [])
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.location.state) {
-      this.setState({
-        redirect: nextProps.location.state.redirect,
-      })
-    }
-  }
-
-  render() {
-    const { deckResults, currentUserDecks } = this.props
-    const { userPage, redirect, message, decks } = this.state
-    const deckResultsCards = deckResults.map((deck) => (
-      <DeckCard key={uuid()} deck={deck.attributes} user={false} />
-    ))
-    const deckCards = decks.map((deck) => (
-      <DeckCard key={uuid()} deck={deck.attributes} user={false} />
-    ))
-    console.log(currentUserDecks)
-    return (
-      <Container fluid>
-        {(redirect && !deckResults.length) ||
-        (!redirect && !currentUserDecks.length) ? (
-          <Alert severity="info">No decks yet</Alert>
-        ) : null}
-        <Container>{deckCards}</Container>
-
-        <React.Fragment></React.Fragment>
+  return (
+    <div className={classes.heroContent}>
+      <Container maxWidth="sm">
+        <Typography
+          component="h1"
+          variant="h2"
+          align="center"
+          color="textPrimary"
+          gutterBottom
+        >
+          Cards Index
+        </Typography>
+        <Typography variant="h5" align="center" color="textSecondary" paragraph>
+          List of Standard Legal Cards 2021
+        </Typography>
+        <div className={classes.heroButtons}>
+          <Grid container spacing={2} justify="center">
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to={`/:username/decks/new`}
+              >
+                Make a New Deck
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" color="primary">
+                Wishlist a Card
+              </Button>
+            </Grid>
+          </Grid>
+        </div>
       </Container>
-    )
-  }
+    </div>
+  )
 }
-
-const mapStateToProps = (state) => {
-  console.log(state.auth)
-  return {
-    deckResults: state.decks.results,
-    loggedIn: state.auth.currentUser.id,
-    loading: state.decks.loading,
-    currentUserDecks: state.auth.currentUserDecks,
-    authLoading: state.auth.loading,
-  }
-}
-
-export default connect(mapStateToProps, { fetchUser })(DeckContainer)

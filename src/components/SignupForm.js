@@ -2,7 +2,14 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { createUser } from '../actions/auth'
 import { connect } from 'react-redux'
-import { Card, Button, Grid, CardHeader, Divider } from '@material-ui/core'
+import {
+  Card,
+  Button,
+  Grid,
+  CardHeader,
+  Divider,
+  TextField,
+} from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 
 class SignupForm extends Component {
@@ -59,7 +66,7 @@ class SignupForm extends Component {
           <CardHeader as="h2"> Signup for your account</CardHeader>
           {/* <Alert severity="error">Something went wrong! {message} </Alert> */}
           <form size="large" onSubmit={this.handleSubmit}>
-            <input
+            <TextField
               id="name"
               placeholder="name"
               name="name"
@@ -67,7 +74,7 @@ class SignupForm extends Component {
               value={this.state.name}
               onChange={this.handleChange('name')}
             />
-            <input
+            <TextField
               id="email"
               placeholder="email"
               name="email"
@@ -75,7 +82,7 @@ class SignupForm extends Component {
               value={this.state.email}
               onChange={this.handleChange('email')}
             />
-            <input
+            <TextField
               id="password"
               placeholder="Password"
               name="password"
@@ -83,7 +90,7 @@ class SignupForm extends Component {
               value={this.state.password}
               onChange={this.handleChange('password')}
             />
-            <input
+            <TextField
               placeholder="Password confirmation"
               name="passwordConfirmation"
               type="password"

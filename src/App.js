@@ -19,7 +19,7 @@ import Cards from './components/Cards2'
 import { getCards } from './actions/cards'
 import DeckContainer5 from './components/not-in-use/DeckContainer5'
 
-// const DeckFormWithStats = withStats(DeckForm)
+const DeckFormWithStats = withStats(DeckForm)
 
 const LoginPage = () => {
   const userIsAuthenticated = useSelector(
@@ -82,7 +82,11 @@ class App extends Component {
           <Route exact path="/decks/search" />
 
           <Route exact path="/:username/decks" component={DeckContainer} />
-          <Route exact path="/:username/decks/new" component={DeckForm} />
+          <Route
+            exact
+            path="/:username/decks/new"
+            component={DeckFormWithStats}
+          />
 
           <Route
             exact

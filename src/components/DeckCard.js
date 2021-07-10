@@ -49,58 +49,76 @@ class DeckCard extends Component {
   }
 
   render() {
-    const {
-      name,
-      userName,
-      creator,
-      updatedAt,
-      formatName,
-      // id,
-    } = this.props.deck
+    const { deck } = this.props
+    const { mouseOver } = this.state
+    const { name, userName, creator, formatName, createdDate } = this.props.deck
+
     return (
-      <Card
-        className="magic-card"
-        onMouseEnter={this.handleMouseOver}
-        onMouseLeave={this.handleMouseOver}
-      >
-        <CardContent>
-          <CardHeader
-            as="a"
-            floated="center"
-            onClick={this.handleClick}
-            className="white-text"
-          >
-            {name}
-          </CardHeader>
-          <CardHeader className="white-text">
-            <i>{userName === 'admin' ? creator : userName}</i>
-          </CardHeader>
-          <List>
-            <ListItem>
-              <ListItemText className="white-text">Format</ListItemText>
-              {formatName}
+      <Card style={{ cursor: 'pointer' }} onMouseOver={this.handleMouseOver}>
+        <CardHeader
+          title={
+            <ListItem
+              button
+              onClick={this.handleClick}
+              onMouseEnter={this.handleMouseOver}
+              onMouseLeave={this.handleMouseOver}
+            >
+              <ListItemText primary={name} />
             </ListItem>
-          </List>
-        </CardContent>
-        <CardContent extra className="white-text">
-          {dateFormater(updatedAt)}
-          {this.props.match.path === '/:username/decks' &&
-            this.state.mouseOver && (
-              <FormLabel
-                as="a"
-                name="delete"
-                onClick={this.toggleDestroyModal}
-                attached="top right"
-                icon="delete"
+          }
+          subheader={
+            <ListItemText
+              primary={
+                <span>
+                  <FormLabel>{formatName}</FormLabel>
+                  <FormLabel>
+                    {userName}
+                    {creator}
+                  </FormLabel>
+                  <FormLabel>{dateFormater(createdDate)}</FormLabel>
+                </span>
+              }
+            />
+          }
+          action={
+            <ListItem
+              button
+              onClick={this.toggleDestroyModal}
+              onMouseEnter={this.handleMouseOver}
+              onMouseLeave={this.handleMouseOver}
+            >
+              <ListItemText
+                primary="Delete"
+                onClick={this.handleDelete}
+                style={{
+                  color: '#FFF',
+                  backgroundColor: '#F44336',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                }}
               />
-            )}
-        </CardContent>
-        <DeleteModal
-          open={this.state.destroy}
-          handleDelete={this.handleDelete}
-          toggle={this.toggleDestroyModal}
-          type="deck"
+            </ListItem>
+          }
         />
+        <CardContent>
+          {deck.cards.map((card) => (
+            <ListItem
+              key={card.id}
+              onClick={this.handleClick}
+              onMouseEnter={this.handleMouseOver}
+              onMouseLeave={this.handleMouseOver}
+            >
+              <ListItemText primary={card.name} />
+            </ListItem>
+          ))}
+        </CardContent>
+        {this.state.destroy && (
+          <DeleteModal
+            deck={deck}
+            onDelete={this.handleDelete}
+            onCancel={this.toggleDestroyModal}
+          />
+        )}
       </Card>
     )
   }

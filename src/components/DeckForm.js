@@ -8,106 +8,157 @@ import { createDeck } from '../actions/decks'
 import { clearCard } from '../actions/cards'
 import { withRouter } from 'react-router-dom'
 import { Alert } from '@material-ui/lab'
-
-const addCard = (newCard, prevState) => {
-  const cards = prevState.fields.cards
-  let updated = false
-  for (let i = 0; i < cards.length; i++) {
-    let card = cards[i]
-
-    if (
-      card.name.toLowerCase() === newCard.attributes.name.toLowerCase() &&
-      card.sideboard === newCard.sideboard
-    ) {
-      ++card.count
-      updated = true
-      break
-    }
-  }
-
-  if (!updated) {
-    for (let i = 0; i < cards.length; i++) {
-      let card = cards[i]
-
-      if (!card.name) {
-        cards[i] = {
-          key: uuid(),
-          error: false,
-          sideboard: newCard.sideboard,
-          ...newCard.attributes,
-          count: 1,
-        }
-        updated = true
-        break
-      }
-    }
-    if (!updated) {
-      cards.push({
-        key: uuid(),
-        error: false,
-        sideboard: newCard.sideboard,
-        ...newCard.attributes,
-        count: 1,
-      })
-    }
-  }
-
-  return cards
-}
+import {
+  InputLabel,
+  IconButton,
+  FormGroup,
+  FormLabel,
+  TextField,
+  Input,
+  Select,
+} from '@material-ui/core'
 
 class DeckForm extends Component {
   state = {
     fields: {
       name: '',
-      formatName: '',
-      cards: [],
+      format: '',
+      cards: {
+        mainboard: [{ key: uuid(), name: '', count: '', error: false }],
+        sideboard: [{ key: uuid(), name: '', count: '', error: false }],
+      },
     },
+    text: false,
     validation: {
       error: false,
       message: '',
     },
   }
 
-  appendInput = (event, { name }) => {
-    event.preventDefault()
-    const sideboard = name === 'sideboard'
-    const cards = this.state.fields.cards
-    if (cards.length <= 100) {
-      this.setState({
-        fields: {
-          ...this.state.fields,
-          cards: [
-            ...cards,
-            { key: uuid(), error: false, sideboard, name: '', count: '' },
-          ],
-        },
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (
+      Object.keys(nextProps.selectedCard).length &&
+      (nextProps.selectedCard.type === 'mainboard' ||
+        nextProps.selectedCard.type === 'sideboard')
+    ) {
+      this.addCard(nextProps.selectedCard)
+    }
+
+    if (nextProps.deckError) {
+      const mainboardCopy = this.state.fields.cards.mainboard.map((card) => {
+        if (nextProps.deckErrorRes.keys.mainboard.includes(card.key)) {
+          card.error = true
+        }
+        return card
       })
-    } else {
-      alert('Max cards reached')
+      const sideboardCopy = this.state.fields.cards.sideboard.map((card) => {
+        if (nextProps.deckErrorRes.keys.sideboard.includes(card.key)) {
+          card.error = true
+        }
+        return card
+      })
+
+      this.setState(
+        {
+          validation: {
+            error: true,
+            message: nextProps.deckErrorRes.message,
+          },
+          fields: {
+            ...this.state.fields,
+            cards: {
+              mainboard: mainboardCopy,
+              sideboard: sideboardCopy,
+            },
+          },
+        },
+        () => console.log(this.state.fields.cards),
+      )
     }
   }
 
-  removeInput = (event, { id, name }) => {
-    event.preventDefault()
-    if (Object.keys(this.props.selectedCard).length) {
-      this.props.clearCard()
+  addCard = (addedCard) => {
+    const board = this.state.fields.cards[addedCard.type]
+    let updated = false
+    const newCards = board.map((stateCard, index) => {
+      const names = board.map((card) => card.name)
+      if (
+        stateCard.name.toLowerCase() === addedCard.attributes.name.toLowerCase()
+      ) {
+        ++stateCard.count
+        updated = true
+        return stateCard
+      } else if (
+        !stateCard.name &&
+        !names.includes(addedCard.attributes.name)
+      ) {
+        updated = true
+        stateCard.name = addedCard.attributes.name
+        stateCard.count = 1
+        return stateCard
+      }
+
+      return stateCard
+    })
+
+    if (!updated) {
+      newCards.push({
+        key: uuid(),
+        name: addedCard.attributes.name,
+        count: 1,
+        error: false,
+      })
     }
 
-    const updatedCards = this.state.fields.cards.filter(
-      (card) => card.key !== id,
-    )
     this.setState({
       fields: {
         ...this.state.fields,
-        cards: updatedCards,
+        cards: {
+          ...this.state.fields.cards,
+          [addedCard.type]: newCards,
+        },
       },
     })
   }
 
-  handleFieldChange = (event, { name, value, checked }) => {
-    if (Object.keys(this.props.selectedCard).length) {
-      this.props.clearCard()
+  appendInput = (event, { name }) => {
+    if (!this.state.text) {
+      this.setState({
+        fields: {
+          ...this.state.fields,
+          cards: {
+            ...this.state.fields.cards,
+            [name]: this.state.fields.cards[name].map((card) => ({
+              ...card,
+              name: '',
+              count: '',
+              error: false,
+            })),
+          },
+        },
+        text: true,
+      })
     }
+  }
+
+  removeInput = (event, { id, name }) => {
+    if (this.state.text) {
+      this.setState({
+        fields: {
+          ...this.state.fields,
+          cards: {
+            ...this.state.fields.cards,
+            [name]: this.state.fields.cards[name].filter(
+              (card) => card.key !== id,
+            ),
+          },
+        },
+        text: false,
+      })
+    }
+  }
+
+  handleChange = (event, { name, value, checked }) => {
     this.setState({
       fields: {
         ...this.state.fields,
@@ -116,13 +167,11 @@ class DeckForm extends Component {
     })
   }
 
-  handleCardChange = (event, { name, id, value }) => {
-    if (Object.keys(this.props.selectedCard).length) {
-      this.props.clearCard()
-    }
-
-    const updatedCards = this.state.fields.cards.map((card) => {
-      if (card.key === id) {
+  handleCardChange = (event) => {
+    const { name, id, value } = event.target
+    const position = event.target.dataset.position
+    const copy = this.state.fields.cards[id].map((card, index) => {
+      if (index === parseInt(position, 10)) {
         card[name] = value
       }
       return card
@@ -131,7 +180,10 @@ class DeckForm extends Component {
       {
         fields: {
           ...this.state.fields,
-          cards: updatedCards,
+          cards: {
+            ...this.state.fields.cards,
+            [id]: copy,
+          },
         },
       },
       () => console.log(this.state.fields.cards),
@@ -140,93 +192,97 @@ class DeckForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const { name, formatName } = this.state.fields
-    if (name && formatName) {
+    const { name, format } = this.state.fields
+    if (name && format) {
       this.props.createDeck(this.state.fields, this.props.history)
+      this.setState({ validation: { error: false, message: '' } })
     } else {
-      const message = `Name and format required for submission`
+      const message = `Name and format required for submission `
       this.setState({ validation: { error: true, message } })
     }
   }
 
   render() {
-    const { handleCardChange, removeInput } = this
-    const { formats } = this.props
     const { error, message } = this.state.validation
-    const { name, formatName, cards } = this.state.fields
-    const mainboard = sortCardsIntoBoards(cards, DeckCardInput, false, {
-      handleCardChange,
-      removeInput,
+    const mainboard = this.state.fields.cards.mainboard.map((input, index) => {
+      return (
+        <DeckCardInput
+          index={index}
+          card={input}
+          key={input.key}
+          handleCardChange={this.handleCardChange}
+          removeInput={this.removeInput}
+          board="mainboard"
+        />
+      )
     })
-    const sideboard = sortCardsIntoBoards(cards, DeckCardInput, true, {
-      handleCardChange,
-      removeInput,
+    const sideboard = this.state.fields.cards.sideboard.map((input, index) => {
+      return (
+        <DeckCardInput
+          index={index}
+          card={input}
+          key={input.key}
+          handleCardChange={this.handleCardChange}
+          removeInput={this.removeInput}
+          board="sideboard"
+        />
+      )
     })
+
+    const { name, archtype, format } = this.state.fields
+    const { formats } = this.props
+
     return (
       <Container>
-        <form onSubmit={this.handleSubmit} error={error}>
-          <input
-            type="text"
-            label="Deck Name"
-            value={name}
-            name="name"
-            onChange={this.handleFieldChange}
-            width={9}
-          />
-          <form field={formatName} onSubmit={this.handleSubmit}>
-            <label>Format</label>
-            <div>
-              <input
-                onChange={this.handleFieldChange}
-                options={formats}
-                placeholder="Search format"
-                value={formatName}
-                name="formatName"
-              />
-            </div>
-          </form>
-
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <label htmlFor="mainboard">Mainboard</label>
-              <input
-                id="mainboard"
-                value={this.state.mainboard}
-                onChange={this.handleChange}
-              />
-            </div>
-            {mainboard}
-            <Button onClick={this.appendInput} name="mainboard">
-              Add Card
-            </Button>
-            <Divider hidden />
-          </form>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <label htmlFor="sideboard">Mainboard</label>
-              <input
-                id="sideboard"
-                value={this.state.sideboard}
-                onChange={this.handleChange}
-              />
-            </div>
-            {sideboard}
-            <Button onClick={this.appendInput} name="sideboard">
-              Add Card
-            </Button>
-            <Divider hidden />
-          </form>
+        <Alert
+          color="error"
+          message={message}
+          onDismiss={() =>
+            this.setState({ validation: { error: false, message: '' } })
+          }
+          showIcon
+          style={{ width: '100%' }}
+        />
+        <FormGroup onSubmit={this.handleSubmit}>
+          <FormLabel>Deck Name</FormLabel>
+          <InputLabel>
+            <TextField
+              onChange={this.handleChange}
+              id="name"
+              defaultValue={name}
+              width={9}
+            />
+          </InputLabel>
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>Deck Format</FormLabel>
+          <Select
+            onChange={this.handleChange}
+            options={formats}
+            placeholder="Search format"
+            search
+            selection
+            value={format}
+            name="format"
+          ></Select>
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>Mainboard</FormLabel>
+          {mainboard}
+          <IconButton onClick={this.appendInput} name="mainboard">
+            Add Card
+          </IconButton>
           <Divider />
-          <Alert
-            type="error"
-            hidden={!error}
-            header="Invalid Submission"
-            content={message}
-          />
-          <Button type="submit " onClick={this.handleSubmit} name="Submit">
-            Submit
-          </Button>
-        </form>
+          <FormLabel>Sideboard</FormLabel>
+          {sideboard}
+          <IconButton onClick={this.appendInput} name="sideboard">
+            Add Card
+          </IconButton>
+          <Divider />
+        </FormGroup>
+        <Button color="primary" onClick={this.handleSubmit}>
+          Create Deck
+        </Button>
       </Container>
     )
   }

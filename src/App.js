@@ -66,7 +66,7 @@ class App extends Component {
   render() {
     const {
       selectedDeck,
-      //loggedIn,
+      loggedIn,
       // loading,
     } = this.props
     return (
@@ -82,11 +82,7 @@ class App extends Component {
           <Route exact path="/decks/search" />
 
           <Route exact path="/:username/decks" component={DeckContainer} />
-          <Route
-            exact
-            path="/:username/decks/new"
-            component={DeckFormWithStats}
-          />
+          <Route exact path="/:username/decks/new" component={DeckForm} />
 
           <Route
             exact

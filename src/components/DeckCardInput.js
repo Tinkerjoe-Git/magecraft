@@ -5,6 +5,7 @@ import {
   FormGroup,
   FormLabel,
   TextField,
+  Input,
 } from '@material-ui/core'
 
 class DeckCardInput extends Component {
@@ -13,79 +14,85 @@ class DeckCardInput extends Component {
     removed: false,
   }
 
+  handleMouseOver = (event) => {
+    this.setState({ mouseOver: true })
+  }
+
+  handleChange = (event) => {
+    const { name, count, removed } = event.target.value || {}
+    const { onChange } = this.props || {}
+    const { onChange: onCardChange } = this.props.card || {}
+    onChange && onChange(event)
+    onCardChange && onCardChange(event)
+  }
+
   handleRemove = (event) => {
     this.props.handleRemove(event, this.props.card)
+    this.setState({ removed: true })
   }
 
   render() {
-    const { index, board, editing } = this.props
-    const { error, key, name, count, card_id } = this.props.card
-    if (this.state.removed && name.length) {
-      return (
-        <React.Fragment>
-          <FormLabel
-            color="primary"
-            size="small"
-            as="a"
-            onClick={this.handleRemove}
-            id={board}
-            name={index}
-          >
-            restore
-          </FormLabel>
-          {`${count} ${name}`} removed
-        </React.Fragment>
-      )
-    } else {
-      return (
-        <FormGroup as={editing ? null : React.Fragment}>
-          {!editing && (
-            <FormLabel
-              color="red"
-              size="small"
-              as="a"
-              corner="left"
-              onClick={this.props.removeInput}
-              id={key}
-              name="remove"
-            >
-              <Icon name="remove" size="large" />
-            </FormLabel>
-          )}
-
-          <TextField
-            type="text"
-            disabled={!!card_id}
-            error={error}
-            placeholder="Card name"
-            value={name}
-            name="name"
-            id={key}
-            className={editing ? 'name-input-deck-show' : 'name-input'}
-            onChange={this.props.handleCardChange}
-          />
-          <TextField
-            type="number"
-            placeholder="N"
-            value={count}
-            name="count"
-            id={key}
-            className={editing ? 'number-input-deck-show' : 'number-input'}
-            onChange={this.props.handleCardChange}
-          />
-
-          {editing && (
-            <Icon
-              name="remove"
-              id={key}
-              corner
-              fitted
-              onClick={this.props.removeInput}
+    console.log('DeckCard info', this.props)
+    const { name, count, error } = this.props.card || {}
+    const { mouseOver, removed } = this.state || {}
+    return (
+      <div className="DeckCardInput">
+        <FormGroup>
+          <InputLabel htmlFor="name">Name</InputLabel>
+          <FormLabel>
+            <TextField
+              id="name"
+              value={name}
+              onChange={this.handleChange}
+              onBlur={this.handleChange}
+              onMouseOver={this.handleMouseOver}
+              onMouseOut={this.handleMouseOver}
+              error={error}
             />
-          )}
+          </FormLabel>
         </FormGroup>
-      )
-    }
+        <FormGroup>
+          <InputLabel htmlFor="count">Count</InputLabel>
+          <FormLabel>
+            <Input
+              id="count"
+              type="number"
+              value={count}
+              onChange={this.handleChange}
+              onBlur={this.handleChange}
+              onMouseOver={this.handleMouseOver}
+              onMouseOut={this.handleMouseOver}
+              error={error}
+            />
+          </FormLabel>
+        </FormGroup>
+        <FormGroup>
+          <InputLabel htmlFor="removed">Removed</InputLabel>
+          <FormLabel>
+            <Input
+              id="removed"
+              type="checkbox"
+              checked={removed}
+              onChange={this.handleChange}
+              onBlur={this.handleChange}
+              onMouseOver={this.handleMouseOver}
+              onMouseOut={this.handleMouseOver}
+              error={error}
+            />
+          </FormLabel>
+        </FormGroup>
+        <Icon
+          className={`DeckCardIcon ${
+            mouseOver ? 'DeckCardIcon--mouseOver' : ''
+          }`}
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseOver}
+          onClick={this.handleRemove}
+        >
+          <i className="material-icons">delete_forever</i>
+        </Icon>
+      </div>
+    )
   }
 }
 

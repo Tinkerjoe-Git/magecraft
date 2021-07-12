@@ -72,22 +72,9 @@ export default function Cards() {
   const classes = useStyles()
   const cards = useSelector((state) => state.cards.results)
   const dispatch = useDispatch()
-  const [searchValue, setSearchValue] = useState('')
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault()
-
-    dispatch({ type: 'CARD_SEARCH_FORM_SUBMITTED' })
-
-    fetch(`http://localhost:3000/cards/search?query=${searchValue}`)
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch({ type: 'CARDS_SEARCH_COMPLETED', payload: data })
-      })
-      .catch((reason) => {
-        dispatch({ type: 'CARDS_SEARCH_FAILED', payload: reason })
-      })
-  }
+  const params = new URLSearchParams(window.location.search)
+  const [searchValue, setSearchValue] = useState(params.get('query') || '')
 
   useEffect(() => {
     dispatch({ type: 'CARDS_COMPONENT_MOUNTED' })
@@ -105,7 +92,12 @@ export default function Cards() {
     }
   }, [])
 
-  console.log(cards)
+  const filteredCards = cards.filter(
+    (card) =>
+      searchValue === '' ||
+      card.name.toLowerCase().startsWith(searchValue.toLowerCase()),
+    // card.name.toLowerCase().includes(searchValue.toLowerCase()),
+  )
 
   return (
     <React.Fragment>
@@ -152,17 +144,12 @@ export default function Cards() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <form onSubmit={handleFormSubmit}>
-                    <input
-                      type="text"
-                      placeholder="Search Cards"
-                      value={searchValue}
-                      onChange={(event) => setSearchValue(event.target.value)}
-                    />
-                    <Button type="submit" variant="contained" color="primary">
-                      Search
-                    </Button>
-                  </form>
+                  <input
+                    type="text"
+                    placeholder="Search Cards"
+                    value={searchValue}
+                    onChange={(event) => setSearchValue(event.target.value)}
+                  />
                 </Grid>
               </Grid>
             </div>
@@ -171,57 +158,61 @@ export default function Cards() {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card.id} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image={card.image_url}
-                    title={card.name}
-                  />
+            {filteredCards.length > 0 ? (
+              filteredCards.map((card) => (
+                <Grid item key={card.id} xs={12} sm={6} md={4}>
+                  <Card className={classes.card}>
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image={card.image_url}
+                      title={card.name}
+                    />
 
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {card.name}
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      align="center"
-                      variant="body1"
-                    >
-                      Type:{card.card_type}
-                    </Typography>
-                    <br></br>
-                    <Typography
-                      color="textSecondary"
-                      align="center"
-                      variant="body2"
-                    >
-                      {card.text}
-                    </Typography>
-                    <br></br>
-                    <Typography gutterBottom variant="body2">
-                      <BrushIcon />
-                      {card.artist}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="primary">
-                      View Full Details
-                    </Button>
-                    <Button
-                      size="small"
-                      color="primary"
-                      onClick={() => {
-                        console.log('handle add')
-                      }}
-                    >
-                      Add Card
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+                    <CardContent className={classes.cardContent}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {card.name}
+                      </Typography>
+                      <Typography
+                        color="textSecondary"
+                        align="center"
+                        variant="body1"
+                      >
+                        Type:{card.card_type}
+                      </Typography>
+                      <br></br>
+                      <Typography
+                        color="textSecondary"
+                        align="center"
+                        variant="body2"
+                      >
+                        {card.text}
+                      </Typography>
+                      <br></br>
+                      <Typography gutterBottom variant="body2">
+                        <BrushIcon />
+                        {card.artist}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small" color="primary">
+                        View Full Details
+                      </Button>
+                      <Button
+                        size="small"
+                        color="primary"
+                        onClick={() => {
+                          console.log('handle add')
+                        }}
+                      >
+                        Add Card
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))
+            ) : (
+              <p justify="center">No Cards Found</p>
+            )}
           </Grid>
         </Container>
       </main>

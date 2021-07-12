@@ -16,6 +16,7 @@ import {
   IconButton,
   InputBase,
   Typography,
+  Button,
 } from '@material-ui/core'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -47,42 +48,35 @@ class NavBar extends Component {
     this.props.logoutUser()
   }
 
-  handleSearch = (event, { name }) => {
-    event.preventDefault()
-    const searchTerm = this.state.search.length ? this.state.search : 'default'
-    switch (this.state.dropdown) {
-      case 'cards':
-        this.props.fetchCARDS({ term: searchTerm }, this.props.history)
-        break
-      case 'decks':
-        this.props.fetchDecks({ term: searchTerm }, this.props.history)
-        break
-      default:
-        alert('Something went wrong in React Router')
-    }
-    this.setState({
-      search: '',
-    })
+  handleSearchFormInputChange = (event) => {
+    this.setState({ search: event.target.value })
   }
 
-  handleSubmit = (event) => {
+  handleSearchFormSubmit = (event) => {
     event.preventDefault()
-    const { term } = this.state
-    switch (this.state.dropdown) {
-      case 'cards':
-        this.props.fetchCARDS({ term }, this.props.history)
-        break
-      case 'decks':
-        this.props.fetchDecks({ term }, this.props.history)
-        break
-      default:
-        alert('Something went wrong in React Router')
-    }
-    this.setState({
-      search: '',
-      submit: false,
-    })
+    const searchTerm = this.state.search.length ? this.state.search : ''
+
+    window.location = `/cards?query=${searchTerm}`
   }
+
+  // handleSubmit = (event) => {
+  //   event.preventDefault()
+  //   const { term } = this.state
+  //   switch (this.state.dropdown) {
+  //     case 'cards':
+  //       this.props.fetchCARDS({ term }, this.props.history)
+  //       break
+  //     case 'decks':
+  //       this.props.fetchDecks({ term }, this.props.history)
+  //       break
+  //     default:
+  //       alert('Something went wrong in React Router')
+  //   }
+  //   this.setState({
+  //     search: '',
+  //     submit: false,
+  //   })
+  // }
 
   renderAuthLinks() {
     const { authChecked, loggedIn, currentUser } = this.props
@@ -130,42 +124,31 @@ class NavBar extends Component {
     const { authChecked, currentUser, loggedIn } = this.props
     return (
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
           <IconButton edge="start" color="inherit" aria-label="open drawer">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
             MageCraft
           </Typography>
-          <form onSubmit={this.handleSearch}>
-            <InputLabel htmlFor="search">Search</InputLabel>
+
+          <form
+            onSubmit={this.handleSearchFormSubmit}
+            style={{ backgroundColor: 'white', padding: '4px 16px' }}
+          >
             <InputBase
               type="text"
+              color="secondary"
               id="search"
               name="search"
               value={search}
-              onChange={this.handleChange}
+              onChange={this.handleSearchFormInputChange}
             />
-            <Select value={dropdown} onChange={this.handleChange}>
-              {options.map((option) => (
-                <MenuItem
-                  key={option.value}
-                  value={option.value}
-                  selected={option.value === dropdown}
-                  onClick={this.handleItemClick}
-                >
-                  {option.text}
-                </MenuItem>
-              ))}
-            </Select>
-            <button
-              type="submit"
-              onClick={this.handleSubmit}
-              disabled={!this.state.search}
-            >
-              {this.state.submit ? 'Sending...' : 'Search'}
+            <button type="submit" disabled={!this.state.search}>
+              Search
             </button>
           </form>
+
           <MenuList>
             <MenuItem
               name="home"
@@ -187,18 +170,6 @@ class NavBar extends Component {
               </MenuItem>
             )}
             <MenuItem>
-              <FormControl onSubmit={this.handleSearch}>
-                <input
-                  type="text"
-                  name="search"
-                  value={search}
-                  onChange={this.handleChange}
-                  placeholder={`Search ${dropdown}...`}
-                />
-              </FormControl>
-              Search
-            </MenuItem>
-            <MenuItem>
               <FormControl onSubmit={this.handleClick}>
                 <InputLabel
                   name="decksnew"
@@ -209,7 +180,7 @@ class NavBar extends Component {
               </FormControl>
               Create
             </MenuItem>
-            <Select
+            {/* <Select
               //TODO: need to check this name, dropdown isn't working
               name="dropdown"
               value={dropdown}
@@ -217,7 +188,7 @@ class NavBar extends Component {
               onChange={this.handleChange}
               options={options}
               placeholder="Cards"
-            />
+            /> */}
             <MenuItem
               value={options}
               component={Link}

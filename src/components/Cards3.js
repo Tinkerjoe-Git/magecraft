@@ -72,7 +72,23 @@ export default function Cards() {
   const classes = useStyles()
   const cards = useSelector((state) => state.cards.results)
   const dispatch = useDispatch()
-  // component did mount
+  const [searchValue, setSearchValue] = useState('')
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault()
+
+    dispatch({ type: 'CARD_SEARCH_FORM_SUBMITTED' })
+
+    fetch(`http://localhost:3000/cards/search?query=${searchValue}`)
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch({ type: 'CARDS_SEARCH_COMPLETED', payload: data })
+      })
+      .catch((reason) => {
+        dispatch({ type: 'CARDS_SEARCH_FAILED', payload: reason })
+      })
+  }
+
   useEffect(() => {
     dispatch({ type: 'CARDS_COMPONENT_MOUNTED' })
 
@@ -89,7 +105,7 @@ export default function Cards() {
     }
   }, [])
 
-  console.log(cards[0])
+  console.log(cards)
 
   return (
     <React.Fragment>
@@ -136,9 +152,17 @@ export default function Cards() {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Wishlist a Card
-                  </Button>
+                  <form onSubmit={handleFormSubmit}>
+                    <input
+                      type="text"
+                      placeholder="Search Cards"
+                      value={searchValue}
+                      onChange={(event) => setSearchValue(event.target.value)}
+                    />
+                    <Button type="submit" variant="contained" color="primary">
+                      Search
+                    </Button>
+                  </form>
                 </Grid>
               </Grid>
             </div>

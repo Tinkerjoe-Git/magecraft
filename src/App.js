@@ -15,9 +15,8 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { connect, useSelector } from 'react-redux'
 import { fetchUser } from './actions/auth'
 import withAuth from './components/hocs/withAuth'
-import Cards from './components/Cards2'
+import Cards from './components/Cards3'
 import { getCards } from './actions/cards'
-import DeckContainer5 from './components/not-in-use/DeckContainer5'
 
 const DeckFormWithStats = withStats(DeckForm)
 
@@ -79,7 +78,7 @@ class App extends Component {
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/cards" component={Cards} />
           <Route exact path="/decks" component={DeckContainer} />
-          <Route exact path="/decks/search" />
+          <Route exact path="/cards/search" component={CardContainer} />
 
           <Route exact path="/:username/decks" component={DeckContainer} />
           <Route exact path="/:username/decks/new" component={DeckForm} />

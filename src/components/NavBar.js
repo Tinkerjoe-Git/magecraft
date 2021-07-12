@@ -3,6 +3,7 @@ import { Link, withRouter, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
+import { fetchCARDS } from '../globalVars'
 import { logoutUser } from '../actions/auth'
 import {
   MenuList,
@@ -51,7 +52,7 @@ class NavBar extends Component {
     const searchTerm = this.state.search.length ? this.state.search : 'default'
     switch (this.state.dropdown) {
       case 'cards':
-        this.props.fetchCards({ term: searchTerm }, this.props.history)
+        this.props.fetchCARDS({ term: searchTerm }, this.props.history)
         break
       case 'decks':
         this.props.fetchDecks({ term: searchTerm }, this.props.history)
@@ -63,6 +64,26 @@ class NavBar extends Component {
       search: '',
     })
   }
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    const { term } = this.state
+    switch (this.state.dropdown) {
+      case 'cards':
+        this.props.fetchCARDS({ term }, this.props.history)
+        break
+      case 'decks':
+        this.props.fetchDecks({ term }, this.props.history)
+        break
+      default:
+        alert('Something went wrong in React Router')
+    }
+    this.setState({
+      search: '',
+      submit: false,
+    })
+  }
+
   renderAuthLinks() {
     const { authChecked, loggedIn, currentUser } = this.props
     if (authChecked) {
@@ -116,13 +137,35 @@ class NavBar extends Component {
           <Typography variant="h6" noWrap>
             MageCraft
           </Typography>
-          <div>
-            <SearchIcon />
+          <form onSubmit={this.handleSearch}>
+            <InputLabel htmlFor="search">Search</InputLabel>
             <InputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
+              type="text"
+              id="search"
+              name="search"
+              value={search}
+              onChange={this.handleChange}
             />
-          </div>
+            <Select value={dropdown} onChange={this.handleChange}>
+              {options.map((option) => (
+                <MenuItem
+                  key={option.value}
+                  value={option.value}
+                  selected={option.value === dropdown}
+                  onClick={this.handleItemClick}
+                >
+                  {option.text}
+                </MenuItem>
+              ))}
+            </Select>
+            <button
+              type="submit"
+              onClick={this.handleSubmit}
+              disabled={!this.state.search}
+            >
+              {this.state.submit ? 'Sending...' : 'Search'}
+            </button>
+          </form>
           <MenuList>
             <MenuItem
               name="home"
@@ -145,8 +188,8 @@ class NavBar extends Component {
             )}
             <MenuItem>
               <FormControl onSubmit={this.handleSearch}>
-                <InputLabel
-                  type="search"
+                <input
+                  type="text"
                   name="search"
                   value={search}
                   onChange={this.handleChange}
@@ -168,6 +211,7 @@ class NavBar extends Component {
             </MenuItem>
             <Select
               //TODO: need to check this name, dropdown isn't working
+              name="dropdown"
               value={dropdown}
               position="relative"
               onChange={this.handleChange}

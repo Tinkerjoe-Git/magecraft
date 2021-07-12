@@ -7,9 +7,11 @@ const defaultState = {
 
 export default function (state = defaultState, action) {
   switch (action.type) {
+    case 'CARD_SEARCH_FORM_SUBMITTED':
     case 'LOADING_CARDS':
       return { ...state, loading: !state.loading, results: [] }
 
+    case 'CARDS_SEARCH_COMPLETED':
     case 'FETCH_CARDS_COMPLETED':
     case 'SEARCH_CARDS':
       return { ...state, results: action.payload, loading: !state.loading }

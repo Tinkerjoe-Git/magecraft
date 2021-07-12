@@ -158,15 +158,6 @@ class DeckForm extends Component {
     }
   }
 
-  handleChange = (event, { name, value, checked }) => {
-    this.setState({
-      fields: {
-        ...this.state.fields,
-        [name]: checked ? checked : value,
-      },
-    })
-  }
-
   handleCardChange = (event) => {
     const { name, id, value } = event.target
     const position = event.target.dataset.position

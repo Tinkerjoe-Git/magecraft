@@ -22,19 +22,6 @@ import { fetchCARDS } from '../globalVars'
 import { setCards } from '../reducers/cardSlice'
 import BrushIcon from '@material-ui/icons/Brush'
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        MageCraft
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
-
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -214,7 +201,6 @@ export default function Cards() {
         >
           If you want to see more sets let me know.
         </Typography>
-        <Copyright />
       </footer>
       {/* End footer */}
     </React.Fragment>

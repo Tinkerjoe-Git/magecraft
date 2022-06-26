@@ -17,8 +17,10 @@ import { fetchUser } from './actions/auth'
 import withAuth from './components/hocs/withAuth'
 import Cards from './components/Cards3'
 import { getCards } from './actions/cards'
+import { DeckFormHook } from './components/DeckFormHook'
+import { DeckCardInputHook } from './components/DeckCardInputHook'
 
-const DeckFormWithStats = withStats(DeckForm)
+const DeckFormWithStats = withStats(DeckFormHook)
 
 const LoginPage = () => {
   const userIsAuthenticated = useSelector(
@@ -81,7 +83,7 @@ class App extends Component {
           <Route exact path="/cards/search" component={CardContainer} />
 
           <Route exact path="/:username/decks" component={DeckContainer} />
-          <Route exact path="/:username/decks/new" component={DeckForm} />
+          <Route exact path="/:username/decks/new" component={DeckFormHook} />
 
           <Route
             exact

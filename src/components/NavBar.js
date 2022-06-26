@@ -162,7 +162,6 @@ class NavBar extends Component {
               <MenuItem
                 name="decks"
                 component={Link}
-                //to="/decks"
                 to={{ pathname: `/${currentUser.name}/decks/new` }}
                 onClick={this.handleItemClick}
               >
@@ -170,7 +169,7 @@ class NavBar extends Component {
               </MenuItem>
             )}
             <MenuItem>
-              <FormControl onSubmit={this.handleClick}>
+              <FormControl onSubmit={this.handleSubmit}>
                 <InputLabel
                   name="decksnew"
                   component={Link}

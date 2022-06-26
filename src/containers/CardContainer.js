@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid'
 import { connect } from 'react-redux'
 import { fetchCARDS } from '../globalVars'
 import { Container } from '@material-ui/core'
-import Cards2 from '../components/Cards2'
+import Cards from '../components/Cards2'
 
 class CardContainer extends Component {
   componentDidMount() {
@@ -13,16 +13,13 @@ class CardContainer extends Component {
 
   render() {
     const cards = this.props.cards.map((card) => (
-      <Cards2
-        key={card.uuid()}
+      <Cards
+        key={card.id}
         //key={uuidv4()}
-        id={card.id}
+        // id={card.id}
         name={card.name}
         img={card.image_url}
         text={card.text}
-        cmc={card.cmc}
-        type={card.card_type}
-        colors={card.colors}
       />
     ))
 

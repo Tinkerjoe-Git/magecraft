@@ -3,6 +3,7 @@ import { Link, withRouter, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
+import { fetchCARDS } from '../globalVars'
 import { logoutUser } from '../actions/auth'
 import {
   MenuList,
@@ -15,6 +16,7 @@ import {
   IconButton,
   InputBase,
   Typography,
+  Button,
 } from '@material-ui/core'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -46,23 +48,36 @@ class NavBar extends Component {
     this.props.logoutUser()
   }
 
-  handleSearch = (event, { name }) => {
-    event.preventDefault()
-    const searchTerm = this.state.search.length ? this.state.search : 'default'
-    switch (this.state.dropdown) {
-      case 'cards':
-        this.props.fetchCards({ term: searchTerm }, this.props.history)
-        break
-      case 'decks':
-        this.props.fetchDecks({ term: searchTerm }, this.props.history)
-        break
-      default:
-        alert('Something went wrong in React Router')
-    }
-    this.setState({
-      search: '',
-    })
+  handleSearchFormInputChange = (event) => {
+    this.setState({ search: event.target.value })
   }
+
+  handleSearchFormSubmit = (event) => {
+    event.preventDefault()
+    const searchTerm = this.state.search.length ? this.state.search : ''
+
+    window.location = `/cards?query=${searchTerm}`
+  }
+
+  // handleSubmit = (event) => {
+  //   event.preventDefault()
+  //   const { term } = this.state
+  //   switch (this.state.dropdown) {
+  //     case 'cards':
+  //       this.props.fetchCARDS({ term }, this.props.history)
+  //       break
+  //     case 'decks':
+  //       this.props.fetchDecks({ term }, this.props.history)
+  //       break
+  //     default:
+  //       alert('Something went wrong in React Router')
+  //   }
+  //   this.setState({
+  //     search: '',
+  //     submit: false,
+  //   })
+  // }
+
   renderAuthLinks() {
     const { authChecked, loggedIn, currentUser } = this.props
     if (authChecked) {
@@ -109,20 +124,31 @@ class NavBar extends Component {
     const { authChecked, currentUser, loggedIn } = this.props
     return (
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
           <IconButton edge="start" color="inherit" aria-label="open drawer">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
             MageCraft
           </Typography>
-          <div>
-            <SearchIcon />
+
+          <form
+            onSubmit={this.handleSearchFormSubmit}
+            style={{ backgroundColor: 'white', padding: '4px 16px' }}
+          >
             <InputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
+              type="text"
+              color="secondary"
+              id="search"
+              name="search"
+              value={search}
+              onChange={this.handleSearchFormInputChange}
             />
-          </div>
+            <button type="submit" disabled={!this.state.search}>
+              Search
+            </button>
+          </form>
+
           <MenuList>
             <MenuItem
               name="home"
@@ -144,18 +170,6 @@ class NavBar extends Component {
               </MenuItem>
             )}
             <MenuItem>
-              <FormControl onSubmit={this.handleSearch}>
-                <InputLabel
-                  type="search"
-                  name="search"
-                  value={search}
-                  onChange={this.handleChange}
-                  placeholder={`Search ${dropdown}...`}
-                />
-              </FormControl>
-              Search
-            </MenuItem>
-            <MenuItem>
               <FormControl onSubmit={this.handleClick}>
                 <InputLabel
                   name="decksnew"
@@ -166,14 +180,15 @@ class NavBar extends Component {
               </FormControl>
               Create
             </MenuItem>
-            <Select
+            {/* <Select
               //TODO: need to check this name, dropdown isn't working
+              name="dropdown"
               value={dropdown}
               position="relative"
               onChange={this.handleChange}
               options={options}
               placeholder="Cards"
-            />
+            /> */}
             <MenuItem
               value={options}
               component={Link}

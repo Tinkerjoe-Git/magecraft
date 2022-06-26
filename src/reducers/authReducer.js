@@ -29,7 +29,6 @@ export default function authReducer(state = defaultState, action) {
     case 'SET_CURRENT_USER':
       return {
         ...state,
-        // maybe want action.payload // action.user
         currentUser: action.user,
         loading: false,
         errorStatus: false,

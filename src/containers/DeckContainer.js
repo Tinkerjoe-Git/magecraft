@@ -71,10 +71,6 @@ export default function DeckContainer() {
     }
   }, [])
 
-  function Cards() {
-    return <Cards cards={deckcards} />
-  }
-
   const [selectedDeck, setSelectedDeck] = useState(null)
   const [selectedCard, setSelectedCard] = useState(null)
 

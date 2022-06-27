@@ -104,90 +104,102 @@ export function DeckFormHook() {
 
   const deckCardsList =
     deckCards.map((card) => (
-      <Grid item key={card.id} xs={12} sm={6} md={4}>
-        <Card className={classes.card}>
-          <CardMedia
-            className={classes.cardMedia}
-            image={card.image_url}
-            title={card.name}
-          />
-
-          <CardContent className={classes.cardContent}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {card.name}
-            </Typography>
-            <Typography color="textSecondary" align="center" variant="body1">
-              Type:{card.card_type}
-            </Typography>
-            <br></br>
-            <Typography color="textSecondary" align="center" variant="body2">
-              {card.text}
-            </Typography>
-            <br></br>
-            <Typography gutterBottom variant="body2">
-              <BrushIcon />
-              {card.artist}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small" color="primary">
-              View Full Details
-            </Button>
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => {
-                console.log('handle add')
-              }}
+      <React.Fragment key={card.id}>
+        <Grid item key={card.id} xs={12} sm={6} md={4}>
+          <Card className={classes.card}>
+            <CardMedia
+              className={classes.cardMedia}
+              image={card.image_url}
+              title={card.name}
             >
-              Add Card
-            </Button>
-          </CardActions>
-        </Card>
-      </Grid>
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {card.name}
+                </Typography>
+                <Typography
+                  color="textSecondary"
+                  align="center"
+                  variant="body1"
+                >
+                  Type:{card.card_type}
+                </Typography>
+                <br></br>
+                <Typography
+                  color="textSecondary"
+                  align="center"
+                  variant="body2"
+                >
+                  {card.text}
+                </Typography>
+                <br></br>
+                <Typography gutterBottom variant="body2">
+                  <BrushIcon />
+                  {card.artist}
+                </Typography>
+              </CardContent>
+            </CardMedia>
+            <CardActions>
+              <Button size="small" color="primary">
+                View Full Details
+              </Button>
+              <Button
+                size="small"
+                color="primary"
+                onClick={() => {
+                  console.log('handle add')
+                }}
+              >
+                Add Card To Deck
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      </React.Fragment>
     )) || []
 
   return (
-    <div>
-      <h1>Create Deck</h1>
-      <form onSubmit={handleSubmit}>
-        <FormControl>
-          <FormLabel>Name</FormLabel>
-          <Input
-            name="name"
-            value={name}
-            onChange={handleChange}
-            onSubmit={handleSubmit}
-            error={error}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Format</FormLabel>
-          <Select
-            name="format"
-            value={format}
-            onChange={handleChange}
-            onSubmit={handleSubmit}
-            error={error}
-          >
-            <option value="">Select Format</option>
-            <option value="standard">Standard</option>
-            <option value="modern">Modern</option>
-            <option value="legacy">Legacy</option>
-            <option value="vintage">Vintage</option>
-            <option value="commander">Commander</option>
-            <option value="players">Players</option>
-          </Select>
-        </FormControl>
-        <Button type="submit">Submit</Button>
+    <React.Fragment>
+      <div>
+        <h1>Create Deck</h1>
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <FormLabel>Name</FormLabel>
+            <Input
+              name="name"
+              value={name}
+              onChange={handleChange}
+              onSubmit={handleSubmit}
+              error={error}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Format</FormLabel>
+            <Select
+              name="format"
+              value={format}
+              onChange={handleChange}
+              onSubmit={handleSubmit}
+              error={error}
+            >
+              <option value="">Select Format</option>
+              <option value="standard">Standard</option>
+              <option value="modern">Modern</option>
+              <option value="legacy">Legacy</option>
+              <option value="vintage">Vintage</option>
+              <option value="commander">Commander</option>
+              <option value="players">Players</option>
+            </Select>
+          </FormControl>
+          <Button type="submit">Submit</Button>
 
-        <Divider />
-        <h1>Deck Cards</h1>
-        <div>
-          <DeckCardInputHook onChange={handleChange} />
-          {deckCardsList}
-        </div>
-      </form>
-    </div>
+          <Divider />
+          <h1>Deck Cards</h1>
+          <div>
+            {deckCardsList} <Card cards={deckCardsList} />
+          </div>
+          <DeckCardInputHook addCard={addCard} />
+        </form>
+      </div>
+    </React.Fragment>
   )
 }

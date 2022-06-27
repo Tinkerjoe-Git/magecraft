@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Cards() {
+function Cards() {
   const classes = useStyles()
   const cards = useSelector((state) => state.cards.results)
   const dispatch = useDispatch()
@@ -206,6 +206,8 @@ export default function Cards() {
     </React.Fragment>
   )
 }
+
+export default Cards
 
 const mapStateToProps = (state) => {
   return {

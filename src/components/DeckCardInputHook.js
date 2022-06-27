@@ -29,43 +29,45 @@ function DeckCardInputHook(props) {
   }
 
   return (
-    <div className="deck-card-input">
-      <FormGroup>
-        <FormLabel>
-          <InputLabel>
-            <Icon onClick={handleChange}>add</Icon>
-            Add Card
+    <React.Fragment>
+      <div className="deck-card-input">
+        <FormGroup>
+          <FormLabel>
+            <InputLabel>
+              <Icon onClick={handleChange}>add</Icon>
+              Add Card
+            </InputLabel>
+          </FormLabel>
+          <Input
+            name="name"
+            value={name}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+            error={error}
+          />
+          <InputLabel
+            className="deck-card-input-count-label"
+            error={error}
+            disabled={removed}
+          >
+            Count
           </InputLabel>
-        </FormLabel>
-        <Input
-          name="name"
-          value={name}
-          onChange={handleChange}
-          onSubmit={handleSubmit}
-          error={error}
-        />
-        <InputLabel
-          className="deck-card-input-count-label"
-          error={error}
-          disabled={removed}
-        >
-          Count
-        </InputLabel>
-        <TextField
-          name="count"
-          value={count}
-          onChange={handleChange}
-          onSubmit={handleSubmit}
-          error={error}
-        />
-        <Icon
-          className="deck-card-input-remove-icon"
-          onClick={() => setRemoved(true)}
-        >
-          remove
-        </Icon>
-      </FormGroup>
-    </div>
+          <TextField
+            name="count"
+            value={count}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+            error={error}
+          />
+          <Icon
+            className="deck-card-input-remove-icon"
+            onClick={() => setRemoved(true)}
+          >
+            remove
+          </Icon>
+        </FormGroup>
+      </div>
+    </React.Fragment>
   )
 }
 

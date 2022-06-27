@@ -33,6 +33,8 @@ import { Cards } from './Cards2'
 import { makeStyles } from '@material-ui/core/styles'
 import { setCards } from '../reducers/cardSlice'
 import BrushIcon from '@material-ui/icons/Brush'
+import { fetchCARDS } from '../globalVars'
+import { addCard } from '../actions/cards'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -76,6 +78,15 @@ export function DeckFormHook() {
   const { cards, setCards } = useState([])
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    fetchCARDS().then((data) => {
+      dispatch({ type: 'FETCH_CARDS_COMPLETED', payload: data })
+    })
+    return () => {
+      console.log(cards)
+    }
+  }, [])
+
   function handleChange(event) {
     setName(event.target.value)
     setCount(event.target.value)
@@ -94,11 +105,11 @@ export function DeckFormHook() {
     }
   }
 
-  function addCard(card) {
-    let newCards = [...cards]
-    newCards.push(card)
-    setCards(newCards)
-  }
+  // function addCard(card) {
+  //   let newCards = [...cards]
+  //   newCards.push(card)
+  //   setCards(newCards)
+  // }
 
   const deckCards = useSelector((state) => state.cards.results)
 
@@ -116,38 +127,19 @@ export function DeckFormHook() {
                 <Typography gutterBottom variant="h5" component="h2">
                   {card.name}
                 </Typography>
-                <Typography
-                  color="textSecondary"
-                  align="center"
-                  variant="body1"
-                >
-                  Type:{card.card_type}
-                </Typography>
-                <br></br>
-                <Typography
-                  color="textSecondary"
-                  align="center"
-                  variant="body2"
-                >
-                  {card.text}
-                </Typography>
-                <br></br>
-                <Typography gutterBottom variant="body2">
-                  <BrushIcon />
-                  {card.artist}
-                </Typography>
               </CardContent>
             </CardMedia>
             <CardActions>
               <Button size="small" color="primary">
-                View Full Details
+                Add to SideBoard
               </Button>
               <Button
                 size="small"
                 color="primary"
-                onClick={() => {
-                  console.log('handle add')
-                }}
+                onClick={() =>
+                  dispatch({ type: 'SELECT_CARD', payload: card }) &&
+                  addCard(card)
+                }
               >
                 Add Card To Deck
               </Button>
@@ -197,7 +189,9 @@ export function DeckFormHook() {
           <div>
             {deckCardsList} <Card cards={deckCardsList} />
           </div>
-          <DeckCardInputHook addCard={addCard} />
+          <DeckCardInputHook>
+            <Button onClick={addCard}>Add Card</Button>
+          </DeckCardInputHook>
         </form>
       </div>
     </React.Fragment>

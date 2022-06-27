@@ -34,7 +34,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { setCards } from '../reducers/cardSlice'
 import BrushIcon from '@material-ui/icons/Brush'
 import { fetchCARDS } from '../globalVars'
-import { addCard } from '../actions/cards'
+import { addCard, selectCard } from '../actions/cards'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -90,6 +90,7 @@ export function DeckFormHook() {
   function handleChange(event) {
     setName(event.target.value)
     setCount(event.target.value)
+    setFormat(event.target.value)
   }
 
   function handleSubmit(event) {
@@ -98,10 +99,6 @@ export function DeckFormHook() {
       setError(true)
     } else {
       dispatch(createDeck(name, format, cards))
-      setName('')
-      setFormat('')
-      setCards([])
-      setError(false)
     }
   }
 
@@ -138,6 +135,7 @@ export function DeckFormHook() {
                 color="primary"
                 onClick={() =>
                   dispatch({ type: 'SELECT_CARD', payload: card }) &&
+                  selectCard(card) &&
                   addCard(card)
                 }
               >
@@ -187,11 +185,10 @@ export function DeckFormHook() {
           <Divider />
           <h1>Deck Cards</h1>
           <div>
-            {deckCardsList} <Card cards={deckCardsList} />
+            <ul>
+              {deckCardsList} <Card cards={deckCardsList} />
+            </ul>
           </div>
-          <DeckCardInputHook>
-            <Button onClick={addCard}>Add Card</Button>
-          </DeckCardInputHook>
         </form>
       </div>
     </React.Fragment>

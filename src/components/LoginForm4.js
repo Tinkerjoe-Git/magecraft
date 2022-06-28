@@ -52,14 +52,14 @@ const LoginForm = ({ onCancelClick }) => {
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       <TextField
-        label="name"
+        label="Name"
         variant="filled"
         required
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
       <TextField
-        label="email"
+        label="Email"
         variant="filled"
         required
         value={email}

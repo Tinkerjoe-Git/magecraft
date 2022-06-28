@@ -14,6 +14,7 @@ import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import LoginForm from './LoginForm4'
 
 function Copyright() {
   return (
@@ -77,8 +78,8 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
+          <LoginForm>
+            {/* <TextField
               variant="outlined"
               margin="normal"
               required
@@ -110,36 +111,36 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/login" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+            /> */}
+            {/* <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button> */}
+          </LoginForm>
+          <Grid container>
+            <Grid item xs>
+              <Link href="/login" variant="body2">
+                Forgot password?
+              </Link>
             </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
+            <Grid item>
+              <Link href="/signup" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+          <Box mt={5}>
+            <Copyright />
+          </Box>
         </div>
       </Grid>
     </Grid>

@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Cards() {
+export function Cards() {
   const classes = useStyles()
   const cards = useSelector((state) => state.cards.results)
   const dispatch = useDispatch()

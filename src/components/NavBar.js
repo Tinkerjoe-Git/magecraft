@@ -5,6 +5,7 @@ import { getCards } from '../actions/cards'
 import { fetchDecks } from '../actions/decks'
 import { fetchCARDS } from '../globalVars'
 import { logoutUser } from '../actions/auth'
+import { fetchUser } from '../actions/auth'
 import {
   MenuList,
   MenuItem,
@@ -154,7 +155,7 @@ class NavBar extends Component {
               name="home"
               component={Link}
               to="/"
-              //onClick={this.handleItemClick}
+              onClick={this.handleItemClick}
             >
               Home
             </MenuItem>

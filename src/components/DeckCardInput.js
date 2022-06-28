@@ -42,6 +42,7 @@ class DeckCardInput extends Component {
           <FormLabel>
             <TextField
               id="name"
+              name="name"
               value={name}
               onChange={this.handleChange}
               onBlur={this.handleChange}
@@ -56,6 +57,7 @@ class DeckCardInput extends Component {
           <FormLabel>
             <Input
               id="count"
+              name="count"
               type="number"
               value={count}
               onChange={this.handleChange}

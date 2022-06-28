@@ -10,64 +10,80 @@ import {
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 
-function DeckCardInputHook(props) {
-  const dispatch = useDispatch()
-  const { name, setName } = useState('')
-  const { count, setCount } = useState(0)
-  const { error, setError } = useState(false)
-  const { mouseOver, setMouseOver } = useState(false)
-  const { removed, setRemoved } = useState(false)
+function DeckCardInputHook() {
+  const [cardData, setCardData] = useState({
+    name: '',
+    count: '',
+  })
 
   function handleChange(event) {
-    const { name, count } = event.target.value || {}
-    setName(name)
-    setCount(count)
-  }
+    const name = event.target.name
+    let value = event.target.value
+    if (event.target.type === 'checkbox') {
+      value = event.target.checked
+    }
 
-  function handleSubmit(event) {
-    event.preventDefault()
+    setCardData({
+      ...cardData,
+      [name]: value,
+    })
   }
 
   return (
-    <React.Fragment>
-      <div className="deck-card-input">
-        <FormGroup>
-          <FormLabel>
-            <InputLabel>
-              <Icon onClick={handleChange}>add</Icon>
-              Add Card
-            </InputLabel>
-          </FormLabel>
-          <Input
-            name="name"
-            value={name}
-            onChange={handleChange}
-            onSubmit={handleSubmit}
-            error={error}
-          />
-          <InputLabel
-            className="deck-card-input-count-label"
-            error={error}
-            disabled={removed}
-          >
-            Count
-          </InputLabel>
+    <div className="DeckCardInput">
+      <FormGroup>
+        <InputLabel htmlFor="name">Name</InputLabel>
+        <FormLabel>
           <TextField
-            name="count"
-            value={count}
+            id="name"
+            name="name"
+            value={cardData.name}
             onChange={handleChange}
-            onSubmit={handleSubmit}
+            // onBlur={this.handleChange}
+            // onMouseOver={this.handleMouseOver}
+            // onMouseOut={this.handleMouseOver}
+          />
+        </FormLabel>
+      </FormGroup>
+      <FormGroup>
+        <InputLabel htmlFor="count">Count</InputLabel>
+        <FormLabel>
+          <Input
+            id="count"
+            name="count"
+            type="number"
+            value={cardData.count}
+            onChange={handleChange}
+            // onBlur={this.handleChange}
+            // onMouseOver={this.handleMouseOver}
+            // onMouseOut={this.handleMouseOver}
+          />
+        </FormLabel>
+      </FormGroup>
+      {/* <FormGroup> */}
+      {/* <InputLabel htmlFor="removed">Removed</InputLabel>
+        <FormLabel>
+          <Input
+            id="removed"
+            type="checkbox"
+            checked={removed}
+            onChange={this.handleChange}
+            onBlur={this.handleChange}
+            onMouseOver={this.handleMouseOver}
+            onMouseOut={this.handleMouseOver}
             error={error}
           />
-          <Icon
-            className="deck-card-input-remove-icon"
-            onClick={() => setRemoved(true)}
-          >
-            remove
-          </Icon>
-        </FormGroup>
-      </div>
-    </React.Fragment>
+        </FormLabel>
+      </FormGroup> */}
+      {/* <Icon
+        className={`DeckCardIcon ${mouseOver ? 'DeckCardIcon--mouseOver' : ''}`}
+        onMouseOver={this.handleMouseOver}
+        onMouseOut={this.handleMouseOver}
+        onClick={this.handleRemove}
+      >
+        <i className="material-icons">delete_forever</i>
+      </Icon> */}
+    </div>
   )
 }
 

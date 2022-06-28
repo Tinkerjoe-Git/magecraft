@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { sortCardsIntoBoards } from '../globalFunctions'
 import {
   Button,
-  Container,
   Checkbox,
   Divider,
   Card,
@@ -29,12 +28,13 @@ import {
   Input,
   Select,
 } from '@material-ui/core'
+import Container from '@material-ui/core/Container'
 import { Cards } from './Cards2'
 import { makeStyles } from '@material-ui/core/styles'
 import { setCards } from '../reducers/cardSlice'
 import BrushIcon from '@material-ui/icons/Brush'
 import { fetchCARDS } from '../globalVars'
-import { addCard, selectCard } from '../actions/cards'
+import { selectCard } from '../actions/cards'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -71,11 +71,11 @@ const useStyles = makeStyles((theme) => ({
 
 export function DeckFormHook() {
   const classes = useStyles()
-  const { name, setName } = useState('')
-  const { format, setFormat } = useState('')
-  const { count, setCount } = useState(0)
-  const { error, setError } = useState(false)
-  const { cards, setCards } = useState([])
+  const [name, setName] = useState('')
+  const [format, setFormat] = useState('')
+  const [count, setCount] = useState(0)
+  const [error, setError] = useState(false)
+  const [cards, setCards] = useState([])
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -87,11 +87,18 @@ export function DeckFormHook() {
     }
   }, [])
 
-  function handleChange(event) {
-    setName(event.target.value)
-    setCount(event.target.value)
-    setFormat(event.target.value)
+  function addCard(addedCard) {
+    setCards([...cards, addedCard])
   }
+
+  // function addCardToBoard(addedCard) {
+  //     setCards(cards.map((card) => {
+  //       if (card.id === addedCard.id) {
+  //         return card
+  //       }
+  //     }
+  //   ))
+  // }
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -102,49 +109,44 @@ export function DeckFormHook() {
     }
   }
 
-  // function addCard(card) {
-  //   let newCards = [...cards]
-  //   newCards.push(card)
-  //   setCards(newCards)
-  // }
-
   const deckCards = useSelector((state) => state.cards.results)
 
   const deckCardsList =
     deckCards.map((card) => (
-      <React.Fragment key={card.id}>
-        <Grid item key={card.id} xs={12} sm={6} md={4}>
-          <Card className={classes.card}>
-            <CardMedia
-              className={classes.cardMedia}
-              image={card.image_url}
-              title={card.name}
-            >
-              <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {card.name}
-                </Typography>
-              </CardContent>
-            </CardMedia>
-            <CardActions>
-              <Button size="small" color="primary">
-                Add to SideBoard
-              </Button>
-              <Button
-                size="small"
-                color="primary"
-                onClick={() =>
-                  dispatch({ type: 'SELECT_CARD', payload: card }) &&
-                  selectCard(card) &&
-                  addCard(card)
-                }
-              >
-                Add Card To Deck
-              </Button>
-            </CardActions>
-          </Card>
+      <Container className={classes.cardGrid} maxWidth="md" item key={card.id}>
+        <Grid container spacing={4}>
+          <Grid item key={card.id} xs={12} sm={6} md={4}>
+            <Card className={classes.card}>
+              <CardMedia
+                className={classes.cardMedia}
+                image={card.image_url}
+                title={card.name}
+              ></CardMedia>
+              <CardActions>
+                <Button size="small" color="primary">
+                  Add to SideBoard
+                </Button>
+                <Button
+                  size="small"
+                  color="primary"
+                  onChange={(e) => setCards(e.target.value)}
+                  onClick={
+                    () =>
+                      dispatch({ type: 'SELECT_CARD', payload: card }) &&
+                      addCard(card.selectedCard)
+
+                    // addCard(card) &&
+                    // dispatch({ type: 'ADD_CARD', payload: cardObj }) &&
+                    // setCards([...cards, card])
+                  }
+                >
+                  Add Card To Deck
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
         </Grid>
-      </React.Fragment>
+      </Container>
     )) || []
 
   return (
@@ -157,7 +159,7 @@ export function DeckFormHook() {
             <Input
               name="name"
               value={name}
-              onChange={handleChange}
+              onChange={(e) => setName(e.target.value)}
               onSubmit={handleSubmit}
               error={error}
             />
@@ -167,7 +169,7 @@ export function DeckFormHook() {
             <Select
               name="format"
               value={format}
-              onChange={handleChange}
+              onChange={(e) => setFormat(e.target.value)}
               onSubmit={handleSubmit}
               error={error}
             >
@@ -177,7 +179,6 @@ export function DeckFormHook() {
               <option value="legacy">Legacy</option>
               <option value="vintage">Vintage</option>
               <option value="commander">Commander</option>
-              <option value="players">Players</option>
             </Select>
           </FormControl>
           <Button type="submit">Submit</Button>

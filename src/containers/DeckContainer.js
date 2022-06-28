@@ -58,13 +58,16 @@ export default function DeckContainer() {
   const deckcards = useSelector((state) => state.results)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch({ type: 'SELECT_DECK' })
+    fetchUser().then((data) => {
+      dispatch({ type: 'LOADING_USER', payload: data })
+    }),
+      // dispatch({ type: 'SELECT_DECK' })
 
-    fetchDecks()
-      .then((data) => {
-        dispatch({ type: 'FETCH_DECKS_COMPLETE', payload: data })
-      })
-      .catch((reason) => ({ type: 'DECK_ERROR', payload: reason }))
+      fetchDecks()
+        .then((data) => {
+          dispatch({ type: 'FETCH_DECKS_COMPLETE', payload: data })
+        })
+        .catch((reason) => ({ type: 'DECK_ERROR', payload: reason }))
 
     return () => {
       console.log('Unmounting')
